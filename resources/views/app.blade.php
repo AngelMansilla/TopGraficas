@@ -20,7 +20,7 @@
       <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item ms-5">
-            <a class="nav-link active" aria-current="page" href="">Ofertas</a>
+            <a class="nav-link active" aria-current="page" href="/">Ofertas</a>
           </li>
           <li class="nav-item ms-5">
             <a class="nav-link" href="/graficas">Graficas</a>
