@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\GraficasController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/artisan', function () {
-    return view('welcome');
-});
 
 Route::get('/', function () {
-    return view('ofertas.index');
+  return view('ofertas.index');
 });
+Route::get('/graficas', function () {
+  return view('graficas.index');
+});
+
+Route::post('/graficas', [GraficasController::class, 'grafica'])->name('graficas');
