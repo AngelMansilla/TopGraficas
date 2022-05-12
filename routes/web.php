@@ -21,4 +21,4 @@ Route::get('/graficas', function () {
   return view('graficas.index');
 });
 
-Route::post('/graficas', [GraficasController::class, 'grafica'])->name('graficas');
+Route::post('/graficas', [GraficasController::class, 'store'])->name('graficas');

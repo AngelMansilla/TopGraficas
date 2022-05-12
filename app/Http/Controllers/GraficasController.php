@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Grafica;
+use Illuminate\Http\Request;
 
 class GraficasController extends Controller
 {
 
-  public function grafica(request $request)
+  public function store(request $request)
   {
     $request->validate([
       'nombre' => 'required|min:3',
@@ -22,7 +21,7 @@ class GraficasController extends Controller
       'imagen' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
     ]);
 
-    $grafica = new Grafica;
+    $grafica = new Grafica();
     $grafica->nombre = $request->nombre;
     $grafica->empresa = $request->empresa;
     $grafica->pvpr = $request->pvpr;

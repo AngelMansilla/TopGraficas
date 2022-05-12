@@ -3,7 +3,7 @@
 @section('content')
 <div class="container w-50 border p-4 mt-4">
   <h1 class="text-center">Publicar Grafica</h1>
-  <form class="row g-3" name="publicar-grafica" type="POST" enctype="multipart/formdata">
+  <form class="row g-3" name="publicar-grafica" type="POST" enctype="multipart/formdata" action="{{ route('graficas') }}">
     <div class="col-md-6">
       <label for="inputNombre" class="form-label">Nombre</label>
       <input type="text" class="form-control" id="inputNombre">
