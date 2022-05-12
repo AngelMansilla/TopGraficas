@@ -22,6 +22,7 @@ return new class extends Migration
       $table->string('memoria');
       $table->string('tipo_memoria');
       $table->string('consumo');
+      $table->date('fecha');
       $table->string('imagen');
       $table->timestamps();
     });
