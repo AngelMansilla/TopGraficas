@@ -15,15 +15,15 @@ return new class extends Migration
   {
     Schema::create('graficas', function (Blueprint $table) {
       $table->id();
-      $table->string('nombre')->unique();
-      $table->string('empresa');
-      $table->float('pvpr');
+      $table->string('nombre', 50)->unique();
+      $table->string('empresa', 50);
+      $table->float('pvpr', 50);
       $table->string('fabricacion')->nullable();
-      $table->string('memoria');
-      $table->string('tipo_memoria');
-      $table->string('consumo');
+      $table->string('memoria', 50);
+      $table->string('tipo_memoria', 50);
+      $table->string('consumo', 50);
       $table->date('fecha');
-      $table->string('imagen');
+      $table->string('imagen', 100);
       $table->timestamps();
     });
   }

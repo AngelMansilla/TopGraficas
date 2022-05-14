@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Grafica extends Model
 {
-    use HasFactory;
+  use HasFactory;
+  protected $fillable = ['nombre', 'empresa', 'pvpr', 'arquitectura', 'memoria', 'tipo_memoria', 'consumo', 'fecha', 'imagen'];
 }
