@@ -15,5 +15,5 @@ use App\Http\Controllers\GraficasController;
 
 
 Route::get('/', function () {
-  return view('ofertas.index');
+  return view('index');
 });

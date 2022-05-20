@@ -3,39 +3,41 @@ import axios from 'axios'
 
 import { Link } from 'react-router-dom'
 
-import { useLocation } from "react-router-dom"
 
-// eslint-disable-next-line no-unused-vars
-const endpoint = 'https://top-graficas.herokuapp.com/api'
+// const endpoint = 'https://top-graficas.herokuapp.com/api'
+const endpoint = 'http://127.0.0.1:8000/api'
+
 const ShowGrafica = () => {
-  // eslint-disable-next-line no-unused-vars
   const [graficas, setGraficas] = useState([])
 
-  const location = useLocation();
   useEffect(() => {
     getAllGraficas()
   }, [])
 
   const getAllGraficas = async () => {
-    const response = await axios.get('${endpoint/graficas')
-    setGraficas(response)
+    const response = await axios.get(`${endpoint}/graficas`)
+    setGraficas(response.data)
   }
 
   const deleteGraficas = async (id) => {
 
-    const response = await axios.delete('${endpoint/grafica/${id}')
+    await axios.delete(`${endpoint}/graficas/${id}`)
     getAllGraficas()
   }
 
-  return (
+  const srcImagen =  (imagen) =>{
+    return `${endpoint}/imagenes/${imagen}`
+  }
 
+  return (
     <div className='d-grid gap-2'>
-      <Link to="/publicar" className='btn btn-success btn-lg mt-2 mb-2 text-white'>Publicar</Link>
+      <Link to="/graficas/publicar" className='btn btn-success btn-lg mt-2 mb-2 text-white'>Publicar</Link>
       <div className="row row-cols-1 row-cols-md-2 g-4">
-        {graficas.map((grafica) => (
+        {graficas.map((grafica)  => (
           <div className="col">
-            <div className="card">
-              <div className="card-body">
+            <div className="card flex-row">
+              <img src={srcImagen(grafica.imagen)} className="card-img-top w-50" alt={grafica.nombre}></img>
+              <div className="card-body w-50">
                 <h5 className="card-title">{grafica.nombre}</h5>
                 <p className="card-text">
                   <div>
@@ -49,11 +51,10 @@ const ShowGrafica = () => {
                   </div>
                 </p>
                 <small className="text-muted">{grafica.fecha}</small>
-              </div>
-              <img src="{Location.pathname + grafica.imagen}" className="card-img-top" alt="{grafica.nombre}"></img>
-              <div className="card-footer">
-                <Link to={'/edit/${grafica.id}'} className='btn btn-warning'>Editar</Link>
-                <button onClick={() => deleteGraficas(grafica.id)} className='btn btn-danger'>Eliminar</button>
+                <div className="card-footer">
+                  <Link to={`editar/${grafica.id}`} className='btn btn-warning'>Editar</Link>
+                  <button onClick={() => deleteGraficas(grafica.id)} className='btn btn-danger'>Eliminar</button>
+                </div>
               </div>
             </div>
           </div>

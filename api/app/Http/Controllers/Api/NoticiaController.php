@@ -87,6 +87,8 @@ class NoticiaController extends Controller
   public function destroy($id)
   {
     $noticia = Noticia::destroy($id);
+    $noticiaFind = Noticia::find($id);
+    unlink(storage_path('app/' . $noticiaFind->imagen));
     return $noticia;
   }
 }

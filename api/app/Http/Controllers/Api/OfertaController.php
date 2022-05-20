@@ -68,25 +68,29 @@ class OfertaController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $request->validate([
-      'titulo' => 'required|min:3',
-      'precio' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-      'votos' => 'required|numeric',
-      'enlace' => 'required|min:3',
-      'descipcion' => 'required|min:3',
-      'vendedor' => 'required|min:3',
-    ]);
+    if (auth()->user()->is_admin || auth()->user()->id == $request->user_id) {
+      $request->validate([
+        'titulo' => 'required|min:3',
+        'precio' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
+        'votos' => 'required|numeric',
+        'enlace' => 'required|min:3',
+        'descipcion' => 'required|min:3',
+        'vendedor' => 'required|min:3',
+      ]);
 
-    $oferta = Oferta::findOrFail($request->$id);
-    $oferta->titulo = $request->titulo;
-    $oferta->precio = $request->precio;
-    $oferta->votos = $request->votos;
-    $oferta->enlace = $request->enlace;
-    $oferta->descipcion = $request->descipcion;
-    $oferta->vendedor = $request->vendedor;
+      $oferta = Oferta::findOrFail($request->$id);
+      $oferta->titulo = $request->titulo;
+      $oferta->precio = $request->precio;
+      $oferta->votos = $request->votos;
+      $oferta->enlace = $request->enlace;
+      $oferta->descipcion = $request->descipcion;
+      $oferta->vendedor = $request->vendedor;
 
-    $oferta->save();
-    return $oferta;
+      $oferta->save();
+      return $oferta;
+    } else {
+      return redirect('/');
+    }
   }
 
   /**
@@ -97,7 +101,12 @@ class OfertaController extends Controller
    */
   public function destroy($id)
   {
-    $oferta = Oferta::destroy($id);
-    return $oferta;
+    $ofertaFind = Oferta::findOrFail($id);
+    if (auth()->user()->is_admin || auth()->user()->id == $ofertaFind->user_id) {
+      $oferta = Oferta::destroy($id);
+      return $oferta;
+    } else {
+      return redirect('/');
+    }
   }
 }

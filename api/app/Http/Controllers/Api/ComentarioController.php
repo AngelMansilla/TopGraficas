@@ -62,6 +62,8 @@ class ComentarioController extends Controller
    */
   public function update(Request $request, $id)
   {
+    if (auth()->user()->is_admin || auth()->user()->id == $request->user_id) {
+
     $request->validate([
       'titulo' => 'required|min:3',
       'informacion' => 'required|min:3',
@@ -75,6 +77,9 @@ class ComentarioController extends Controller
 
     $comentario->save();
     return $comentario;
+  }else {
+      return redirect('/');
+    }
   }
 
   /**
@@ -85,7 +90,12 @@ class ComentarioController extends Controller
    */
   public function destroy($id)
   {
-    $comentario = Comentario::destroy($id);
-    return $comentario;
+    $comentarioFind = Comentario::findOrFail($id);
+    if (auth()->user()->is_admin || auth()->user()->id == $comentarioFind->user_id) {
+      $comentario = Comentario::destroy($id);
+      return $comentario;
+    } else {
+      return redirect('/');
+    }
   }
 }

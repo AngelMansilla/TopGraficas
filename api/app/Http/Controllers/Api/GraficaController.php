@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller\Api\ImagenController;
 use App\Models\Grafica;
 use Illuminate\Http\Request;
 
@@ -48,8 +49,8 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = $request->imagen->store('images');
-
+    $grafica->imagen = explode("/", $request->imagen->store('images'))[1];
+    $grafica->user_id = auth()->user()->id;
     $grafica->save();
   }
 
@@ -95,7 +96,8 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = $request->imagen->store('images');
+    $grafica->imagen = $request->imagen->store();
+    $grafica->user_id = $request->user_id;
 
     $grafica->save();
     return $grafica;
@@ -109,7 +111,9 @@ class GraficaController extends Controller
    */
   public function destroy($id)
   {
-    $grafica = Grafica::destory($id);
+    $graficaFind = Grafica::findOrFail($id);
+    $grafica = Grafica::destroy($id);
+    unlink(storage_path('app/images/' . $graficaFind->imagen));
     return $grafica;
   }
 }

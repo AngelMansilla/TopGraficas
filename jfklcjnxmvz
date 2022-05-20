@@ -1,0 +1,77 @@
+[33mcommit ea2699e31aa86c0c3e50fa404fe89af35c615e32[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Mon May 16 12:00:36 2022 +0200
+
+    Configuracion de Api y Front
+
+[33mcommit 454834159b6bf511ddbbd5eb7f74670415c50911[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Mon May 16 00:32:14 2022 +0200
+
+    Configurar laravel como api, creando las tablas, modelos y controladores necesarios, y añado react para realizar el front
+
+[33mcommit f1c6d78494a0ae92ed739651b370605574deb537[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Sat May 14 15:26:00 2022 +0200
+
+    Se añade react
+
+[33mcommit a4b5ab8e8a0c6caeff009ecf2f8dd7039467575c[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Sat May 14 15:18:00 2022 +0200
+
+    Actualizaciones formulario grafica
+
+[33mcommit 256d873c1573792408e5313a0f794b210df0f1c7[m[33m ([m[1;31mheroku/master[m[33m)[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Thu May 12 15:24:40 2022 +0200
+
+    Corrección formulario graficas
+
+[33mcommit 17db4a94f0252edfe95a1bbefb6a704683f0079e[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Thu May 12 07:52:49 2022 +0200
+
+    Modificacion metodo store de la clase grafica y redirección formulario grafica
+
+[33mcommit e2ff2cd22d93c94d1390e39f83700b7a1c40ca0f[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Thu May 12 01:06:13 2022 +0200
+
+    Configurar base de datos de heroku
+
+[33mcommit 9bf7d9a37fb84e8247eb54e18c8e6f9fd6dbabcd[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Thu May 12 00:49:07 2022 +0200
+
+    Configurando base de datos heroku
+
+[33mcommit a2fcdd2b9796a4d170733cc23c9ee31670a84fe0[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Thu May 12 00:06:30 2022 +0200
+
+    Añadimos rutas con https
+
+[33mcommit 49ea4c41fd52861c2eeb8a9384abde3c43e80557[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Thu May 12 00:01:26 2022 +0200
+
+    Añadir Procfile y creacion de publicar grafica
+
+[33mcommit ef770371495c6846af9986248b1a90b5b9d4b9c6[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Sun May 8 16:16:47 2022 +0200
+
+    Nav y footer
+
+[33mcommit 2d097dbb65a84b036d8611482341fccdd14850f7[m
+Author: Angel <sarrom95@gmail.com>
+Date:   Fri May 6 12:51:58 2022 +0200
+
+    Creación proyecto
+
+[33mcommit 9cde626e7d96120777d357b5747f4a989345e33e[m
+Author: Morrras <37605383+Morrras@users.noreply.github.com>
+Date:   Tue May 3 23:17:24 2022 +0200
+
+    Initial commit
