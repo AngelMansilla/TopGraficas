@@ -59,6 +59,12 @@ class OfertaController extends Controller
     return $oferta;
   }
 
+  public function search($id)
+  {
+    $ofertas = Oferta::all()->where('grafica_id', $id);
+    return $ofertas;
+  }
+
   /**
    * Update the specified resource in storage.
    *

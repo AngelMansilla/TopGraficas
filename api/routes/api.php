@@ -31,28 +31,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(GraficaController::class)->group(function () {
   Route::get('/graficas', 'index');
-  Route::get('/graficas/{id}', 'show');
+  Route::get('/grafica/{id}', 'show');
 });
 
 Route::controller(NoticiaController::class)->group(function () {
   Route::get('/noticias', 'index');
-  Route::get('/noticias/{id}', 'show');
+  Route::get('/noticia/{id}', 'show');
 });
 
 Route::controller(OfertaController::class)->group(function () {
   Route::get('/ofertas', 'index');
-  Route::get('/ofertas/{id}', 'show');
+  Route::get('/oferta/{id}', 'show');
+  Route::get('/ofertas/{id}', 'search');
 });
 
 Route::controller(ComentarioController::class)->group(function () {
   Route::get('/comentarios', 'index');
-  Route::get('/comentarios/{id}', 'show');
+  Route::get('/comentario/{id}', 'show');
 });
 
 
 
 Route::controller(ImagenController::class)->group(function () {
-  Route::get('/imagenes/{id}', 'show');
+  Route::get('/imagene/{id}', 'show');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -63,42 +64,42 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
   Route::controller(AuthController::class)->group(function () {
     Route::get('/cerrarsesion', 'logout');
-    Route::put('/usuarios/{id}', 'editUser');
+    Route::put('/usuario/{id}', 'editUser');
   });
 
   Route::controller(OfertaController::class)->group(function () {
     Route::post('/ofertas', 'store');
-    Route::put('/ofertas/{id}', 'update');
+    Route::put('/oferta/{id}', 'update');
   });
   Route::controller(ComentarioController::class)->group(function () {
     Route::post('/comentarios', 'store');
-    Route::put('/comentarios/{id}', 'update');
+    Route::put('/comentario/{id}', 'update');
   });
     Route::controller(UserController::class)->group(function () {
-    Route::get('/usuarios/{id}', 'show');
+    Route::get('/usuario/{id}', 'show');
   });
 });
 
 Route::group(['middleware' => 'admin'], function () {
   Route::controller(GraficaController::class)->group(function () {
     Route::post('/graficas', 'store');
-    Route::put('/graficas/{id}', 'update');
-    Route::delete('/graficas/{id}', 'destroy');
+    Route::put('/grafica/{id}', 'update');
+    Route::delete('/grafica/{id}', 'destroy');
   });
   Route::controller(NoticiaController::class)->group(function () {
     Route::post('/noticias', 'store');
-    Route::put('/noticias/{id}', 'update');
-    Route::delete('/noticias/{id}', 'destroy');
+    Route::put('/noticia/{id}', 'update');
+    Route::delete('/noticia/{id}', 'destroy');
   });
   Route::controller(OfertaController::class)->group(function () {
-    Route::delete('/ofertas/{id}', 'destroy');
+    Route::delete('/oferta/{id}', 'destroy');
   });
   Route::controller(ComentarioController::class)->group(function () {
-    Route::delete('/comentarios/{id}', 'destroy');
+    Route::delete('/comentario/{id}', 'destroy');
   });
     Route::controller(UserController::class)->group(function () {
     Route::get('/usuarios', 'index');
-    Route::delete('/usuarios/{id}', 'destroy');
+    Route::delete('/usuario/{id}', 'destroy');
   });
 
 });
