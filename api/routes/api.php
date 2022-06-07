@@ -49,6 +49,8 @@ Route::controller(ComentarioController::class)->group(function () {
   Route::get('/comentarios/{id}', 'show');
 });
 
+
+
 Route::controller(ImagenController::class)->group(function () {
   Route::get('/imagenes/{id}', 'show');
 });
@@ -58,41 +60,45 @@ Route::controller(AuthController::class)->group(function () {
   Route::post('/sesion', 'login');
 });
 
-// Route::controller(UserController::class)->group(function () {
-//   Route::get('/usuarios', 'index');
-//   Route::post('/usuarios', 'store');
-//   Route::get('/usuarios/{id}', 'show');
-//   Route::put('/usuarios/{id}', 'update');
-//   Route::delete('/usuarios/{id}', 'destroy');
-// });
-
-
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
   Route::controller(AuthController::class)->group(function () {
     Route::get('/cerrarsesion', 'logout');
+    Route::put('/usuarios/{id}', 'editUser');
   });
 
   Route::controller(OfertaController::class)->group(function () {
     Route::post('/ofertas', 'store');
     Route::put('/ofertas/{id}', 'update');
+  });
+  Route::controller(ComentarioController::class)->group(function () {
+    Route::post('/comentarios', 'store');
+    Route::put('/comentarios/{id}', 'update');
+  });
+    Route::controller(UserController::class)->group(function () {
+    Route::get('/usuarios/{id}', 'show');
+  });
+});
+
+Route::group(['middleware' => 'admin'], function () {
+  Route::controller(GraficaController::class)->group(function () {
+    Route::post('/graficas', 'store');
+    Route::put('/graficas/{id}', 'update');
+    Route::delete('/graficas/{id}', 'destroy');
+  });
+  Route::controller(NoticiaController::class)->group(function () {
+    Route::post('/noticias', 'store');
+    Route::put('/noticias/{id}', 'update');
+    Route::delete('/noticias/{id}', 'destroy');
+  });
+  Route::controller(OfertaController::class)->group(function () {
     Route::delete('/ofertas/{id}', 'destroy');
   });
-  Route::group(['middleware' => 'admin'], function () {
-    Route::controller(NoticiaController::class)->group(function () {
-      Route::post('/noticias', 'store');
-      Route::put('/noticias/{id}', 'update');
-      Route::delete('/noticias/{id}', 'destroy');
-    });
-    Route::controller(GraficaController::class)->group(function () {
-      Route::post('/graficas', 'store');
-      Route::put('/graficas/{id}', 'update');
-      Route::delete('/graficas/{id}', 'destroy');
-    });
-
-    Route::controller(ComentarioController::class)->group(function () {
-      Route::post('/comentarios', 'store');
-      Route::put('/comentarios/{id}', 'update');
-      Route::delete('/comentarios/{id}', 'destroy');
-    });
+  Route::controller(ComentarioController::class)->group(function () {
+    Route::delete('/comentarios/{id}', 'destroy');
   });
+    Route::controller(UserController::class)->group(function () {
+    Route::get('/usuarios', 'index');
+    Route::delete('/usuarios/{id}', 'destroy');
+  });
+
 });
