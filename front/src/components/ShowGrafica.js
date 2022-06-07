@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import getGraficas from '../services/getGraficas'
 
-import { Link } from 'react-router-dom'
+import { Link } from "wouter"
 
 
 // const endpoint = 'https://top-graficas.herokuapp.com/api'
@@ -15,8 +16,7 @@ const ShowGrafica = () => {
   }, [])
 
   const getAllGraficas = async () => {
-    const response = await axios.get(`${endpoint}/graficas`)
-    setGraficas(response.data)
+    await getGraficas().then(graficas => setGraficas(graficas))
   }
 
   const deleteGraficas = async (id) => {
@@ -32,6 +32,7 @@ const ShowGrafica = () => {
   return (
     <div className='d-grid gap-2'>
       <Link to="/graficas/publicar" className='btn btn-success btn-lg mt-2 mb-2 text-white'>Publicar</Link>
+      
       <div className="row row-cols-1 row-cols-md-2 g-4">
         {graficas.map((grafica)  => (
           <div className="col">

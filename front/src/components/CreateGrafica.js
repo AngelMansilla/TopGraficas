@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 
 
+import { Link } from "wouter"
 // const endpoint = 'https://top-graficas.herokuapp.com/api/graficas'
 const endpoint = 'http://127.0.0.1:8000/api/graficas'
 
@@ -31,11 +32,15 @@ const CreateGrafica = () => {
     formData.append("fecha", fecha)
     formData.append("imagen", imagen)
 
-    await axios.post(endpoint, formData, { 'Content-Type': 'multipart/form-data' })
+
+
+    let accessToken = "29|hptNG2W7gR7h83Y5lEopKRNgTHZcikNEXRxGI0gy"
+    await axios.post(endpoint, formData, {"Authorization" : `Bearer ${accessToken}`} , { 'Content-Type': 'multipart/form-data' })
   }
+
   return (
     <div className="container w-50 border p-4 mt-4">
-      <h1 className="text-center">Publicar Grafica</h1>
+      <h1 className="text-center">Publicar Gráfica</h1>
       <form className="row g-3" name="publicar-grafica" onSubmit={store}>
         <div className="col-md-6">
           <label htmlFor="inputNombre" className="form-label">Nombre</label>
@@ -75,6 +80,7 @@ const CreateGrafica = () => {
         </div>
         <div className="col-12 text-center">
           <button type="submit" className="btn btn-primary">Publicar</button>
+          <Link className="btn btn-primary ms-2" to="/graficas">Volver</Link>
         </div>
       </form>
     </div>

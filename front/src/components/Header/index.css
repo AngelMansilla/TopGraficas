@@ -1,0 +1,10 @@
+.navbar-collapse {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container-fluid-navbar-toggler {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}

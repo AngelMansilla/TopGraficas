@@ -36,13 +36,10 @@ class AuthController extends Controller
       'pais' => $request->pais,
       'ciudad' => $request->ciudad,
       'fecha_nacimiento' => $request->fecha_nacimiento,
-      'is_admin' => false
+      'is_admin' => 0
     ]);
-
-    $token = $user->createToken('auth_token')->plainTextToken;
-
     return response()
-      ->json(['data' => $user, 'access_token' => $token, 'token_type' => 'Bearer',]);
+      ->json(['data' => $user]);
   }
 
   public function login(Request $request)
@@ -52,10 +49,10 @@ class AuthController extends Controller
     }
     $user = User::where('email', $request['email'])->firstOrFail();
     $token = $user->createToken('auth_token')->plainTextToken;
-
+    
     return response()
       ->json([
-        'message' => 'Hola ' . $user->name,
+        'message' => 'Hola ' . $user->nombre,
         'accessToken' => $token,
         'token_type' => 'Bearer',
         'user' => $user,
@@ -64,9 +61,11 @@ class AuthController extends Controller
 
   public function logout()
   {
-    auth()->user()->tokens()->delete();
-    return [
-      'message' => 'Has finalizado sesióin correctamente'
-    ];
+    if (Auth::check()) {
+      auth()->user()->tokens()->delete();
+      return [
+        'message' => 'Has finalizado sesión correctamente'
+      ];
+    }
   }
 }

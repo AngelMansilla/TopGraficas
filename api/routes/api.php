@@ -10,8 +10,6 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,15 +45,9 @@ Route::controller(OfertaController::class)->group(function () {
 });
 
 Route::controller(ComentarioController::class)->group(function () {
-  Route::get('/comentarios/{id}', 'show');
   Route::get('/comentarios', 'index');
-  Route::post('/comentarios', 'store');
-  Route::put('/comentarios/{id}', 'update');
-  Route::delete('/comentarios/{id}', 'destroy');
+  Route::get('/comentarios/{id}', 'show');
 });
-
-
-
 
 Route::controller(ImagenController::class)->group(function () {
   Route::get('/imagenes/{id}', 'show');
