@@ -1,35 +1,45 @@
-import React, { useState } from 'react'
-import { Link } from 'wouter'
-import getGraficas from '../../services/getGraficas'
+import React, { useEffect, useState } from 'react'
+import { useLocation } from "wouter"
 
-const POPULAR_GRAFICAS = getGraficas()
+import getGraficas from '../../services/getGraficas'
+import ListOfOfertas from '../../components/ListOfOfertas'
 
 export default function Home() {
-  const [keyword, setKeyword] = useState('')
+  const [graficas, setGraficas] = useState([])
+  const [id, setId] = useState([])
+  
+  const [path, pushLocation] = useLocation()
 
-  const handleSubmit = evt => {
-    //navegar a otra ruta
-    console.log(keyword)
-  }
+  useEffect(function () {
+    getGraficas().then(graficas => setGraficas(graficas))
+  }, [])
+
 
   const handleChange = evt => {
-    setKeyword(evt.target.value)
+    setId(evt.target.value)
+    if(evt.target.value){
+      pushLocation(`/ofertas/${evt.target.value}`)
+    }else{
+      pushLocation(`/`)
+    }
   }
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={keyword} />
-      </form>
-      <h3 className="Page-tittle">Las mejores ofertas</h3>
-      <select>
-        {console.log(POPULAR_GRAFICAS)}
-        <option></option>
-        {/* {POPULAR_GRAFICAS.forEach(popularGraficas => 
-          <option key={popularGraficas.id}>
-          <Link to={`/graficas/${popularGraficas.id}`}>Graficas {popularGraficas.nombre}</Link>
+      <select onChange={handleChange}>
+        <option key="" value=""></option>
+        {graficas.map((grafica) => (
+          <option key={grafica.id} value={grafica.id}>
+            Graficas {grafica.nombre}
           </option>
-        )} */}
+        ))}
       </select>
+      <h3 className="Page-tittle">Las mejores ofertas</h3>
+      <div className='d-grid gap-2'>
+        <div className="row row-cols-1 row-cols-md-2 g-4">
+          <ListOfOfertas id={id} />
+        </div>
+      </div>
     </>
   )
 }

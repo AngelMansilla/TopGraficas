@@ -10,6 +10,6 @@ class ImagenController extends Controller
 
   public function show($id)
   {
-    return response()->file(storage_path('app/images/' . $id));
+    return response()->file(storage_path('app\images\\' . $id));
   }
 }

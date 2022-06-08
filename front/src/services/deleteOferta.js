@@ -1,7 +1,7 @@
 
-export default async function deleteGrafica(id) {
+export default async function deleteOferta(id) {
   // const apiURL = 'https://top-graficas.herokuapp.com/api'
-  const apiURL = `http://127.0.0.1:8000/api/grafica/${id}`
+  const apiURL = `http://127.0.0.1:8000/api/oferta/${id}`
 
   const res = await fetch(apiURL, {
     method: 'DELETE'

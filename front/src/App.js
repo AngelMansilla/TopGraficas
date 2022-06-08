@@ -19,6 +19,9 @@ export default function App() {
           component={Home}
           path="/" />
         <Route
+          component={Home}
+          path="/ofertas/:id" />
+        <Route
           component={Graficas}
           path="/graficas" />
         <Route
@@ -26,7 +29,7 @@ export default function App() {
           path="/noticias" />
         <Route
           component={IniciarSesion}
-           path="/iniciarSesion" />
+          path="/iniciarSesion" />
         <Footer />
       </section>
     </div >

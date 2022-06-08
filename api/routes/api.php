@@ -53,7 +53,7 @@ Route::controller(ComentarioController::class)->group(function () {
 
 
 Route::controller(ImagenController::class)->group(function () {
-  Route::get('/imagene/{id}', 'show');
+  Route::get('/imagen/{id}', 'show');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -68,26 +68,26 @@ Route::middleware('auth:sanctum')->group(function () {
   });
 
   Route::controller(OfertaController::class)->group(function () {
-    Route::post('/ofertas', 'store');
+    Route::post('/oferta', 'store');
     Route::put('/oferta/{id}', 'update');
   });
   Route::controller(ComentarioController::class)->group(function () {
-    Route::post('/comentarios', 'store');
+    Route::post('/comentario', 'store');
     Route::put('/comentario/{id}', 'update');
   });
-    Route::controller(UserController::class)->group(function () {
+  Route::controller(UserController::class)->group(function () {
     Route::get('/usuario/{id}', 'show');
   });
 });
 
 Route::group(['middleware' => 'admin'], function () {
   Route::controller(GraficaController::class)->group(function () {
-    Route::post('/graficas', 'store');
+    Route::post('/grafica', 'store');
     Route::put('/grafica/{id}', 'update');
     Route::delete('/grafica/{id}', 'destroy');
   });
   Route::controller(NoticiaController::class)->group(function () {
-    Route::post('/noticias', 'store');
+    Route::post('/noticia', 'store');
     Route::put('/noticia/{id}', 'update');
     Route::delete('/noticia/{id}', 'destroy');
   });
@@ -97,9 +97,8 @@ Route::group(['middleware' => 'admin'], function () {
   Route::controller(ComentarioController::class)->group(function () {
     Route::delete('/comentario/{id}', 'destroy');
   });
-    Route::controller(UserController::class)->group(function () {
+  Route::controller(UserController::class)->group(function () {
     Route::get('/usuarios', 'index');
     Route::delete('/usuario/{id}', 'destroy');
   });
-
 });
