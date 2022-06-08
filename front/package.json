@@ -38,5 +38,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "author": "Angel Mansilla Puerto",
+  "license": "MIT",
+  "description": "Front del proyecto topgrafica",
+  "repository": "https://github.com/AngelMansilla/TopGraficas.git"
 }

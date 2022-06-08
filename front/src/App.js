@@ -26,7 +26,7 @@ export default function App() {
           path="/noticias" />
         <Route
           component={IniciarSesion}
-          path="/iniciarSesion" />
+           path="/iniciarSesion" />
         <Footer />
       </section>
     </div >
