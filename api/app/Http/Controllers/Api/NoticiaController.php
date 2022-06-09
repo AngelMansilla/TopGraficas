@@ -36,7 +36,8 @@ class NoticiaController extends Controller
     $noticia = new Noticia();
     $noticia->titulo = $request->titulo;
     $noticia->informacion = $request->informacion;
-    $noticia->imagen = $request->imagen->store('images');
+    $noticia->imagen = explode("/", $request->imagen->store('public/images'))[1];
+
 
     $noticia->save();
   }

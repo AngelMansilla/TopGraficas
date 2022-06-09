@@ -5,7 +5,8 @@ export default async function getNoticias({ id = '' } = {}) {
   } else {
     id = 's'
   }
-  const apiURL = `http://127.0.0.1:8000/api/noticia${id}`
+  const apiURL = `https://top-graficas.herokuapp.com/api/noticia${id}`
+  // const apiURL = `http://127.0.0.1:8000/api/noticia${id}`
   
   const res = await fetch(apiURL)
   const Response = await res.json()

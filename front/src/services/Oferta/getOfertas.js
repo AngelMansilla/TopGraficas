@@ -7,7 +7,9 @@ export default async function getOfertas({id}) {
     id = 's'
   }
   
-  const apiURL = `http://127.0.0.1:8000/api/oferta${id}`
+  const apiURL = `https://top-graficas.herokuapp.com/api/oferta${id}`
+  // const apiURL = `http://127.0.0.1:8000/api/oferta${id}`
+
   const res = await fetch(apiURL)
   const Response = await res.json()
   if (Array.isArray(Response)) {

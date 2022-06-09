@@ -50,8 +50,6 @@ Route::controller(ComentarioController::class)->group(function () {
   Route::get('/comentario/{id}', 'show');
 });
 
-
-
 Route::controller(ImagenController::class)->group(function () {
   Route::get('/imagen/{id}', 'show');
 });

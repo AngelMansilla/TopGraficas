@@ -5,7 +5,8 @@ export default async function getGraficas({ id = '' } = {}) {
   } else {
     id = 's'
   }
-  const apiURL = `http://127.0.0.1:8000/api/grafica${id}`
+  const apiURL = `https://top-graficas.herokuapp.com/api/grafica${id}`
+  // const apiURL = `http://127.0.0.1:8000/api/grafica${id}`
 
   const res = await fetch(apiURL)
   const Response = await res.json()
@@ -13,4 +14,3 @@ export default async function getGraficas({ id = '' } = {}) {
     return Response
   }
 }
-

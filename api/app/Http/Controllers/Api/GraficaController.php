@@ -49,7 +49,7 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = explode("/", $request->imagen->store('images'))[1];
+    $grafica->imagen = explode("/", $request->imagen->store('public/images'))[1];
     $grafica->user_id = auth()->user()->id;
     $grafica->save();
   }
