@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Grafica from '../Grafica'
-import getGraficas from '../../services/getGraficas'
+import getGraficas from '../../services/Grafica/getGraficas'
 
 export default function ListOfGraficas() {
   const [graficas, setGraficas] = useState([])
@@ -11,6 +11,7 @@ export default function ListOfGraficas() {
 
   return graficas.map(({ id, nombre, imagen, empresa, memoria, consumo, fecha }) =>
     <Grafica
+      key={id}
       id={id}
       nombre={nombre}
       imagen={imagen}

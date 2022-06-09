@@ -1,7 +1,6 @@
 
 export default async function postGrafica(formData) {
-  // const apiURL = 'https://top-graficas.herokuapp.com/api'
-  const apiURL = `http://127.0.0.1:8000/api/grafica`
+  const apiURL = `http://127.0.0.1:8000/api/oferta`
 
   const res = await fetch(apiURL)
   const Response = await res.json()
