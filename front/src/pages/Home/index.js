@@ -4,16 +4,23 @@ import { useLocation } from "wouter"
 import getGraficas from '../../services/Grafica/getGraficas'
 import ListOfOfertas from '../../components/ListOfOfertas'
 
+
 export default function Home() {
   const [graficas, setGraficas] = useState([])
   const [id, setId] = useState(0)
 
+  const [loading, setLoading] = useState(false)
+
   const [, pushLocation] = useLocation()
 
   useEffect(function () {
-    getGraficas().then(graficas => setGraficas(graficas))
-  }, [])
 
+    setLoading(true)
+    getGraficas().then(graficas => {
+      setGraficas(graficas)
+      setLoading(false)
+    })
+  }, [])
 
   const handleChange = evt => {
     setId(evt.target.value)
@@ -23,6 +30,9 @@ export default function Home() {
       pushLocation(`/`)
     }
   }
+
+  if (loading) return <img class="mx-auto d-block" src="https://www.gastroempleo.com/img/Cargando.gif" alt="Gif loading" height="100px" />
+
 
   return (
     <>
@@ -35,11 +45,7 @@ export default function Home() {
         ))}
       </select>
       <h3 className="Page-tittle">Las mejores ofertas</h3>
-      <div className='d-grid gap-2'>
-        <div className="row row-cols-1 row-cols-md-2 g-4">
-          <ListOfOfertas id={id} graficas={graficas} />
-        </div>
-      </div>
+      <ListOfOfertas id={id} graficas={graficas} />
     </>
   )
 }

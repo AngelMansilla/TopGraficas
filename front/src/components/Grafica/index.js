@@ -28,7 +28,7 @@ export default function Grafica({ id, nombre, imagen, empresa, memoria, consumo,
               Consumo: {consumo} vatios
             </p>
           </div>
-          <small className="text-muted row justify-content-center">Fecha de salida:{fecha}</small>
+          <small className="text-muted row justify-content-center">Fecha de salida {fecha}</small>
           <div className="card-footer row">
             <Link to={`editar/${id}`} className='btn btn-warning'>Editar</Link>
             <button onClick={() => deleteGrafica(id)} className='btn btn-danger'>Eliminar</button>
