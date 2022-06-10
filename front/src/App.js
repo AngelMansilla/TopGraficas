@@ -15,21 +15,23 @@ export default function App() {
     <div className="App">
       <section className="App-content">
         <Header />
-        <Route
-          component={Home}
-          path="/" />
-        <Route
-          component={Home}
-          path="/ofertas/:id" />
-        <Route
-          component={Graficas}
-          path="/graficas" />
-        <Route
-          component={Noticias}
-          path="/noticias" />
-        <Route
-          component={IniciarSesion}
-          path="/iniciarSesion" />
+        <main className="main">
+          <Route
+            component={Home}
+            path="/" />
+          <Route
+            component={Home}
+            path="/ofertas/:id" />
+          <Route
+            component={Graficas}
+            path="/graficas" />
+          <Route
+            component={Noticias}
+            path="/noticias" />
+          <Route
+            component={IniciarSesion}
+            path="/iniciarSesion" />
+        </main>
         <Footer />
       </section>
     </div >

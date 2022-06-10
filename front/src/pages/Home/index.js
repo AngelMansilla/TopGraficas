@@ -21,13 +21,10 @@ export default function Home({ params }) {
         loading
           ? <Spinner />
           :
-          <SelectGraficas graficaId={params ? params.id : 0} graficas={graficas} />
-      }
-      {
-        loading
-          ? <Spinner />
-          :
-          <ListOfOfertas graficaId={params ? params.id : 0} graficas={graficas} />
+          <div>
+            <SelectGraficas graficaId={params ? params.id : 0} graficas={graficas} />
+            <ListOfOfertas graficaId={params ? params.id : 0} graficas={graficas} />
+          </div>
       }
     </>
   )

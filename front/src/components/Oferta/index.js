@@ -4,7 +4,9 @@ import { Link } from 'wouter'
 
 import deleteOferta from '../../services/Oferta/deleteOferta'
 
-const endpoint = 'http://127.0.0.1:8000/api'
+// const endpoint = 'http://127.0.0.1:8000/api'
+const endpoint = 'https://top-graficas.herokuapp.com/api'
+
 
 const srcImagen = (imagen) => {
   return `${endpoint}/imagen/${imagen}`

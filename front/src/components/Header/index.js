@@ -26,24 +26,25 @@ export default function Header() {
               <li className="nav-item ms-5">
                 <Link className="nav-link" to="/noticias">Noticias</Link>
               </li>
-              <li className="nav-item ms-5">
-                {
-                  isLogged
-                    ?
-                    <Link className="nav-link" to="/perfil">Perfil</Link>
-                    :
-                    <Link className="nav-link" to="/iniciarSesion">Iniciar sesión</Link>
-                }
-              </li>
-              <li className="nav-item ms-5">
-                {
-                  isLogged
-                    ?
-                    <Link className="nav-link" to="/cerrarSesion">Cerrar sesión</Link>
-                    :
-                    <Link className="nav-link" to="/registrarse">Registrarse</Link>
-                }
-              </li>
+              {isLogged
+                  ?
+                  <>
+                    <li className="nav-item ms-5">
+                      <Link className="nav-link" to="/perfil">Perfil</Link>
+                    </li>
+                    <li className="nav-item ms-5">
+                      <Link className="nav-link" to="/cerrarSesion">Cerrar sesión</Link>
+                    </li>
+                  </>
+                  :
+                  <>
+                    <li className="nav-item ms-5">
+                      <Link className="nav-link" to="/iniciarSesion">Iniciar sesión</Link>
+                    </li>
+                    <li className="nav-item ms-5">
+                      <Link className="nav-link" to="/registrarse">Registrarse</Link>
+                    </li>
+                  </>}
             </ul>
           </div>
         </div>

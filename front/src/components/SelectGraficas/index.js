@@ -11,7 +11,8 @@ export default function SelectGraficas({ id, graficas }) {
       pushLocation(`/`)
     }
   }
-  return <select onChange={handleChange} value={id} multiple={false}>
+  return Array.isArray(graficas) ?
+  <select onChange={handleChange} value={id} multiple={false}>
     <option key="0" value="0"></option>
     {graficas.map((grafica) => (
       <option key={grafica.id} value={grafica.id}>
@@ -19,4 +20,6 @@ export default function SelectGraficas({ id, graficas }) {
       </option>
     ))}
   </select>
+  :
+  <div></div>
 }
