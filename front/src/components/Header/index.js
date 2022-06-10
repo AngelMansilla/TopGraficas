@@ -1,10 +1,12 @@
 import React from "react"
 import { Link } from 'wouter'
 import './index.css'
+import useUser from '../../hooks/useUser'
 
 export default function Header() {
 
-  const isLogged = false;
+  // const isLogged = false;
+  const { isLogged, logout } = useUser()
 
   return (
     <header className='header' >
@@ -27,24 +29,24 @@ export default function Header() {
                 <Link className="nav-link" to="/noticias">Noticias</Link>
               </li>
               {isLogged
-                  ?
-                  <>
-                    <li className="nav-item ms-5">
-                      <Link className="nav-link" to="/perfil">Perfil</Link>
-                    </li>
-                    <li className="nav-item ms-5">
-                      <Link className="nav-link" to="/cerrarSesion">Cerrar sesión</Link>
-                    </li>
-                  </>
-                  :
-                  <>
-                    <li className="nav-item ms-5">
-                      <Link className="nav-link" to="/iniciarSesion">Iniciar sesión</Link>
-                    </li>
-                    <li className="nav-item ms-5">
-                      <Link className="nav-link" to="/registrarse">Registrarse</Link>
-                    </li>
-                  </>}
+                ?
+                <>
+                  <li className="nav-item ms-5">
+                    <Link className="nav-link" to="/perfil">Perfil</Link>
+                  </li>
+                  <li className="nav-item ms-5">
+                    <span type="button" className="nav-link" onClick={() => logout()}>Cerrar sesión</span>
+                  </li> 
+                </>
+                :
+                <>
+                  <li className="nav-item ms-5">
+                    <Link className="nav-link" to="/iniciarSesion">Iniciar sesión</Link>
+                  </li>
+                  <li className="nav-item ms-5">
+                    <Link className="nav-link" to="/registrarse">Registrarse</Link>
+                  </li>
+                </>}
             </ul>
           </div>
         </div>

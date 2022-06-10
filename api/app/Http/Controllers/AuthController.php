@@ -70,7 +70,14 @@ class AuthController extends Controller
 
   public function login(Request $request)
   {
-    if (!Auth::attempt($request->only('email', 'password'))) {
+    $validator = Validator::make($request->all(), [
+      'email' => 'required|email',
+      'password' => 'required|string|min:6'
+    ]);
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+    }
+    if (!Auth::attempt($validator->validated())) {
       return response()->json(['message' => 'Sin autorización'], 401);
     }
     $user = User::where('email', $request['email'])->firstOrFail();

@@ -8,32 +8,36 @@ import Graficas from './pages/Graficas'
 import Noticias from './pages/Noticias'
 import IniciarSesion from './pages/IniciarSesion'
 
+import { UserContextProvider } from './context/UserContext'
+
 import './App.css';
 
 export default function App() {
   return (
-    <div className="App">
-      <section className="App-content">
-        <Header />
-        <main className="main">
-          <Route
-            component={Home}
-            path="/" />
-          <Route
-            component={Home}
-            path="/ofertas/:id" />
-          <Route
-            component={Graficas}
-            path="/graficas" />
-          <Route
-            component={Noticias}
-            path="/noticias" />
-          <Route
-            component={IniciarSesion}
-            path="/iniciarSesion" />
-        </main>
-        <Footer />
-      </section>
-    </div >
-  );
+    <UserContextProvider>
+      <div className="App">
+        <section className="App-content">
+          <Header />
+          <main className="main">
+            <Route
+              component={Home}
+              path="/" />
+            <Route
+              component={Home}
+              path="/ofertas/:id" />
+            <Route
+              component={Graficas}
+              path="/graficas" />
+            <Route
+              component={Noticias}
+              path="/noticias" />
+            <Route
+              component={IniciarSesion}
+              path="/iniciarSesion" />
+          </main>
+          <Footer />
+        </section>
+      </div >
+    </UserContextProvider>
+  )
 }
