@@ -1,10 +1,13 @@
-import React from 'react'
+import React from "react";
 
-import ListOfNoticias from '../../components/ListOfNoticias'
+import ListOfNoticias from "../../components/ListOfNoticias";
+import HeaderNoticias from "../../components/Header/noticias";
 
 export default function Noticias() {
-
   return (
-    <ListOfNoticias />
-  )
+    <>
+      {sessionStorage.getItem("isAdmin") === "1" && <HeaderNoticias />}
+      <ListOfNoticias />
+    </>
+  );
 }

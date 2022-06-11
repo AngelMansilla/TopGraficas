@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import './style.css'
-import useUser from '../../hooks/useUser'
+import "./style.css";
+import useUser from "../../hooks/useUser";
+import Spinner from "../../components/Spinner";
 
 export default function IniciarSesion() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [, navigate] = useLocation()
-  const { isLoginLoading, hasLoginError, login, isLogged } = useUser()
+  const [, navigate] = useLocation();
+  const { isLoginLoading, hasLoginError, login, isLogged } = useUser();
 
   useEffect(() => {
-    if (isLogged) navigate('/')
-  }, [isLogged, navigate])
+    if (isLogged) navigate("/");
+  }, [isLogged, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email, password })
+    login({ email, password });
   };
 
   return (
     <>
-      {
-        isLoginLoading && <strong>Comprobando credenciales...</strong>
-      }
-      {
-        !isLoginLoading &&
+      {isLoginLoading && <Spinner />}
+      {!isLoginLoading && (
         <div className="wrapper fadeInDown">
           <div id="formContent">
             <div className="fadeIn first">
@@ -52,14 +50,13 @@ export default function IniciarSesion() {
               <input
                 type="submit"
                 className="fadeIn fourth"
-                value="Iniciar sesion" />
+                value="Iniciar sesion"
+              />
             </form>
           </div>
         </div>
-      }
-      {
-        hasLoginError && <strong>Credenciales incorrectos</strong>
-      }
+      )}
+      {hasLoginError && <strong>Credenciales incorrectos</strong>}
     </>
-  )
+  );
 }

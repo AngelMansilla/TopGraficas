@@ -37,7 +37,6 @@ export default function ListOfOfertas({ graficaId, graficas }) {
     ? <Spinner />
     :
     <div className='d-grid gap-2'>
-      <h3 className="Page-tittle">Las mejores ofertas</h3>
       <div className="row row-cols-1 row-cols-md-2 g-4">
         {ofertas.map(({ id, titulo, precio, votos, enlace, descripcion, vendedor, created_at, grafica_id }) =>
           <Oferta

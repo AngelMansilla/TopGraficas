@@ -3,10 +3,12 @@ import { Route } from "wouter"
 
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Home from './pages/Home'
-import Graficas from './pages/Graficas'
-import Noticias from './pages/Noticias'
+import Home from './pages/Home/index'
+import Graficas from './pages/Graficas/index'
+import Noticias from './pages/Noticias/index'
 import IniciarSesion from './pages/IniciarSesion'
+import CreateGraficas from './pages/Graficas/create'
+import EditGraficas from './pages/Graficas/edit'
 
 import { UserContextProvider } from './context/UserContext'
 
@@ -34,6 +36,12 @@ export default function App() {
             <Route
               component={IniciarSesion}
               path="/iniciarSesion" />
+            <Route
+              component={CreateGraficas}
+              path="/grafica/publicar" />
+            <Route
+              component={EditGraficas}
+              path="/grafica/editar/:id" />
           </main>
           <Footer />
         </section>
