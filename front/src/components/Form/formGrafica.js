@@ -51,7 +51,8 @@ export default function FormGrafica({ grafica_id }) {
           fecha,
           imagen,
         })
-      : submitPost({
+      : 
+      submitPost({
           nombre,
           empresa,
           pvpr,

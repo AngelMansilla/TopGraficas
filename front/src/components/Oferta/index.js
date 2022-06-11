@@ -26,9 +26,9 @@ export default function Oferta({
 }) {
   let fecha = new Date(created_at);
   
-  const { isLoginLoading, isLogged } = useUser();
+  const { isLoginLoading } = useUser();
   return (
-    <div className="col">
+    <div className="col fadeIn first">
       <div className="card flex-row">
         <img
           src={srcImagen(imagen)}
@@ -60,12 +60,12 @@ export default function Oferta({
             <div className="card-footer my-3">
               <Link to={`/oferta/editar/${id}`}>
                 <i
-                  class="bi bi-wrench-adjustable-circle mx-3"
+                  className="bi bi-wrench-adjustable-circle mx-3"
                   type="button"
                 ></i>
               </Link>
               <i
-                class="bi bi-x-circle"
+                className="bi bi-x-circle"
                 type="button"
                 onClick={() => deleteOferta(id)}
               ></i>

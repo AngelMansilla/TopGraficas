@@ -5,7 +5,7 @@ import useUser from "../../hooks/useUser";
 import Spinner from "../Spinner";
 
 export default function Header() {
-  // const isLogged = false;
+  
   const { isLoginLoading, isLogged, logout } = useUser();
 
   return (

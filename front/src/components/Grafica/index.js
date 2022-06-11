@@ -22,9 +22,9 @@ export default function Grafica({
   consumo,
   fecha,
 }) {
-  const { isLoginLoading, isLogged } = useUser();
+  const { isLoginLoading } = useUser();
   return (
-    <div className="col">
+    <div className="col fadeIn first">
       <div className="card flex-row">
         <img
           src={srcImagen(imagen)}
@@ -48,12 +48,12 @@ export default function Grafica({
             <div className="card-footer my-3">
               <Link to={`/grafica/editar/${id}`}>
                 <i
-                  class="bi bi-wrench-adjustable-circle mx-3"
+                  className="bi bi-wrench-adjustable-circle mx-3"
                   type="button"
                 ></i>
               </Link>
               <i
-                class="bi bi-x-circle"
+                className="bi bi-x-circle"
                 type="button"
                 onClick={() => deleteGrafica(id)}
               ></i>

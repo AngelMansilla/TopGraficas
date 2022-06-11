@@ -67,11 +67,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::controller(OfertaController::class)->group(function () {
     Route::post('/oferta', 'store');
-    Route::put('/oferta/{id}', 'update');
   });
   Route::controller(ComentarioController::class)->group(function () {
     Route::post('/comentario', 'store');
-    Route::put('/comentario/{id}', 'update');
   });
   Route::controller(UserController::class)->group(function () {
     Route::get('/usuario/{id}', 'show');
@@ -90,9 +88,11 @@ Route::group(['middleware' => 'admin'], function () {
     Route::delete('/noticia/{id}', 'destroy');
   });
   Route::controller(OfertaController::class)->group(function () {
+    Route::put('/comentario/{id}', 'update');
     Route::delete('/oferta/{id}', 'destroy');
   });
   Route::controller(ComentarioController::class)->group(function () {
+    Route::put('/comentario/{id}', 'update');
     Route::delete('/comentario/{id}', 'destroy');
   });
   Route::controller(UserController::class)->group(function () {
