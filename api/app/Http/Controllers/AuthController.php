@@ -62,7 +62,12 @@ class AuthController extends Controller
 
     $input = $request->all();
     $updateuser->fill($input)->save();
-    $token = $updateuser->createToken('auth_token')->plainTextToken;
+
+    if($updateuser['is_admin'] === 1){
+      $token = $updateuser->createToken($request['email'], ['admin'])->plainTextToken;
+    }else{
+      $token = $updateuser->createToken($request['email'])->plainTextToken;
+    }
 
     return response()
       ->json(['data' => $updateuser, 'access_token' => $token, 'token_type' => 'Bearer',]);
@@ -81,7 +86,11 @@ class AuthController extends Controller
       return response()->json(['message' => 'Sin autorización'], 401);
     }
     $user = User::where('email', $request['email'])->firstOrFail();
-    $token = $user->createToken('auth_token')->plainTextToken;
+    if($user['is_admin'] === 1){
+      $token = $user->createToken($request['email'], ['admin'])->plainTextToken;
+    }else{
+      $token = $user->createToken($request['email'])->plainTextToken;
+    }
 
     return response()
       ->json([

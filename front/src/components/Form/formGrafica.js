@@ -19,16 +19,16 @@ export default function FormGrafica({ grafica_id }) {
 
   useEffect(() => {
     if (grafica_id) {
-      const response = getGrafica({ grafica_id });
-      setNombre(response.nombre);
-      setEmpresa(response.empresa);
-      setPvpr(response.pvpr);
-      setArquitectura(response.arquitectura);
-      setMemoria(response.memoria);
-      setTipo_memoria(response.tipo_memoria);
-      setConsumo(response.consumo);
-      setFecha(response.fecha);
-      setImagen(response.imagen);
+      const response = getGrafica({ id: grafica_id }).then((grafica) => {
+        setNombre(grafica.nombre);
+        setEmpresa(grafica.empresa);
+        setPvpr(grafica.pvpr);
+        setArquitectura(grafica.arquitectura);
+        setMemoria(grafica.memoria);
+        setTipo_memoria(grafica.tipo_memoria);
+        setConsumo(grafica.consumo);
+        setFecha(grafica.fecha);
+      });
     }
   }, [grafica_id]);
 
@@ -51,8 +51,7 @@ export default function FormGrafica({ grafica_id }) {
           fecha,
           imagen,
         })
-      : 
-      submitPost({
+      : submitPost({
           nombre,
           empresa,
           pvpr,
@@ -63,12 +62,23 @@ export default function FormGrafica({ grafica_id }) {
           fecha,
           imagen,
         });
+    setNombre("");
+    setEmpresa("");
+    setPvpr("");
+    setArquitectura("");
+    setMemoria("");
+    setTipo_memoria("");
+    setConsumo("");
+    setFecha("");
+    setImagen(null);
   };
 
   return (
     <>
       {isSubmitLoading && <Spinner />}
-      {hasSubmitError && <strong className="alert alert-danger">Datos incorrectos</strong>}
+      {hasSubmitError && (
+        <strong className="alert alert-danger">Datos incorrectos</strong>
+      )}
       {!isSubmitLoading && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">
@@ -196,7 +206,7 @@ export default function FormGrafica({ grafica_id }) {
                   className="form-control"
                   name="imagen"
                   id="inputImagen"
-                  onChange={(e) => setImagen(e.target.files[0])}
+                  onChange={(e) => setImagen(e.target.files[0].name)}
                 />
               </div>
               <div className="col-12 text-center d-flex">

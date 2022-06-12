@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Controller\Api\ImagenController;
 use App\Models\Grafica;
 use Illuminate\Http\Request;
 
@@ -37,7 +36,7 @@ class GraficaController extends Controller
       'tipo_memoria' => 'required|min:1',
       'consumo' => 'required|min:1',
       'fecha' => 'required|date',
-      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+      'imagen' => 'required'
     ]);
 
     $grafica = new Grafica();
@@ -49,7 +48,7 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = explode("/", $request->imagen->store('public/images'))[1];
+    $grafica->imagen = $request->imagen;
     $grafica->user_id = auth()->user()->id;
     $grafica->save();
   }

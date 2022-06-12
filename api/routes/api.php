@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   // return $request->user();
   return response()
@@ -76,7 +77,7 @@ Route::middleware('auth:sanctum')->group(function () {
   });
 });
 
-Route::group(['middleware' => 'admin'], function () {
+Route::group(['middleware' => ['auth:sanctum', 'abilities:admin']], function () {
   Route::controller(GraficaController::class)->group(function () {
     Route::post('/grafica', 'store');
     Route::put('/grafica/{id}', 'update');
