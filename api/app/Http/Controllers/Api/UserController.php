@@ -84,7 +84,7 @@ class UserController extends Controller
       'telefono' => 'required|min:1',
     ]);
 
-    $user = User::findOrFail($request->$id);
+    $user = User::where('id', $request->$id)->get();
     $user->nombre = $request->nombre;
     $user->email = $request->email;
     $user->contraseña = $request->contraseña;

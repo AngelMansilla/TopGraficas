@@ -84,7 +84,7 @@ class OfertaController extends Controller
         'vendedor' => 'required|min:3',
       ]);
 
-      $oferta = Oferta::findOrFail($request->$id);
+      $oferta = Oferta::where('id', $request->$id)->get();
       $oferta->titulo = $request->titulo;
       $oferta->precio = $request->precio;
       $oferta->votos = $request->votos;
@@ -107,12 +107,7 @@ class OfertaController extends Controller
    */
   public function destroy($id)
   {
-    $ofertaFind = Oferta::findOrFail($id);
-    if (auth()->user()->is_admin || auth()->user()->id == $ofertaFind->user_id) {
       $oferta = Oferta::destroy($id);
       return $oferta;
-    } else {
-      return redirect('/');
-    }
   }
 }

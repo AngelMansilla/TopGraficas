@@ -19,6 +19,7 @@ export default function useUser() {
           setState({ loading: false, error: false });
           sessionStorage.setItem("jwt", res.accessToken);
           sessionStorage.setItem("isAdmin", res.user.is_admin);
+          sessionStorage.setItem("user_id", res.user.id);
           setJWT(res.accessToken);
         })
         .catch((err) => {
@@ -37,6 +38,7 @@ export default function useUser() {
         setJWT(null);
         sessionStorage.setItem("jwt", "");
         sessionStorage.setItem("isAdmin", 0);
+        sessionStorage.setItem("user_id", 0);
         navigate("/iniciarSesion")
       })
       .catch((err) => {

@@ -30,14 +30,13 @@ class NoticiaController extends Controller
     $request->validate([
       'titulo' => 'required|min:3',
       'informacion' => 'required|min:3',
-      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+      'imagen' => 'required'
     ]);
 
     $noticia = new Noticia();
     $noticia->titulo = $request->titulo;
     $noticia->informacion = $request->informacion;
-    $noticia->imagen = explode("/", $request->imagen->store('public/images'))[1];
-
+    $noticia->imagen = $request->imagen;
 
     $noticia->save();
   }
@@ -66,13 +65,13 @@ class NoticiaController extends Controller
     $request->validate([
       'titulo' => 'required|min:3',
       'informacion' => 'required|min:3',
-      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+      'imagen' => 'required'
     ]);
 
-    $noticia = Noticia::findOrFail($request->$id);
+    $noticia = Noticia::where('id', $request->$id)->get();
     $noticia->titulo = $request->titulo;
     $noticia->informacion = $request->informacion;
-    $noticia->imagen = $request->imagen->store('images');
+    $noticia->imagen = $request->imagen;
 
     $noticia->save();
 
@@ -88,8 +87,6 @@ class NoticiaController extends Controller
   public function destroy($id)
   {
     $noticia = Noticia::destroy($id);
-    $noticiaFind = Noticia::find($id);
-    unlink(storage_path('app/' . $noticiaFind->imagen));
     return $noticia;
   }
 }

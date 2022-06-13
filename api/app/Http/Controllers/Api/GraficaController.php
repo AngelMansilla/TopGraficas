@@ -83,10 +83,11 @@ class GraficaController extends Controller
       'tipo_memoria' => 'required|min:1',
       'consumo' => 'required|min:1',
       'fecha' => 'required|date',
-      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+      'imagen' => 'required'
     ]);
 
-    $grafica = Grafica::findOrFail($request->$id);
+    $grafica = Grafica::find($id);
+
     $grafica->nombre = $request->nombre;
     $grafica->empresa = $request->empresa;
     $grafica->pvpr = $request->pvpr;
@@ -95,10 +96,10 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = $request->imagen->store();
-    $grafica->user_id = $request->user_id;
+    $grafica->imagen = $request->imagen;
 
     $grafica->save();
+
     return $grafica;
   }
 
@@ -110,9 +111,7 @@ class GraficaController extends Controller
    */
   public function destroy($id)
   {
-    $graficaFind = Grafica::findOrFail($id);
     $grafica = Grafica::destroy($id);
-    unlink(storage_path('app/images/' . $graficaFind->imagen));
     return $grafica;
   }
 }

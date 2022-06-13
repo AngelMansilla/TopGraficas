@@ -60,7 +60,7 @@ export default function useGrafica() {
       imagen,
     }) => {
       setState({ loading: true, error: false });
-      sessionStorage.getItem("isAmin") === "1"
+      sessionStorage.getItem("isAdmin") === "1"
         ? putService({
             grafica_id,
             nombre,

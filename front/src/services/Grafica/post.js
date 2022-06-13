@@ -34,7 +34,6 @@ export default async function post({
       imagen,
     }),
   });
-  console.log(res)
   if (!res.ok) throw new Error("Response is NOT ok");
   return res;
 }

@@ -19,7 +19,7 @@ export default function FormGrafica({ grafica_id }) {
 
   useEffect(() => {
     if (grafica_id) {
-      const response = getGrafica({ id: grafica_id }).then((grafica) => {
+      getGrafica({ id: grafica_id }).then((grafica) => {
         setNombre(grafica.nombre);
         setEmpresa(grafica.empresa);
         setPvpr(grafica.pvpr);
@@ -62,15 +62,18 @@ export default function FormGrafica({ grafica_id }) {
           fecha,
           imagen,
         });
-    setNombre("");
-    setEmpresa("");
-    setPvpr("");
-    setArquitectura("");
-    setMemoria("");
-    setTipo_memoria("");
-    setConsumo("");
-    setFecha("");
-    setImagen(null);
+
+    if (!grafica_id) {
+      setNombre("");
+      setEmpresa("");
+      setPvpr("");
+      setArquitectura("");
+      setMemoria("");
+      setTipo_memoria("");
+      setConsumo("");
+      setFecha("");
+      setImagen(null);
+    }
   };
 
   return (

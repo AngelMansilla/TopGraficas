@@ -1,5 +1,5 @@
-const ENDPOINT = `https://top-graficas.herokuapp.com/api`
-// const ENDPOINT = `http://127.0.0.1:8000/api`;
+// const ENDPOINT = `https://top-graficas.herokuapp.com/api`
+const ENDPOINT = `http://127.0.0.1:8000/api`;
 
 export default async function post({
   grafica_id,
@@ -15,9 +15,10 @@ export default async function post({
   jwt,
 }) {
   const res = await fetch(`${ENDPOINT}/grafica/${grafica_id}`, {
-    method: "POST",
+    method: "PUT",
     headers: {
-      "Content-Type": "application/json",
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${jwt}`,
     },
     body: JSON.stringify({
@@ -32,7 +33,9 @@ export default async function post({
       imagen,
     }),
   });
+  console.log(res)
+  const Response = await res.json()
+  console.log(Response)
   if (!res.ok) throw new Error("Response is NOT ok");
-  const res_1 = await res.json();
-  return res_1;
+  return Response;
 }
