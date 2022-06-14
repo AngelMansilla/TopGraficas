@@ -8,10 +8,9 @@ import useUser from "../../hooks/useUser";
 
 import useOferta from "../../hooks/useOferta";
 
-import ENDPOINT from "../../constants"
+import ENDPOINT from "../../constants";
 
 import { useLocation } from "wouter";
-
 
 export default function Oferta({
   id,
@@ -26,12 +25,15 @@ export default function Oferta({
   user_id,
 }) {
   const srcImagen = (imagen) => {
-    return `${ENDPOINT}/imagen/${imagen}`;
+    return `${ENDPOINT()}/imagen/${imagen}`;
   };
   const [, navigate] = useLocation();
   let fecha = new Date(created_at);
   const { isLoginLoading } = useUser();
   const { deleteOferta, hasErrorOferta, isLoadingOferta } = useOferta();
+  const handleEnlace = function () {
+    window.location.href = enlace;
+  };
   return (
     <div className="col fadeIn first">
       <div className="card flex-row">
@@ -51,28 +53,37 @@ export default function Oferta({
             <p className="row text-break justify-content-center">
               Descipcion: {descripcion}
             </p>
-            <button id="enlace" class="row justify-content-center submit-button" onClick={ navigate(enlace)} >Ir a la Oferta</button>
+            <button
+              id="enlace"
+              class="row justify-content-center submit-button"
+              onClick={() => handleEnlace()}
+            >
+              Ir a la Oferta
+            </button>
             <small className="text-muted row justify-content-center">
               Publicado el {fecha.getDay()}/{fecha.getMonth()}/
               {fecha.getFullYear()}
             </small>
           </div>
           {(isLoginLoading || isLoadingOferta) && <Spinner height="50px" />}
-          {(!isLoginLoading && !isLoadingOferta) && (sessionStorage.getItem("isAdmin") === "1" ||  String(user_id) === sessionStorage.getItem("user_id")) && (
-            <div className="card-footer my-3">
-              <Link to={`/oferta/editar/${id}`}>
+          {!isLoginLoading &&
+            !isLoadingOferta &&
+            (sessionStorage.getItem("isAdmin") === "1" ||
+              String(user_id) === sessionStorage.getItem("user_id")) && (
+              <div className="card-footer my-3">
+                <Link to={`/oferta/editar/${id}`}>
+                  <i
+                    className="bi bi-wrench-adjustable-circle mx-3"
+                    type="button"
+                  ></i>
+                </Link>
                 <i
-                  className="bi bi-wrench-adjustable-circle mx-3"
+                  className="bi bi-x-circle"
                   type="button"
+                  onClick={() => deleteOferta({ id })}
                 ></i>
-              </Link>
-              <i
-                className="bi bi-x-circle"
-                type="button"
-                onClick={() => deleteOferta({id})}
-              ></i>
-            </div>
-          )}
+              </div>
+            )}
           {hasErrorOferta && (
             <div>
               <strong className="alert alert-danger">Error al eliminar</strong>

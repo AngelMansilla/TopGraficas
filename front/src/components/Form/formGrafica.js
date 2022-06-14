@@ -51,72 +51,72 @@ export default function FormGrafica({ grafica_id }) {
 
   const handleChange = (target) => {
     if (target.name === "nombre") {
+      setNombre(target.value)
       if (target.value.lengeht > 3) {
-        setNombre(target.value)
         setErrorNombre(false)
       } else {
         setErrorNombre(true)
       }
     }
     if (target.name === "empresa") {
+      setEmpresa(target.value)
       if (target.value.lengeht > 3) {
-        setEmpresa(target.value)
         setErrorEmpresa(false)
       } else {
         setErrorEmpresa(true)
       }
     }
     if (target.name === "pvpr") {
+      setPvpr(target.value)
       if (target.value > 0 && regPvpr.test(target.value)) {
-        setPvpr(target.value)
         setErrorPvpr(false)
       } else {
         setErrorPvpr(true)
       }
     }
     if (target.name === "arquitectura") {
+      setArquitectura(target.value)
       if (target.value.lengeht > 3) {
-        setArquitectura(target.value)
         setErrorArquitectura(false)
       } else {
         setErrorArquitectura(true)
       }
     }
     if (target.name === "memoria") {
+      setMemoria(target.value)
       if (target.value.lengeht > 1) {
-        setMemoria(target.value)
         setErrorMemoria(false)
       } else {
         setErrorMemoria(true)
       }
     }
     if (target.name === "tipo_memoria") {
+      setTipo_memoria(target.value)
       if (target.value.lengeht > 1) {
-        setTipo_memoria(target.value)
         setErrorTipo_memoria(false)
       } else {
         setErrorTipo_memoria(true)
       }
     }
     if (target.name === "consumo") {
+      setConsumo(target.value)
       if (target.value.lengeht > 1) {
-        setConsumo(target.value)
         setErrorConsumo(false)
       } else {
         setErrorConsumo(true)
       }
     }
     if (target.name === "fecha") {
+      setFecha(target.value)
       if (moment(target.value, 'MM/DD/YY', true).isValid()) {
-        setFecha(target.value)
         setErrorFecha(false)
       } else {
         setErrorFecha(true)
       }
     }
     if (target.name === "imagen") {
-      if (target.files[0].name !== "") {
-        setImagen(target.files[0].name)
+      setImagen(target.files[0])
+      if (target.files[0]) {
         setErrorImagen(false)
       } else {
         setErrorImagen(true)

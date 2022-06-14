@@ -6,11 +6,7 @@ import useUser from "../../hooks/useUser";
 import Spinner from "../Spinner";
 import useNoticia from "../../hooks/useNoticia";
 
-const endpoint = "http://127.0.0.1:8000/api";
-
-const srcImagen = (imagen) => {
-  return `${endpoint}/imagen/${imagen}`;
-};
+import ENDPOINT from "../../constants";
 
 export default function Noticia({
   id,
@@ -20,6 +16,9 @@ export default function Noticia({
   created_at,
 }) {
   let fecha = new Date(created_at);
+  const srcImagen = (imagen) => {
+    return `${ENDPOINT()}/imagen/${imagen}`;
+  };
 
   const { isLoginLoading } = useUser();
 

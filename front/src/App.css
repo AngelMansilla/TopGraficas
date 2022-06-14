@@ -343,3 +343,7 @@ input[type=password]:placeholder, input[type=email]:placeholder {
 .bi-file-person-fill {
   font-size: 3em;
 }
+
+.disabled{
+  pointer-events: none;
+}

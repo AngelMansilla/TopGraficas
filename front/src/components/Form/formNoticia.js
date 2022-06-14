@@ -35,24 +35,24 @@ export default function Formnoticia({ noticia_id }) {
 
   const handleChange = (target) => {
     if (target.name === "titulo") {
+      setTitulo(target.value)
       if (target.value.lengeht > 3) {
-        setTitulo(target.value)
         setErrorTitulo(false)
       } else {
         setErrorTitulo(true)
       }
     }
     if (target.name === "informacion") {
+      setInformacion(target.value)
       if (target.value.lengeht > 3) {
-        setInformacion(target.value)
         setErrorInformacion(false)
       } else {
         setErrorInformacion(true)
       }
     }
     if (target.name === "imagen") {
-      if (target.files[0].name !== "") {
-        setImagen(target.files[0].name)
+      setImagen(target.files[0])
+      if (target.files[0] ) {
         setErrorImagen(false)
       } else {
         setErrorImagen(true)

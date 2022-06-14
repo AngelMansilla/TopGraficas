@@ -26,11 +26,9 @@ export default function FormRegistrar() {
   const [errorTelefono, setErrorTelefono] = useState("");
   const [formValido, setFormValido] = useState(false);
   const regTelefono = new RegExp("^d{9}$");
-  const regEmail = new RegExp(
-    '^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)|(".+"))@(([^<>()[].,;:s@"]+.)+[^<>()[].,;:s@"]{2,})$'
-  );
+  const regEmail = new RegExp("^[\\w-\\.]+@([\\w-]+\.)+[\\w-]{2,4}$");
   const regPassword = new RegExp(
-    "^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$"
+    "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
   );
 
   const handleChange = (target) => {

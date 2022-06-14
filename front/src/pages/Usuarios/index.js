@@ -9,34 +9,33 @@ export default function IniciarSesion() {
   const [password, setPassword] = useState("");
   const [, navigate] = useLocation();
   const { isLoginLoading, hasLoginError, login, isLogged } = useUser();
-  const [errorEmail, setErrorEmail] = useState("")
-  const [errorPassword, setErrorPassword] = useState("")
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regEmail = new RegExp("^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$")
-  const regPassword = new RegExp("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$")
-  
-  
+  const regEmail = new RegExp("^[\\w-\\.]+@([\\w-]+\.)+[\\w-]{2,4}$");
+  const regPassword = new RegExp(
+    "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
+  );
+
   const handleChange = (target) => {
-    if (target.name === "email") {
+    if (target.name === "login") {
+      setEmail(target.value);
       if (regEmail.test(target.value)) {
-        setEmail(target.value)
-        setErrorEmail(false)
+        setErrorEmail(false);
       } else {
-        setErrorEmail(true)
+        setErrorEmail(true);
       }
     }
     if (target.name === "password") {
+      setPassword(target.value);
       if (regPassword.test(target.value)) {
-        setPassword(target.value)
-        setErrorPassword(false)
+        setErrorPassword(false);
       } else {
-        setErrorPassword(true)
+        setErrorPassword(true);
       }
     }
-    setFormValido(
-      errorEmail === false && errorPassword === false
-    )
-  }
+    setFormValido(errorEmail === false && errorPassword === false);
+  };
   useEffect(() => {
     if (isLogged) navigate("/");
   }, [isLogged, navigate]);
@@ -55,37 +54,52 @@ export default function IniciarSesion() {
             <div className="fadeIn first">
               <i className="bi bi-file-person-fill"></i>
             </div>
-            <form onSubmit={handleSubmit}>
-              {errorEmail && (
-                <strong className="alert alert-danger">Formato emeail. Ejemplo: pepito@gmail.com</strong>
-              )}
-              <input
-                type="email"
-                id="login"
-                className="fadeIn second"
-                name="login"
-                placeholder="correo electronico"
-                onChange={(e) => handleChange(e.target)}
-                value={email}
-              />
-              {errorPassword && (
-                <strong className="alert alert-danger">Minimo una letra, numero y caracter especial. 6-16 caracteres</strong>
-              )}
-              <input
-                type="password"
-                id="password"
-                className="fadeIn third"
-                name="login"
-                placeholder="contraseña"
-                onChange={(e) => handleChange(e.target)}
-                value={password}
-              />
-              {formValido &&
+            <form className="mt-2" onSubmit={handleSubmit}>
+              <div>
+                {errorEmail && (
+                  <strong className="alert alert-danger">
+                    Formato emeail. Ejemplo: pepito@gmail.com
+                  </strong>
+                )}
+                <input
+                  type="email"
+                  id="login"
+                  className="fadeIn second mt-3 mb-3"
+                  name="login"
+                  placeholder="correo electronico"
+                  onChange={(e) => handleChange(e.target)}
+                  value={email}
+                />
+              </div>
+              <div>
+                {errorPassword && (
+                  <strong className="alert alert-danger">
+                    1 letra, 1 numero y 8 caracteres minimo
+                  </strong>
+                )}
+                <input
+                  type="password"
+                  id="password"
+                  className="fadeIn third mt-3"
+                  name="password"
+                  placeholder="contraseña"
+                  onChange={(e) => handleChange(e.target)}
+                  value={password}
+                />
+              </div>
+              {formValido ? (
                 <input
                   type="submit"
                   className="fadeIn fourth"
                   value="Iniciar sesion"
-                />}
+                />
+              ) : (
+                <input
+                  type="submit"
+                  className="fadeIn fourth disabled"
+                  value="Iniciar sesion"
+                />
+              )}
             </form>
           </div>
         </div>

@@ -25,12 +25,13 @@ class UserController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
+
   public function store(Request $request)
   {
     $request->validate([
       'nombre' => 'required|min:3',
-      'email' => 'required|min:3',
-      'contraseña' => 'required|min:6',
+      'email' => 'required|regex:/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      'contraseña' => 'required|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
       'apellido' => 'min:3',
       'fecha_nacimiento' => 'required|date',
       'pais' => 'required|min:1',
@@ -75,8 +76,8 @@ class UserController extends Controller
   {
     $request->validate([
       'nombre' => 'required|min:3',
-      'email' => 'required|min:3',
-      'contraseña' => 'required|min:6',
+      'email' => 'required|regex:/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      'contraseña' => 'required|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
       'apellido' => 'min:3',
       'fecha_nacimiento' => 'required|date',
       'pais' => 'required|min:1',

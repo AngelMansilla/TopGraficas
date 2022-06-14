@@ -9,9 +9,6 @@ import Spinner from "../Spinner";
 
 import ENDPOINT from "../../constants";
 
-const srcImagen = (imagen) => {
-  return `${ENDPOINT}/imagen/${imagen}`;
-};
 
 export default function Grafica({
   id,
@@ -25,6 +22,9 @@ export default function Grafica({
 }) {
   const { isLoginLoading } = useUser();
   const { deleteGrafica, hasErrorGrafica, isLoadingGrafica } = useGrafica();
+  const srcImagen = (imagen) => {
+    return `${ENDPOINT()}/imagen/${imagen}`;
+  };
   return (
     <div className="col fadeIn first">
       <div className="card flex-row">

@@ -23,66 +23,66 @@ export default function FormOferta({ oferta_id }) {
   const [errorVendedor, setErrorVendedor] = useState("");
   const [errorGrafica, setErrorGrafica] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regPrecio = new RegExp("^[\d]{0,11}(\.[\d]{1,2})?$")
-
+  const regPrecio = new RegExp("^[d]{0,11}(.[d]{1,2})?$");
 
   const handleChange = (target) => {
     if (target.name === "titulo") {
+      setTitulo(target.value);
       if (target.value.lengeht > 3) {
-        setTitulo(target.value)
-        setErrorTitulo(false)
+        setErrorTitulo(false);
       } else {
-        setErrorTitulo(true)
+        setErrorTitulo(true);
       }
     }
     if (target.name === "vendedor") {
+      setVendedor(target.value);
       if (target.value.lengeht > 3) {
-        setVendedor(target.value)
-        setErrorVendedor(false)
+        setErrorVendedor(false);
       } else {
-        setErrorVendedor(true)
+        setErrorVendedor(true);
       }
     }
     if (target.name === "precio") {
+      setPrecio(target.value);
       if (target.value > 0 && regPrecio.test(target.value)) {
-        setPrecio(target.value)
-        setErrorPrecio(false)
+        setErrorPrecio(false);
       } else {
-        setErrorPrecio(true)
+        setErrorPrecio(true);
       }
     }
     if (target.name === "descripcion") {
+      setDescripcion(target.value);
       if (target.value.lengeht > 3) {
-        setDescripcion(target.value)
-        setErrorDescripcion(false)
+        setErrorDescripcion(false);
       } else {
-        setErrorDescripcion(true)
+        setErrorDescripcion(true);
       }
     }
     if (target.name === "enlace") {
+      setEnlace(target.value);
       if (target.value.lengeht > 3) {
-        setEnlace(target.value)
-        setErrorEnlace(false)
+        setErrorEnlace(false);
       } else {
-        setErrorEnlace(true)
+        setErrorEnlace(true);
       }
     }
     if (target.name === "grafica") {
+      setGrafica_id(target.value);
       if (target.value > 0) {
-        setGrafica_id(target.value)
-        setErrorGrafica(false)
+        setErrorGrafica(false);
       } else {
-        setErrorGrafica(true)
+        setErrorGrafica(true);
       }
     }
     setFormValido(
       errorTitulo === false &&
-      errorDescripcion === false &&
-      errorVendedor === false &&
-      errorEnlace === false &&
-      errorGrafica === false &&
-      errorPrecio === false)
-  }
+        errorDescripcion === false &&
+        errorVendedor === false &&
+        errorEnlace === false &&
+        errorGrafica === false &&
+        errorPrecio === false
+    );
+  };
 
   useEffect(() => {
     if (oferta_id) {
@@ -106,23 +106,23 @@ export default function FormOferta({ oferta_id }) {
     if (formValido) {
       oferta_id
         ? putOferta({
-          oferta_id,
-          titulo,
-          precio,
-          enlace,
-          descripcion,
-          vendedor,
-          grafica_id,
-          user_id,
-        })
+            oferta_id,
+            titulo,
+            precio,
+            enlace,
+            descripcion,
+            vendedor,
+            grafica_id,
+            user_id,
+          })
         : postOferta({
-          titulo,
-          precio,
-          enlace,
-          descripcion,
-          vendedor,
-          grafica_id,
-        });
+            titulo,
+            precio,
+            enlace,
+            descripcion,
+            vendedor,
+            grafica_id,
+          });
 
       if (!oferta_id) {
         setTitulo("");
@@ -139,10 +139,13 @@ export default function FormOferta({ oferta_id }) {
       {isLoadingOferta && <Spinner />}
       {hasErrorOferta ? (
         <strong className="alert alert-danger">Datos incorrectos</strong>
-      )
-        :
-        <strong className="alert alert-success">{oferta_id ? "Oferta modificada correctamente" : "Oferta publicada correctamente"}</strong>
-      }
+      ) : (
+        <strong className="alert alert-success">
+          {oferta_id
+            ? "Oferta modificada correctamente"
+            : "Oferta publicada correctamente"}
+        </strong>
+      )}
       {!isLoadingOferta && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">
@@ -156,7 +159,9 @@ export default function FormOferta({ oferta_id }) {
             >
               <div className="col-md-6">
                 {errorTitulo && (
-                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                  <strong className="alert alert-danger">
+                    Obligatorio y mas de 3 caracteres
+                  </strong>
                 )}
                 <label htmlFor="inputTitulo" className="form-label">
                   Titulo
@@ -172,7 +177,9 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-6">
                 {errorEnlace && (
-                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                  <strong className="alert alert-danger">
+                    Obligatorio y mas de 3 caracteres
+                  </strong>
                 )}
                 <label htmlFor="inputEnlace" className="form-label">
                   Enlace
@@ -188,7 +195,9 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-6">
                 {errorPrecio && (
-                  <strong className="alert alert-danger">Obligatorio, mayor de 0 y maximo 2 decimales</strong>
+                  <strong className="alert alert-danger">
+                    Obligatorio, mayor de 0 y maximo 2 decimales
+                  </strong>
                 )}
                 <label htmlFor="inputPrecio" className="form-label">
                   Precio (€)
@@ -205,7 +214,9 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-6">
                 {errorVendedor && (
-                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                  <strong className="alert alert-danger">
+                    Obligatorio y mas de 3 caracteres
+                  </strong>
                 )}
                 <label htmlFor="inputVendedor" className="form-label">
                   vendedor
@@ -234,7 +245,7 @@ export default function FormOferta({ oferta_id }) {
                   className="form-control text-center"
                   value={grafica_id}
                 >
-                  <option key='0' value='0'>
+                  <option key="0" value="0">
                     Selecciona una gráfica
                   </option>
                   {graficas.map((grafica) => (
@@ -246,7 +257,9 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-12">
                 {errorDescripcion && (
-                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                  <strong className="alert alert-danger">
+                    Obligatorio y mas de 3 caracteres
+                  </strong>
                 )}
                 <label htmlFor="textareaDescipcion" className="form-label">
                   Descripcion
@@ -260,12 +273,13 @@ export default function FormOferta({ oferta_id }) {
                 />
               </div>
               <div className="col-12 text-center d-flex">
-                {formValido &&
+                {formValido && (
                   <input
                     type="submit"
                     className="fadeIn fourth"
                     value={oferta_id ? "Editar" : "Publicar"}
-                  />}
+                  />
+                )}
                 <Link className="fadeIn fourth" to="/">
                   <input
                     type="button"

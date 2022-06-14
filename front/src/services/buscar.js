@@ -10,7 +10,7 @@ export default async function buscar({ keyword, id = 0, graficaId = 0 }) {
     }
   }
 
-  const apiURL = `${ENDPOINT()}/${keyword}${id}`;
+  const apiURL = `${ENDPOINT()}/${keyword}${id}`
   const res = await fetch(apiURL)
   if (!res.ok) throw new Error("Response is NOT ok");
   const Response = await res.json();
