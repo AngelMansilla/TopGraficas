@@ -22,6 +22,7 @@ export default function Formnoticia({ noticia_id }) {
   const [errorImagen, setErrorImagen] = useState("");
   const [formValido, setFormValido] = useState(false);
 
+
   useEffect(() => {
     if (noticia_id) {
       getServices({ keyword, id: noticia_id }).then((noticia) => {
@@ -90,9 +91,12 @@ export default function Formnoticia({ noticia_id }) {
   return (
     <>
       {isLoadingNoticia && <Spinner />}
-      {hasErrorNoticia && (
+      {hasErrorNoticia ? (
         <strong className="alert alert-danger">Datos incorrectos</strong>
-      )}
+      )
+        :
+        <strong className="alert alert-success">{noticia_id ? "Noticia modificada correctamente" : "Noticia publicada correctamente"}</strong>
+      }
       {!isLoadingNoticia && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">

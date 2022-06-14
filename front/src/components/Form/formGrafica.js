@@ -32,7 +32,8 @@ export default function FormGrafica({ grafica_id }) {
   const [errorFecha, setErrorFecha] = useState("");
   const [errorImagen, setErrorImagen] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regPvpr = newRegExp("^[\d]{0,11}(\.[\d]{1,2})?$")
+  const regPvpr = newRegExp("^[\d]{0,11}(\.[\d]{1,2})?$");
+
   useEffect(() => {
     if (grafica_id) {
       getServices({ keyword, id: grafica_id }).then((grafica) => {
@@ -178,9 +179,12 @@ export default function FormGrafica({ grafica_id }) {
   return (
     <>
       {isLoadingGrafica && <Spinner />}
-      {hasErrorGrafica && (
+      {hasErrorGrafica ? (
         <strong className="alert alert-danger">Datos incorrectos</strong>
-      )}
+      )
+        :
+        <strong className="alert alert-success">{grafica_id ? "Grafica modificada correctamente" : "Grafica publicada correctamente"}</strong>
+      }
       {!isLoadingGrafica && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">

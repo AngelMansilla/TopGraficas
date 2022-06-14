@@ -25,6 +25,7 @@ export default function FormOferta({ oferta_id }) {
   const [formValido, setFormValido] = useState(false);
   const regPrecio = newRegExp("^[\d]{0,11}(\.[\d]{1,2})?$")
 
+
   const handleChange = (target) => {
     if (target.name === "titulo") {
       if (target.value.lengeht > 3) {
@@ -136,9 +137,12 @@ export default function FormOferta({ oferta_id }) {
   return (
     <>
       {isLoadingOferta && <Spinner />}
-      {hasErrorOferta && (
+      {hasErrorOferta ? (
         <strong className="alert alert-danger">Datos incorrectos</strong>
-      )}
+      )
+        :
+        <strong className="alert alert-success">{oferta_id ? "Oferta modificada correctamente" : "Oferta publicada correctamente"}</strong>
+      }
       {!isLoadingOferta && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">

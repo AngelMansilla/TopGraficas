@@ -161,9 +161,12 @@ export default function FormRegistrar() {
   return (
     <>
       {isLoginLoading && <Spinner />}
-      {hasLoginError && (
+      {hasLoginError ? (
         <strong className="alert alert-danger">Datos incorrectos</strong>
-      )}
+      )
+        :
+        <strong className="alert alert-success">{user && "Perfil modificado correctamente"}</strong>
+      }
       {!isLoginLoading && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">
