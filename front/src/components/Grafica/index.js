@@ -7,10 +7,10 @@ import useGrafica from "../../hooks/useGrafica";
 import useUser from "../../hooks/useUser";
 import Spinner from "../Spinner";
 
-const endpoint = "http://127.0.0.1:8000/api";
+import ENDPOINT from "../../constants";
 
 const srcImagen = (imagen) => {
-  return `${endpoint}/imagen/${imagen}`;
+  return `${ENDPOINT}/imagen/${imagen}`;
 };
 
 export default function Grafica({
@@ -24,7 +24,7 @@ export default function Grafica({
   pvpr,
 }) {
   const { isLoginLoading } = useUser();
-  const { deleteGrafica, hasErrorGrafica, isLoadingGrafica} = useGrafica();
+  const { deleteGrafica, hasErrorGrafica, isLoadingGrafica } = useGrafica();
   return (
     <div className="col fadeIn first">
       <div className="card flex-row">
@@ -47,24 +47,28 @@ export default function Grafica({
             Fecha de salida {fecha}
           </small>
           {(isLoginLoading || isLoadingGrafica) && <Spinner height="50px" />}
-          {(!isLoginLoading && !isLoadingGrafica) && sessionStorage.getItem("isAdmin") === "1" && (
-            <div className="card-footer my-3">
-              <Link to={`/grafica/editar/${id}`}>
+          {!isLoginLoading &&
+            !isLoadingGrafica &&
+            sessionStorage.getItem("isAdmin") === "1" && (
+              <div className="card-footer my-3">
+                <Link to={`/grafica/editar/${id}`}>
+                  <i
+                    className="bi bi-wrench-adjustable-circle mx-3"
+                    type="button"
+                  ></i>
+                </Link>
                 <i
-                  className="bi bi-wrench-adjustable-circle mx-3"
+                  className="bi bi-x-circle"
                   type="button"
+                  onClick={() => deleteGrafica({ id })}
                 ></i>
-              </Link>
-              <i
-                className="bi bi-x-circle"
-                type="button"
-                onClick={() => deleteGrafica({ id })}
-              ></i>
+              </div>
+            )}
+          {hasErrorGrafica && (
+            <div>
+              <strong className="alert alert-danger">Error al eliminar</strong>
             </div>
           )}
-          {hasErrorGrafica && (<div>
-            <strong className="alert alert-danger">Error al eliminar</strong>
-          </div>)}
         </div>
       </div>
     </div>

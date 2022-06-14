@@ -23,7 +23,7 @@ export default function FormOferta({ oferta_id }) {
   const [errorVendedor, setErrorVendedor] = useState("");
   const [errorGrafica, setErrorGrafica] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regPrecio = newRegExp("^[\d]{0,11}(\.[\d]{1,2})?$")
+  const regPrecio = new RegExp("^[\d]{0,11}(\.[\d]{1,2})?$")
 
 
   const handleChange = (target) => {

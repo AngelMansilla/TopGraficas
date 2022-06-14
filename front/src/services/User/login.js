@@ -1,4 +1,4 @@
-import ENDPOINT from "../constants";
+import ENDPOINT from "../../constants";
 export default async function login({ email, password }) {
   const res = await fetch(`${ENDPOINT}/sesion`, {
     method: "POST",

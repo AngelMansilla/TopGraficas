@@ -44,7 +44,7 @@ export default function Formnoticia({ noticia_id }) {
     }
     if (target.name === "informacion") {
       if (target.value.lengeht > 3) {
-        setEmpresa(target.value)
+        setInformacion(target.value)
         setErrorInformacion(false)
       } else {
         setErrorInformacion(true)

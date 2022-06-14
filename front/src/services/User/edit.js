@@ -1,4 +1,4 @@
-import ENDPOINT from "../constants";
+import ENDPOINT from "../../constants";
 export default async function login({jwt, datos}) {
   const res = await fetch(`${ENDPOINT}/usuario`, {
     method: "PUT",

@@ -32,7 +32,7 @@ export default function FormGrafica({ grafica_id }) {
   const [errorFecha, setErrorFecha] = useState("");
   const [errorImagen, setErrorImagen] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regPvpr = newRegExp("^[\d]{0,11}(\.[\d]{1,2})?$");
+  const regPvpr = new RegExp("^[\d]{0,11}(\.[\d]{1,2})?$");
 
   useEffect(() => {
     if (grafica_id) {

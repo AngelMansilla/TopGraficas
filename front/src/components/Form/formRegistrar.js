@@ -26,9 +26,9 @@ export default function FormRegistrar() {
   const [errorCiudad, setErrorCiudad] = useState("");
   const [errorTelefono, setErrorTelefono] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regTelefono = newRegExp("^\d{9}$")
-  const regEmail = newRegExp("^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$")
-  const regPassword = newRegExp("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$")
+  const regTelefono = new RegExp("^\d{9}$")
+  const regEmail = new RegExp("^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$")
+  const regPassword = new RegExp("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$")
 
   const handleChange = (target) => {
     if (target.name === "nombre") {
@@ -308,7 +308,7 @@ export default function FormRegistrar() {
                   <input
                     type="submit"
                     className="fadeIn fourth"
-                    value={oferta_id ? "Editar" : "Registrarse"}
+                    value={user ? "Editar" : "Registrarse"}
                   />}
                 <Link className="fadeIn fourth" to="/">
                   <input

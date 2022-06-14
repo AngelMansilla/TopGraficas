@@ -1,4 +1,4 @@
-import ENDPOINT from "../constants";
+import ENDPOINT from "../../constants";
 export default async function logout(jwt) {
   const res = await fetch(`${ENDPOINT}/cerrarsesion`, {
     method: "GET",

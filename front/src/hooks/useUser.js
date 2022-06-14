@@ -3,6 +3,8 @@ import { useState } from "react";
 import Context from "../context/UserContext";
 import loginService from "../services/User/login";
 import logoutService from "../services/User/logout";
+import registerService from "../services/User/register";
+import editService from "../services/User/edit";
 
 import { useLocation } from "wouter";
 
@@ -64,6 +66,7 @@ export default function useUser() {
 
   const edit = useCallback((datos) => {
     setState({ loading: true, error: false });
+    const jwt = sessionStorage.getItem("jwt")
     editService({ jwt, datos })
       .then((res) => {
         sessionStorage.setItem("jwt", res.accessToken);

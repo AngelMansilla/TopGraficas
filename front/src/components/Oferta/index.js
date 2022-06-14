@@ -8,11 +8,10 @@ import useUser from "../../hooks/useUser";
 
 import useOferta from "../../hooks/useOferta";
 
-const endpoint = "http://127.0.0.1:8000/api";
+import ENDPOINT from "../../constants"
 
-const srcImagen = (imagen) => {
-  return `${endpoint}/imagen/${imagen}`;
-};
+import { useLocation } from "wouter";
+
 
 export default function Oferta({
   id,
@@ -26,6 +25,10 @@ export default function Oferta({
   nombreGrafica,
   user_id,
 }) {
+  const srcImagen = (imagen) => {
+    return `${ENDPOINT}/imagen/${imagen}`;
+  };
+  const [, navigate] = useLocation();
   let fecha = new Date(created_at);
   const { isLoginLoading } = useUser();
   const { deleteOferta, hasErrorOferta, isLoadingOferta } = useOferta();
@@ -48,7 +51,7 @@ export default function Oferta({
             <p className="row text-break justify-content-center">
               Descipcion: {descripcion}
             </p>
-            <button id="enlace" class="row justify-content-center submit-button" onClick={location.href = enlace} >Ir a la Oferta</button>
+            <button id="enlace" class="row justify-content-center submit-button" onClick={ navigate(enlace)} >Ir a la Oferta</button>
             <small className="text-muted row justify-content-center">
               Publicado el {fecha.getDay()}/{fecha.getMonth()}/
               {fecha.getFullYear()}
