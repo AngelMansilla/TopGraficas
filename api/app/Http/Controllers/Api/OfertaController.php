@@ -30,19 +30,20 @@ class OfertaController extends Controller
     $request->validate([
       'titulo' => 'required|min:3',
       'precio' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-      'votos' => 'required|numeric',
       'enlace' => 'required|min:3',
-      'descipcion' => 'required|min:3',
+      'descripcion' => 'required|min:3',
       'vendedor' => 'required|min:3',
+      'grafica_id' => 'required',
     ]);
 
     $oferta = new Oferta();
     $oferta->titulo = $request->titulo;
     $oferta->precio = $request->precio;
-    $oferta->votos = $request->votos;
     $oferta->enlace = $request->enlace;
-    $oferta->descipcion = $request->descipcion;
+    $oferta->descripcion = $request->descripcion;
     $oferta->vendedor = $request->vendedor;
+    $oferta->grafica_id = $request->grafica_id;
+    $oferta->user_id = auth()->user()->id;
 
     $oferta->save();
   }
@@ -74,29 +75,27 @@ class OfertaController extends Controller
    */
   public function update(Request $request, $id)
   {
-    if (auth()->user()->is_admin || auth()->user()->id == $request->user_id) {
       $request->validate([
         'titulo' => 'required|min:3',
         'precio' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-        'votos' => 'required|numeric',
         'enlace' => 'required|min:3',
-        'descipcion' => 'required|min:3',
+        'descripcion' => 'min:3',
         'vendedor' => 'required|min:3',
+        'grafica_id' => 'required',
       ]);
-
-      $oferta = Oferta::where('id', $request->$id)->get();
-      $oferta->titulo = $request->titulo;
-      $oferta->precio = $request->precio;
-      $oferta->votos = $request->votos;
-      $oferta->enlace = $request->enlace;
-      $oferta->descipcion = $request->descipcion;
-      $oferta->vendedor = $request->vendedor;
-
-      $oferta->save();
-      return $oferta;
-    } else {
-      return redirect('/');
-    }
+      $oferta = Oferta::find($id);
+      if( auth()->user()->id === $oferta->user_id || auth()->user()->isAdmin == 1){
+        $oferta->titulo = $request->titulo;
+        $oferta->precio = $request->precio;
+        $oferta->enlace = $request->enlace;
+        $oferta->descripcion = $request->descripcion;
+        $oferta->vendedor = $request->vendedor;
+        $oferta->grafica_id = $request->grafica_id;
+        $oferta->save();
+        return $oferta;
+      }else{
+        return "No tienes permisos";
+      }
   }
 
   /**
@@ -107,7 +106,7 @@ class OfertaController extends Controller
    */
   public function destroy($id)
   {
-      $oferta = Oferta::destroy($id);
-      return $oferta;
+    $oferta = Oferta::destroy($id);
+    return $oferta;
   }
 }

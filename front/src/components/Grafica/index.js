@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "wouter";
 
-import deleteGrafica from "../../services/Grafica/deleteGrafica";
+import useGrafica from "../../hooks/useGrafica";
 
 import useUser from "../../hooks/useUser";
 import Spinner from "../Spinner";
@@ -21,8 +21,10 @@ export default function Grafica({
   memoria,
   consumo,
   fecha,
+  pvpr,
 }) {
   const { isLoginLoading } = useUser();
+  const { deleteGrafica, hasErrorGrafica, isLoadingGrafica} = useGrafica();
   return (
     <div className="col fadeIn first">
       <div className="card flex-row">
@@ -39,12 +41,13 @@ export default function Grafica({
             <p className="row justify-content-center">
               Consumo: {consumo} vatios
             </p>
+            <p className="row justify-content-center">Precio: {pvpr} €</p>
           </div>
           <small className="text-muted row justify-content-center">
             Fecha de salida {fecha}
           </small>
-          {isLoginLoading && <Spinner height="50px" />}
-          {!isLoginLoading && sessionStorage.getItem("isAdmin") === "1" && (
+          {(isLoginLoading || isLoadingGrafica) && <Spinner height="50px" />}
+          {(!isLoginLoading && !isLoadingGrafica) && sessionStorage.getItem("isAdmin") === "1" && (
             <div className="card-footer my-3">
               <Link to={`/grafica/editar/${id}`}>
                 <i
@@ -55,10 +58,13 @@ export default function Grafica({
               <i
                 className="bi bi-x-circle"
                 type="button"
-                onClick={() => deleteGrafica(id)}
+                onClick={() => deleteGrafica({ id })}
               ></i>
             </div>
           )}
+          {hasErrorGrafica && (<div>
+            <strong className="alert alert-danger">Error al eliminar</strong>
+          </div>)}
         </div>
       </div>
     </div>

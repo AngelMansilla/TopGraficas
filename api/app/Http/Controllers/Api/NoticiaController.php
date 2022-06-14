@@ -37,6 +37,7 @@ class NoticiaController extends Controller
     $noticia->titulo = $request->titulo;
     $noticia->informacion = $request->informacion;
     $noticia->imagen = $request->imagen;
+    $noticia->user_id = auth()->user()->id;
 
     $noticia->save();
   }
@@ -68,7 +69,7 @@ class NoticiaController extends Controller
       'imagen' => 'required'
     ]);
 
-    $noticia = Noticia::where('id', $request->$id)->get();
+    $noticia = Noticia::find($id);
     $noticia->titulo = $request->titulo;
     $noticia->informacion = $request->informacion;
     $noticia->imagen = $request->imagen;

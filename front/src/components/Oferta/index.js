@@ -2,10 +2,10 @@ import React from "react";
 
 import { Link } from "wouter";
 
-import deleteOferta from "../../services/Oferta/deleteOferta";
-
 import Spinner from "../Spinner";
 import useUser from "../../hooks/useUser";
+
+import useOferta from "../../hooks/useOferta";
 
 const endpoint = "http://127.0.0.1:8000/api";
 const srcImagen = (imagen) => {
@@ -23,10 +23,11 @@ export default function Oferta({
   imagen,
   created_at,
   nombreGrafica,
+  user_id,
 }) {
   let fecha = new Date(created_at);
-  
   const { isLoginLoading } = useUser();
+  const { deleteOferta, hasErrorOferta, isLoadingOferta } = useOferta();
   return (
     <div className="col fadeIn first">
       <div className="card flex-row">
@@ -55,8 +56,8 @@ export default function Oferta({
               {fecha.getFullYear()}
             </small>
           </div>
-          {isLoginLoading && <Spinner height="50px" />}
-          {!isLoginLoading && sessionStorage.getItem("isAdmin") === "1" && (
+          {(isLoginLoading || isLoadingOferta) && <Spinner height="50px" />}
+          {(!isLoginLoading && !isLoadingOferta) && (sessionStorage.getItem("isAdmin") === "1" ||  String(user_id) === sessionStorage.getItem("user_id")) && (
             <div className="card-footer my-3">
               <Link to={`/oferta/editar/${id}`}>
                 <i
@@ -67,8 +68,13 @@ export default function Oferta({
               <i
                 className="bi bi-x-circle"
                 type="button"
-                onClick={() => deleteOferta(id)}
+                onClick={() => deleteOferta({id})}
               ></i>
+            </div>
+          )}
+          {hasErrorOferta && (
+            <div>
+              <strong className="alert alert-danger">Error al eliminar</strong>
             </div>
           )}
         </div>

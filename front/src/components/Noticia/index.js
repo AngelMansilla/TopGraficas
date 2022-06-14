@@ -2,10 +2,9 @@ import React from "react";
 
 import { Link } from "wouter";
 
-import deleteNoticia from "../../services/Noticia/deleteNoticia";
-
 import useUser from "../../hooks/useUser";
 import Spinner from "../Spinner";
+import useNoticia from "../../hooks/useNoticia";
 
 const endpoint = "http://127.0.0.1:8000/api";
 
@@ -24,6 +23,7 @@ export default function Noticia({
 
   const { isLoginLoading } = useUser();
 
+  const { deleteNoticia, hasErrorNoticia, isLoadingNoticia } = useNoticia();
   return (
     <div className="col fadeIn first">
       <div className="card flex-row">
@@ -43,8 +43,8 @@ export default function Noticia({
               {fecha.getFullYear()}
             </small>
           </div>
-          {isLoginLoading && <Spinner height="50px" />}
-          {!isLoginLoading && sessionStorage.getItem("isAdmin") === "1" && (
+          {(isLoginLoading || isLoadingNoticia) && <Spinner height="50px" />}
+          {(!isLoginLoading && !isLoadingNoticia) && sessionStorage.getItem("isAdmin") === "1" && (
             <div className="card-footer my-3">
               <Link to={`/noticia/editar/${id}`}>
                 <i
@@ -55,8 +55,13 @@ export default function Noticia({
               <i
                 className="bi bi-x-circle"
                 type="button"
-                onClick={() => deleteNoticia(id)}
+                onClick={() => deleteNoticia({id})}
               ></i>
+            </div>
+          )}
+          {hasErrorNoticia && (
+            <div>
+              <strong className="alert alert-danger">Error al eliminar</strong>
             </div>
           )}
         </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import useGrafica from "../../hooks/useGrafica";
 import { Link } from "wouter";
 import Spinner from "../Spinner";
-import getGrafica from "../../services/Grafica/getGraficas";
+import getServices from "../../services/buscar";
 
 export default function FormGrafica({ grafica_id }) {
   const [nombre, setNombre] = useState("");
@@ -14,12 +14,17 @@ export default function FormGrafica({ grafica_id }) {
   const [consumo, setConsumo] = useState("");
   const [fecha, setFecha] = useState("");
   const [imagen, setImagen] = useState(null);
-  const { isSubmitLoading, hasSubmitError, submitPost, isSubmit, submitPut } =
-    useGrafica();
+  const keyword = "grafica";
+  const {
+    isLoadingGrafica,
+    hasErrorGrafica,
+    postGrafica,
+    putGrafica,
+  } = useGrafica();
 
   useEffect(() => {
     if (grafica_id) {
-      getGrafica({ id: grafica_id }).then((grafica) => {
+      getServices({ keyword, id: grafica_id }).then((grafica) => {
         setNombre(grafica.nombre);
         setEmpresa(grafica.empresa);
         setPvpr(grafica.pvpr);
@@ -32,14 +37,10 @@ export default function FormGrafica({ grafica_id }) {
     }
   }, [grafica_id]);
 
-  useEffect(() => {
-    if (isSubmit);
-  }, [isSubmit]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     grafica_id
-      ? submitPut({
+      ? putGrafica({
           grafica_id,
           nombre,
           empresa,
@@ -51,7 +52,7 @@ export default function FormGrafica({ grafica_id }) {
           fecha,
           imagen,
         })
-      : submitPost({
+      : postGrafica({
           nombre,
           empresa,
           pvpr,
@@ -78,18 +79,16 @@ export default function FormGrafica({ grafica_id }) {
 
   return (
     <>
-      {isSubmitLoading && <Spinner />}
-      {hasSubmitError && (
+      {isLoadingGrafica && <Spinner />}
+      {hasErrorGrafica && (
         <strong className="alert alert-danger">Datos incorrectos</strong>
       )}
-      {!isSubmitLoading && (
+      {!isLoadingGrafica && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">
-            {grafica_id ? (
-              <h1 className="text-center fadeIn first">Editar Gráfica</h1>
-            ) : (
-              <h1 className="text-center fadeIn first">Publicar Gráfica</h1>
-            )}
+          <h1 className="text-center fadeIn first">
+              {grafica_id ? "Editar gráfica" : "Publicar gráfica"}
+            </h1>
             <form
               className="row g-3"
               name="publicar-grafica"
@@ -213,19 +212,11 @@ export default function FormGrafica({ grafica_id }) {
                 />
               </div>
               <div className="col-12 text-center d-flex">
-                {grafica_id ? (
-                  <input
-                    type="submit"
-                    className="fadeIn fourth"
-                    value="Editar"
-                  />
-                ) : (
-                  <input
-                    type="submit"
-                    className="fadeIn fourth"
-                    value="Publicar"
-                  />
-                )}
+              <input
+                  type="submit"
+                  className="fadeIn fourth"
+                  value={grafica_id ? "Editar" : "Publicar"}
+                />
                 <Link className="fadeIn fourth" to="/graficas">
                   <input
                     type="button"

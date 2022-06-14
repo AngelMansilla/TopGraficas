@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState} from "react";
+import { useCallback, useContext, useState } from "react";
 import postService from "../services/publicar";
 import putService from "../services/modificar";
 import deleteService from "../services/eliminar";
@@ -7,32 +7,19 @@ import Context from "../context/UserContext";
 export default function useGrafica() {
   const { jwt } = useContext(Context);
   const [state, setState] = useState({ loading: false, error: false });
-  const keyword = "grafica";
+  const keyword = "noticia";
 
 
-
-  const postGrafica = useCallback(
+  const postNoticia = useCallback(
     ({
-      nombre,
-      empresa,
-      pvpr,
-      arquitectura,
-      memoria,
-      tipo_memoria,
-      consumo,
-      fecha,
+      titulo,
+      informacion,
       imagen,
     }) => {
       setState({ loading: true, error: false });
       let datos = {
-        nombre,
-        empresa,
-        pvpr,
-        arquitectura,
-        memoria,
-        tipo_memoria,
-        consumo,
-        fecha,
+        titulo,
+        informacion,
         imagen,
       };
       sessionStorage.getItem("isAdmin") === "1"
@@ -53,35 +40,23 @@ export default function useGrafica() {
     []
   );
 
-  const putGrafica = useCallback(
+  const putNoticia = useCallback(
     ({
-      grafica_id,
-      nombre,
-      empresa,
-      pvpr,
-      arquitectura,
-      memoria,
-      tipo_memoria,
-      consumo,
-      fecha,
+      noticia_id,
+      titulo,
+      informacion,
       imagen,
     }) => {
       setState({ loading: true, error: false });
       let datos = {
-        grafica_id,
-        nombre,
-        empresa,
-        pvpr,
-        arquitectura,
-        memoria,
-        tipo_memoria,
-        consumo,
-        fecha,
+        titulo,
+        informacion,
         imagen,
       };
       sessionStorage.getItem("isAdmin") === "1"
         ? putService({
             keyword,
+            id: noticia_id,
             jwt,
             datos,
           })
@@ -96,7 +71,7 @@ export default function useGrafica() {
     },
     []
   );
-  const deleteGrafica = useCallback(({ id }) => {
+  const deleteNoticia = useCallback(({ id }) => {
     setState({ loading: true, error: false });
     sessionStorage.getItem("isAdmin") === "1"
       ? deleteService({
@@ -106,7 +81,6 @@ export default function useGrafica() {
         })
           .then((res) => {
             setState({ loading: false, error: false });
-
             window.location.reload();
           })
           .catch((err) => {
@@ -117,10 +91,10 @@ export default function useGrafica() {
   }, []);
 
   return {
-    isLoadingGrafica: state.loading,
-    hasErrorGrafica: state.error,
-    postGrafica,
-    putGrafica,
-    deleteGrafica,
+    isLoadingNoticia: state.loading,
+    hasErrorNoticia: state.error,
+    postNoticia,
+    putNoticia,
+    deleteNoticia,
   };
 }

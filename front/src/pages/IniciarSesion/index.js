@@ -56,7 +56,9 @@ export default function IniciarSesion() {
           </div>
         </div>
       )}
-      {hasLoginError && <strong>Credenciales incorrectos</strong>}
+      {hasLoginError && (
+        <strong className="alert alert-danger">Credenciales incorrectos</strong>
+      )}
     </>
   );
 }
