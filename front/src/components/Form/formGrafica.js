@@ -30,7 +30,7 @@ export default function FormGrafica({ grafica_id }) {
   const [errorTipo_memoria, setErrorTipo_memoria] = useState("");
   const [errorConsumo, setErrorConsumo] = useState("");
   const [errorFecha, setErrorFecha] = useState("");
-  const [I, setI] = useState("");
+  const [errorImagen, setErrorImagen] = useState("");
   const [formValido, setFormValido] = useState(false);
   const regPvpr = newRegExp("^[\d]{0,11}(\.[\d]{1,2})?$")
   useEffect(() => {
@@ -116,9 +116,9 @@ export default function FormGrafica({ grafica_id }) {
     if (target.name === "fecha") {
       if (target.files[0].name !== "") {
         setImagen(target.files[0].name)
-        setI(false)
+        setErrorImagen(false)
       } else {
-        setI(true)
+        setErrorImagen(true)
       }
     }
     setFormValido(

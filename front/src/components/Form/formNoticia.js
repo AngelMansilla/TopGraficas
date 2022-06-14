@@ -9,7 +9,7 @@ export default function Formnoticia({ noticia_id }) {
   const [titulo, setTitulo] = useState("");
   const [informacion, setInformacion] = useState("");
   const [imagen, setImagen] = useState(null);
-  
+
   const keyword = "noticia";
   const {
     isLoadingNoticia,
@@ -17,6 +17,10 @@ export default function Formnoticia({ noticia_id }) {
     postNoticia,
     putNoticia,
   } = useNoticia();
+  const [errorTitulo, setErrorTitulo] = useState("");
+  const [errorInformacion, setErrorInformacion] = useState("");
+  const [errorImagen, setErrorImagen] = useState("");
+  const [formValido, setFormValido] = useState(false);
 
   useEffect(() => {
     if (noticia_id) {
@@ -27,25 +31,59 @@ export default function Formnoticia({ noticia_id }) {
     }
   }, [noticia_id]);
 
+
+  const handleChange = (target) => {
+    if (target.name === "titulo") {
+      if (target.value.lengeht > 3) {
+        setTitulo(target.value)
+        setErrorTitulo(false)
+      } else {
+        setErrorTitulo(true)
+      }
+    }
+    if (target.name === "informacion") {
+      if (target.value.lengeht > 1000) {
+        setEmpresa(target.value)
+        setErrorInformacion(false)
+      } else {
+        setErrorInformacion(true)
+      }
+    }
+    if (target.name === "imagen") {
+      if (target.files[0].name !== "") {
+        setImagen(target.files[0].name)
+        setErrorImagen(false)
+      } else {
+        setErrorImagen(true)
+      }
+    }
+    setFormValido(
+      errorTitulo === false &&
+      errorInformacion === false &&
+      errorImagen === false)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    noticia_id
-      ? putNoticia({
+    if (formValido) {
+      noticia_id
+        ? putNoticia({
           noticia_id,
           titulo,
           informacion,
           imagen,
         })
-      : postNoticia({
+        : postNoticia({
           titulo,
           informacion,
           imagen,
         });
 
-    if (!noticia_id) {
-      setTitulo("");
-      setInformacion("");
-      setImagen(null);
+      if (!noticia_id) {
+        setTitulo("");
+        setInformacion("");
+        setImagen(null);
+      }
     }
   };
 
@@ -67,6 +105,9 @@ export default function Formnoticia({ noticia_id }) {
               onSubmit={handleSubmit}
             >
               <div className="col-md-12">
+                {errorTitulo && (
+                  <strong className="alert alert-danger">Obligatorio y minimo 3 caracteres</strong>
+                )}
                 <label htmlFor="inputTitulo" className="form-label">
                   Titulo
                 </label>
@@ -76,10 +117,13 @@ export default function Formnoticia({ noticia_id }) {
                   name="tiutlo"
                   id="inputTitulo"
                   value={titulo}
-                  onChange={(e) => setTitulo(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-md-12">
+                {errorInformacion && (
+                  <strong className="alert alert-danger">Obligatorio y maximo 1000 caracteres</strong>
+                )}
                 <label htmlFor="textareaInformacion" className="form-label">
                   Informacion
                 </label>
@@ -88,10 +132,13 @@ export default function Formnoticia({ noticia_id }) {
                   name="infomracion"
                   id="textareaInformacion"
                   value={informacion}
-                  onChange={(e) => setInformacion(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-12">
+                {errorImagen && (
+                  <strong className="alert alert-danger">Obligatorio</strong>
+                )}
                 <label htmlFor="inputImagen" className="form-label">
                   Imagen
                 </label>
@@ -100,15 +147,15 @@ export default function Formnoticia({ noticia_id }) {
                   className="form-control"
                   name="imagen"
                   id="inputImagen"
-                  onChange={(e) => setImagen(e.target.files[0].name)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-12 text-center d-flex">
-                <input
+                {formValido && <input
                   type="submit"
                   className="fadeIn fourth"
                   value={noticia_id ? "Editar" : "Publicar"}
-                />
+                />}
                 <Link className="fadeIn fourth" to="/noticias">
                   <input
                     type="button"

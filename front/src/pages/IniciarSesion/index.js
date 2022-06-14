@@ -14,6 +14,8 @@ export default function IniciarSesion() {
   const [formValido, setFormValido] = useState(false);
   const regEmail = newRegExp("^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$")
   const regPassword = newRegExp("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$")
+  
+  
   const handleChange = (target) => {
     if (target.name === "email") {
       if (regEmail.test(target.value)) {
@@ -63,7 +65,7 @@ export default function IniciarSesion() {
                 className="fadeIn second"
                 name="login"
                 placeholder="correo electronico"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => handleChange(e.target)}
                 value={email}
               />
               {errorPassword && (
@@ -75,7 +77,7 @@ export default function IniciarSesion() {
                 className="fadeIn third"
                 name="login"
                 placeholder="contraseña"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handleChange(e.target)}
                 value={password}
               />
               {formValido &&
