@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as moment from 'moment';
+import moment from 'moment';
 import useGrafica from "../../hooks/useGrafica";
 import { Link } from "wouter";
 import Spinner from "../Spinner";

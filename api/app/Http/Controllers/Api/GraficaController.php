@@ -1,4 +1,4 @@
-"<?php
+<?php
 
 namespace App\Http\Controllers\Api;
 
@@ -36,7 +36,7 @@ class GraficaController extends Controller
       'tipo_memoria' => 'required|min:1',
       'consumo' => 'required|min:1',
       'fecha' => 'required|date',
-      'imagen' => 'required'
+      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
     ]);
 
     $grafica = new Grafica();
@@ -48,7 +48,7 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = $request->imagen;
+    $grafica->imagen = explode("/", $request->imagen->store('../app/Http/Controllers/images'))[1];
     $grafica->user_id = auth()->user()->id;
     $grafica->save();
   }
@@ -83,7 +83,7 @@ class GraficaController extends Controller
       'tipo_memoria' => 'required|min:1',
       'consumo' => 'required|min:1',
       'fecha' => 'required|date',
-      'imagen' => 'required'
+      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
     ]);
 
     $grafica = Grafica::find($id);
@@ -96,7 +96,7 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = $request->imagen;
+    $grafica->imagen = explode("/", $request->imagen->store('../app/Http/Controllers/images'))[1];
 
     $grafica->save();
 
