@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('titulo', 50)->unique();
             $table->float('precio', 8,2);
-            $table->bigInteger('votos');
             $table->string('enlace', 1000);
             $table->string('descripcion', 10000);
             $table->string('vendedor', 50);

@@ -20,6 +20,7 @@ export default function Home({ params }) {
       setLoading(false);
     });
   }, []);
+
   return (
     <>
       {loading ? (

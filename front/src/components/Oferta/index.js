@@ -16,7 +16,6 @@ export default function Oferta({
   id,
   titulo,
   precio,
-  votos,
   enlace,
   descripcion,
   vendedor,
@@ -41,16 +40,13 @@ export default function Oferta({
           <div className="card-text row ms-3">
             <p className="row justify-content-center">Tienda: {vendedor}</p>
             <p className="row justify-content-center">Precio: {precio} €</p>
-            <p className="row justify-content-center">Votos: {votos}</p>
             <p className="row justify-content-center">
               Grafica: {nombreGrafica}
             </p>
             <p className="row text-break justify-content-center">
               Descipcion: {descripcion}
             </p>
-            <small className="text-break row justify-content-center">
-              Enlace: {enlace}
-            </small>
+            <button id="enlace" class="row justify-content-center submit-button" onClick={location.href = enlace} >Ir a la Oferta</button>
             <small className="text-muted row justify-content-center">
               Publicado el {fecha.getDay()}/{fecha.getMonth()}/
               {fecha.getFullYear()}
