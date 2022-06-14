@@ -16,6 +16,72 @@ export default function FormOferta({ oferta_id }) {
   const keyword = "oferta";
   const { isLoadingOferta, hasErrorOferta, postOferta, putOferta } =
     useOferta();
+  const [errorTitulo, setErrorTitulo] = useState("");
+  const [errorPrecio, setErrorPrecio] = useState("");
+  const [errorEnlace, setErrorEnlace] = useState("");
+  const [errorDescripcion, setErrorDescripcion] = useState("");
+  const [errorVendedor, setErrorVendedor] = useState("");
+  const [errorGrafica, setErrorGrafica] = useState("");
+  const [formValido, setFormValido] = useState(false);
+  const regPrecio = newRegExp("^[\d]{0,11}(\.[\d]{1,2})?$")
+
+  const handleChange = (target) => {
+    if (target.name === "titulo") {
+      if (target.value.lengeht > 3) {
+        setTitulo(target.value)
+        setErrorTitulo(false)
+      } else {
+        setErrorTitulo(true)
+      }
+    }
+    if (target.name === "vendedor") {
+      if (target.value.lengeht > 3) {
+        setVendedor(target.value)
+        setErrorVendedor(false)
+      } else {
+        setErrorVendedor(true)
+      }
+    }
+    if (target.name === "precio") {
+      if (target.value > 0 && regPrecio.test(target.value)) {
+        setPrecio(target.value)
+        setErrorPrecio(false)
+      } else {
+        setErrorPrecio(true)
+      }
+    }
+    if (target.name === "descripcion") {
+      if (target.value.lengeht > 3) {
+        setDescripcion(target.value)
+        setErrorDescripcion(false)
+      } else {
+        setErrorDescripcion(true)
+      }
+    }
+    if (target.name === "enlace") {
+      if (target.value.lengeht > 3) {
+        setEnlace(target.value)
+        setErrorEnlace(false)
+      } else {
+        setErrorEnlace(true)
+      }
+    }
+    if (target.name === "grafica") {
+      if (target.value > 0) {
+        setGrafica_id(target.value)
+        setErrorGrafica(false)
+      } else {
+        setErrorGrafica(true)
+      }
+    }
+    setFormValido(
+      errorTitulo === false &&
+      errorDescripcion === false &&
+      errorVendedor === false &&
+      errorEnlace === false &&
+      errorGrafica === false &&
+      errorPrecio === false)
+  }
 
   useEffect(() => {
     if (oferta_id) {
@@ -36,8 +102,9 @@ export default function FormOferta({ oferta_id }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    oferta_id
-      ? putOferta({
+    if (formValido) {
+      oferta_id
+        ? putOferta({
           oferta_id,
           titulo,
           precio,
@@ -47,7 +114,7 @@ export default function FormOferta({ oferta_id }) {
           grafica_id,
           user_id,
         })
-      : postOferta({
+        : postOferta({
           titulo,
           precio,
           enlace,
@@ -56,12 +123,13 @@ export default function FormOferta({ oferta_id }) {
           grafica_id,
         });
 
-    if (!oferta_id) {
-      setTitulo("");
-      setPrecio("");
-      setEnlace("");
-      setDescripcion("");
-      setVendedor("");
+      if (!oferta_id) {
+        setTitulo("");
+        setPrecio("");
+        setEnlace("");
+        setDescripcion("");
+        setVendedor("");
+      }
     }
   };
 
@@ -83,6 +151,9 @@ export default function FormOferta({ oferta_id }) {
               onSubmit={handleSubmit}
             >
               <div className="col-md-6">
+                {errorTitulo && (
+                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                )}
                 <label htmlFor="inputTitulo" className="form-label">
                   Titulo
                 </label>
@@ -92,10 +163,13 @@ export default function FormOferta({ oferta_id }) {
                   name="titulo"
                   id="inputTitulo"
                   value={titulo}
-                  onChange={(e) => setTitulo(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-md-6">
+                {errorEnlace && (
+                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                )}
                 <label htmlFor="inputEnlace" className="form-label">
                   Enlace
                 </label>
@@ -105,10 +179,13 @@ export default function FormOferta({ oferta_id }) {
                   name="enlace"
                   id="inputEnlace"
                   value={enlace}
-                  onChange={(e) => setEnlace(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-md-6">
+                {errorPrecio && (
+                  <strong className="alert alert-danger">Obligatorio, mayor de 0 y maximo 2 decimales</strong>
+                )}
                 <label htmlFor="inputPrecio" className="form-label">
                   Precio (€)
                 </label>
@@ -119,10 +196,13 @@ export default function FormOferta({ oferta_id }) {
                   id="inputPrecio"
                   step="0.01"
                   value={precio}
-                  onChange={(e) => setPrecio(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-md-6">
+                {errorVendedor && (
+                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                )}
                 <label htmlFor="inputVendedor" className="form-label">
                   vendedor
                 </label>
@@ -132,15 +212,18 @@ export default function FormOferta({ oferta_id }) {
                   name="vendedor"
                   id="inputVendedor"
                   value={vendedor}
-                  onChange={(e) => setVendedor(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-md-12">
+                {errorGrafica && (
+                  <strong className="alert alert-danger">Obligatorio</strong>
+                )}
                 <label htmlFor="textareaDescipcion" className="form-label">
                   Graficas
                 </label>
                 <select
-                  onChange={(e) => setGrafica_id(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                   multiple={false}
                   name="grafica"
                   id="inputGrafica"
@@ -158,6 +241,9 @@ export default function FormOferta({ oferta_id }) {
                 </select>
               </div>
               <div className="col-md-12">
+                {errorDescripcion && (
+                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                )}
                 <label htmlFor="textareaDescipcion" className="form-label">
                   Descripcion
                 </label>
@@ -166,15 +252,16 @@ export default function FormOferta({ oferta_id }) {
                   name="descripcion"
                   id="textareaDescipcion"
                   value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
+                  onChange={(e) => handleChange(e.target)}
                 />
               </div>
               <div className="col-12 text-center d-flex">
-                <input
-                  type="submit"
-                  className="fadeIn fourth"
-                  value={oferta_id ? "Editar" : "Publicar"}
-                />
+                {formValido &&
+                  <input
+                    type="submit"
+                    className="fadeIn fourth"
+                    value={oferta_id ? "Editar" : "Publicar"}
+                  />}
                 <Link className="fadeIn fourth" to="/">
                   <input
                     type="button"

@@ -113,7 +113,7 @@ export default function FormGrafica({ grafica_id }) {
         setErrorFecha(true)
       }
     }
-    if (target.name === "fecha") {
+    if (target.name === "imagen") {
       if (target.files[0].name !== "") {
         setImagen(target.files[0].name)
         setErrorImagen(false)

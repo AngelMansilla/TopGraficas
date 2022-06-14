@@ -42,7 +42,7 @@ export default function Formnoticia({ noticia_id }) {
       }
     }
     if (target.name === "informacion") {
-      if (target.value.lengeht > 1000) {
+      if (target.value.lengeht > 3) {
         setEmpresa(target.value)
         setErrorInformacion(false)
       } else {
@@ -122,7 +122,7 @@ export default function Formnoticia({ noticia_id }) {
               </div>
               <div className="col-md-12">
                 {errorInformacion && (
-                  <strong className="alert alert-danger">Obligatorio y maximo 1000 caracteres</strong>
+                  <strong className="alert alert-danger">Obligatorio y minimo 3 caracteres</strong>
                 )}
                 <label htmlFor="textareaInformacion" className="form-label">
                   Informacion
