@@ -20,6 +20,7 @@ export default function useUser() {
           sessionStorage.setItem("jwt", res.accessToken);
           sessionStorage.setItem("isAdmin", res.user.is_admin);
           sessionStorage.setItem("user_id", res.user.id);
+          sessionStorage.setItem("user", res.user);
           setJWT(res.accessToken);
         })
         .catch((err) => {
@@ -39,6 +40,7 @@ export default function useUser() {
         sessionStorage.setItem("jwt", "");
         sessionStorage.setItem("isAdmin", 0);
         sessionStorage.setItem("user_id", 0);
+        sessionStorage.setItem("user", null);
         navigate("/iniciarSesion")
       })
       .catch((err) => {
@@ -46,11 +48,43 @@ export default function useUser() {
         console.error(err);
       });
   }, [setJWT]);
+
+  const register = useCallback((datos) => {
+    setState({ loading: true, error: false });
+    registerService(datos)
+      .then((res) => {
+        setState({ loading: false, error: false });
+        navigate("/iniciarSesion")
+      })
+      .catch((err) => {
+        setState({ loading: false, error: true });
+        console.error(err);
+      });
+  }, []);
+
+  const edit = useCallback((datos) => {
+    setState({ loading: true, error: false });
+    editService({ jwt, datos })
+      .then((res) => {
+        sessionStorage.setItem("jwt", res.accessToken);
+        sessionStorage.setItem("isAdmin", 0);
+        sessionStorage.setItem("user", res.data);
+        setState({ loading: false, error: false });
+      })
+      .catch((err) => {
+        setState({ loading: false, error: true });
+        console.error(err);
+      })
+  }, []);
+
+
   return {
     isLogged: Boolean(sessionStorage.getItem("jwt")),
     isLoginLoading: state.loading,
     hasLoginError: state.error,
     login,
     logout,
+    register,
+    edit,
   };
 }

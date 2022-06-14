@@ -22,14 +22,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-  // return $request->user();
-  return response()
-    ->json([
-      'usuario' => $request->user(),
-    ]);
-});
-
 Route::controller(GraficaController::class)->group(function () {
   Route::get('/graficas', 'index');
   Route::get('/grafica/{id}', 'show');
@@ -46,11 +38,6 @@ Route::controller(OfertaController::class)->group(function () {
   Route::get('/ofertas/{id}', 'search');
 });
 
-Route::controller(ComentarioController::class)->group(function () {
-  Route::get('/comentarios', 'index');
-  Route::get('/comentario/{id}', 'show');
-});
-
 Route::controller(ImagenController::class)->group(function () {
   Route::get('/imagen/{id}', 'show');
 });
@@ -63,18 +50,12 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
   Route::controller(AuthController::class)->group(function () {
     Route::get('/cerrarsesion', 'logout');
-    Route::put('/usuario/{id}', 'editUser');
+    Route::put('/usuario', 'editUser');
   });
 
   Route::controller(OfertaController::class)->group(function () {
     Route::post('/oferta', 'store');
     Route::put('/oferta/{id}', 'update');
-  });
-  Route::controller(ComentarioController::class)->group(function () {
-    Route::post('/comentario', 'store');
-  });
-  Route::controller(UserController::class)->group(function () {
-    Route::get('/usuario/{id}', 'show');
   });
 });
 
@@ -91,13 +72,5 @@ Route::group(['middleware' => ['auth:sanctum', 'abilities:admin']], function () 
   });
   Route::controller(OfertaController::class)->group(function () {
     Route::delete('/oferta/{id}', 'destroy');
-  });
-  Route::controller(ComentarioController::class)->group(function () {
-    Route::put('/comentario/{id}', 'update');
-    Route::delete('/comentario/{id}', 'destroy');
-  });
-  Route::controller(UserController::class)->group(function () {
-    Route::get('/usuarios', 'index');
-    Route::delete('/usuario/{id}', 'destroy');
   });
 });

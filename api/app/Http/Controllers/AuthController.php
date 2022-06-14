@@ -13,14 +13,14 @@ class AuthController extends Controller
   public function register(Request $request)
   {
     $validator = Validator::make($request->all(), [
-      'nombre' => 'required|string|max:191',
-      'email' => 'required|string|max:191|email|unique:users',
-      'password' => 'required|min:8|string|max:191',
-      'apellido' => 'string|max:191',
+      'nombre' => 'required|string|min:3',
+      'email' => 'required|string|min:3|email|unique:users|regex:/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/',
+      'password' => 'required|regex:/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/',
+      'apellido' => 'string|min:3',
       'fecha_nacimiento' => 'required|date',
-      'pais' => 'required|string|max:191',
-      'ciudad' => 'string|max:191',
-      'telefono' => 'string|max:191',
+      'pais' => 'required|string|min:3',
+      'ciudad' => 'string|min:3',
+      'telefono' => 'string|regex:/^\d{9}$/',
     ]);
 
     if ($validator->fails()) {
@@ -41,6 +41,7 @@ class AuthController extends Controller
     return response()
       ->json(['data' => $user]);
   }
+  
   public function editUser(Request $request)
   {
     $validator = Validator::make($request->all(), [

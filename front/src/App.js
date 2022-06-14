@@ -6,13 +6,15 @@ import Footer from "./components/Footer";
 import Home from "./pages/Ofertas/index";
 import Graficas from "./pages/Graficas/index";
 import Noticias from "./pages/Noticias/index";
-import IniciarSesion from "./pages/IniciarSesion";
+import IniciarSesion from "./pages/Usuarios";
 import CreateGrafica from "./pages/Graficas/create";
 import EditGrafica from "./pages/Graficas/edit";
 import CreateOferta from "./pages/Ofertas/create";
 import EditOferta from "./pages/Ofertas/edit";
 import CreateNoticia from "./pages/Noticias/create";
 import EditNoticia from "./pages/Noticias/edit";
+import CreateUsuario from "./pages/Usuarios/create";
+import EditUsuario from "./pages/Usuarios/edit";
 
 import { UserContextProvider } from "./context/UserContext";
 
@@ -36,6 +38,8 @@ export default function App() {
             <Route component={EditOferta} path="/oferta/editar/:id" />
             <Route component={CreateNoticia} path="/noticia/publicar" />
             <Route component={EditNoticia} path="/noticia/editar/:id" />
+            <Route component={CreateUsuario} path="/registrarse" />
+            <Route component={EditUsuario} path="/perfil" />
           </main>
           <Footer />
         </section>
