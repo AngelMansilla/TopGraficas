@@ -174,24 +174,24 @@ export default function Formnoticia({ noticia_id }) {
                   onSuccess={handleUpload}
                 />
               </div>
-              <div className="col-12 text-center d-flex">
+              <div className="col-6 form-control text-center d-flex border-0">
                 {formValido ? (
                   <input
                     type="submit"
-                    className="fadeIn fourth"
+                    className="fadeIn fourth form-control ms-4 p-2 submit"
                     value={noticia_id ? "Editar" : "Publicar"}
                   />
                 ) : (
                   <input
                     type="submit"
-                    className="fadeIn fourth disabled"
+                    className="fadeIn fourth disabled form-control ms-4 p-2 submit"
                     value={noticia_id ? "Editar" : "Publicar"}
                   />
                 )}
-                <Link className="fadeIn fourth" to="/noticias">
+                <Link className="fadeIn fourth" to="/graficas">
                   <input
                     type="button"
-                    className="fadeIn fourth"
+                    className="fadeIn fourth form-control ms-0 p-2"
                     value="volver"
                   />
                 </Link>
