@@ -22,7 +22,6 @@ export default function Oferta({
   user_id,
   graficas,
 }) {
-  let fecha = new Date(created_at);
   const { isLoginLoading } = useUser();
   const { deleteOferta, hasErrorOferta, isLoadingOferta } = useOferta();
   const [imagen, setImagen] = useState("");
@@ -97,8 +96,7 @@ export default function Oferta({
               Descipcion: {descripcion}
             </p>
             <small className="text-muted row justify-content-center">
-              Publicado el {fecha.getDay()}/{fecha.getMonth()}/
-              {fecha.getFullYear()}
+              Publicado el {created_at.substr(0,10)}
             </small>
           </div>
         </div>

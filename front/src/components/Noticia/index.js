@@ -13,7 +13,6 @@ export default function Noticia({
   imagen,
   created_at,
 }) {
-  let fecha = new Date(created_at);
 
   const { isLoginLoading } = useUser();
 
@@ -33,8 +32,7 @@ export default function Noticia({
               Informacion: {informacion}
             </p>
             <small className="text-muted row justify-content-center">
-              Publicado el {fecha.getDay()}/{fecha.getMonth()}/
-              {fecha.getFullYear()}
+              Publicado el {created_at.substr(0,10)}
             </small>
           </div>
           {(isLoginLoading || isLoadingNoticia) && <Spinner height="50px" />}
