@@ -10,7 +10,6 @@ import useOferta from "../../hooks/useOferta";
 
 import getServices from "../../services/buscar";
 
-
 export default function Oferta({
   id,
   titulo,
@@ -44,9 +43,7 @@ export default function Oferta({
           .then((grafica) => {
             setImagen(grafica.imagen);
             setNombreGrafica(grafica.nombre);
-            setDiferenciaPrecio(
-              parseFloat(precio) - parseFloat(grafica.pvpr) 
-            );
+            setDiferenciaPrecio(roundToTwo(parseFloat(precio) - parseFloat(grafica.pvpr)));
             setLoading(false);
           })
           .catch((err) => {
@@ -57,6 +54,10 @@ export default function Oferta({
     },
     [grafica_id]
   );
+
+  function roundToTwo(num) {
+    return +(Math.round(num + "e+2") + "e-2");
+  }
 
   return (
     <div className="col fadeIn first m-50">
@@ -76,7 +77,11 @@ export default function Oferta({
             <p className="row justify-content-center">Tienda: {vendedor}</p>
             <p className="row justify-content-center">
               <strong>Precio: {precio}€</strong>
-              <span className={diferenciaPrecio < 0 ? "precioVerde" : "precioRojo"}>{diferenciaPrecio}€</span> 
+              <span
+                className={diferenciaPrecio < 0 ? "precioVerde" : "precioRojo"}
+              >
+                {diferenciaPrecio}€
+              </span>
             </p>
             <p className="row justify-content-center">
               Grafica: {nombreGrafica}

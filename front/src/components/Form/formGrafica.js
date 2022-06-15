@@ -133,6 +133,8 @@ export default function FormGrafica({ grafica_id }) {
     if(url!== ""){
       setErrorImagen(false);
       setImagen(url)
+    }else {
+      setErrorImagen(true);
     }
   };
 

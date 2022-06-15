@@ -1,6 +1,5 @@
 import ENDPOINT from "../constants";
 export default async function publicar({ keyword, jwt, datos }) {
-  console.log(datos)
   const res = await fetch(`${ENDPOINT()}/${keyword}`, {
     method: "POST",
     enctype: "multipart/form-data",
@@ -12,7 +11,6 @@ export default async function publicar({ keyword, jwt, datos }) {
     body: JSON.stringify(datos),
   });
   const Response = await res.json();
-  console.log(Response)
   if (!res.ok) throw new Error("Response is NOT ok");
   return Response;
 }
