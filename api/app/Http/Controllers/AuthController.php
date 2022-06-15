@@ -12,7 +12,8 @@ class AuthController extends Controller
 {
   public function register(Request $request)
   {
-    $validator = Validator::make($request->all(), [
+
+    $request->validate([
       'nombre' => 'required|string|max:191',
       'email' =>  'required|min:3',
       'password' => 'required|min:8',
@@ -22,10 +23,6 @@ class AuthController extends Controller
       'ciudad' => 'max:191',
       'telefono' => 'max:9',
     ]);
-
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
 
     $user = User::create([
       'nombre' => $request->nombre,
@@ -44,7 +41,7 @@ class AuthController extends Controller
 
   public function editUser(Request $request)
   {
-    $validator = Validator::make($request->all(), [
+    $request->validate([
       'nombre' => 'required|string|max:191',
       'email' =>  'required|min:3',
       'password' => 'required|min:8',
@@ -55,9 +52,6 @@ class AuthController extends Controller
       'telefono' => 'max:9',
     ]);
 
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
 
     $updateuser = User::where('email', $request['email'])->firstOrFail();
 
@@ -78,16 +72,12 @@ class AuthController extends Controller
 
   public function login(Request $request)
   {
-    $validator = Validator::make($request->all(), [
+    $request->validate([
+
       'email' =>  'required|min:3',
       'password' => 'required|min:8',
     ]);
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
-    if (!Auth::attempt($validator->validated())) {
-      return response()->json(['message' => 'Sin autorización'], 401);
-    }
+
     $user = User::where('email', $request['email'])->firstOrFail();
     if ($user['is_admin'] === 1) {
       $token = $user->createToken($request['email'], ['admin'])->plainTextToken;

@@ -2,36 +2,27 @@ import React, { useState, useEffect } from "react";
 
 import Oferta from "../Oferta";
 import Spinner from "../../components/Spinner";
+
 import getServices from "../../services/buscar";
 
 export default function ListOfOfertas({ graficaId, graficas }) {
   const [ofertas, setOfertas] = useState([]);
   const [loading, setLoading] = useState(false);
   const keyword = "oferta";
-  let grafica = "";
 
   useEffect(
     function () {
       setLoading(true);
-      getServices({ keyword, graficaId }).then((ofertas) => {
+      getServices({ keyword, graficaId: graficaId }).then((ofertas) => {
+        if (!Array.isArray(ofertas)) {
+          ofertas = Object.values(ofertas);
+        }
         setOfertas(ofertas);
         setLoading(false);
       });
     },
     [graficaId]
   );
-
-  function searchGraficaImagen(grafica_id) {
-    if (graficas.length !== 0 && grafica !== undefined) {
-      grafica = getServices({ keyword, grafica_id });
-      return grafica.imagen;
-    }
-  }
-  function searchGraficaNombre() {
-    if (graficas.length !== 0 && grafica !== undefined) {
-      return grafica.nombre;
-    }
-  }
 
   return loading ? (
     <Spinner />
@@ -60,10 +51,10 @@ export default function ListOfOfertas({ graficaId, graficas }) {
               enlace={enlace}
               descripcion={descripcion}
               vendedor={vendedor}
-              imagen={searchGraficaImagen(grafica_id)}
               created_at={created_at}
-              nombreGrafica={searchGraficaNombre(grafica_id)}
               user_id={user_id}
+              grafica_id={grafica_id}
+              graficas={graficas}
             />
           )
         )}

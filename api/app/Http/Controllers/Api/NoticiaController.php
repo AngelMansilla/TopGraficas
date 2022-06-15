@@ -28,14 +28,11 @@ class NoticiaController extends Controller
    */
   public function store(Request $request)
   {
-    $validator = Validator::make($request->all(), [
+    $request->validate([
       'titulo' => 'required|min:3',
       'informacion' => 'required|min:3',
       'imagen' => 'required'
     ]);
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
 
     $noticia = new Noticia();
     $noticia->titulo = $request->titulo;
@@ -70,14 +67,11 @@ class NoticiaController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $validator = Validator::make($request->all(), [
+    $request->validate([
       'titulo' => 'required|min:3',
       'informacion' => 'required|min:3',
       'imagen' => 'required'
     ]);
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
 
     $noticia = Noticia::find($id);
     $noticia->titulo = $request->titulo;

@@ -216,7 +216,6 @@ export default function FormGrafica({ grafica_id }) {
               className="row g-3"
               name="publicar-grafica"
               onSubmit={handleSubmit}
-              encType="multipart/form-data"
             >
               <div className="col-md-6">
                 {errorNombre && (
@@ -363,7 +362,7 @@ export default function FormGrafica({ grafica_id }) {
                 )}
                 <label htmlFor="inputImagen" className="form-label"></label>
                 {imagenEdit && (
-                  <img src={imagen ? imagen : imagenEdit} className="form-control"></img>
+                  <img src={imagen ? imagen : imagenEdit} className="form-control" alt="Imagen grafica"/>
                 )}
                 <SimpleFileUpload
                   apiKey="268ccedd024fa995abe1240d0bfd8298"
@@ -376,13 +375,13 @@ export default function FormGrafica({ grafica_id }) {
                 {formValido ? (
                   <input
                     type="submit"
-                    className="fadeIn fourth form-control ms-4 p-2"
+                    className="fadeIn fourth form-control ms-4 p-2 submit"
                     value={grafica_id ? "Editar" : "Publicar"}
                   />
                 ) : (
                   <input
                     type="submit"
-                    className="fadeIn fourth disabled form-control ms-4 p-2"
+                    className="fadeIn fourth disabled form-control ms-4 p-2 submit"
                     value={grafica_id ? "Editar" : "Publicar"}
                   />
                 )}

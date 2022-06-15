@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import useNoticia from "../../hooks/useNoticia";
 import { Link } from "wouter";
 import Spinner from "../Spinner";
-
+import SimpleFileUpload from "react-simple-file-upload";
 import getServices from "../../services/buscar";
 
 export default function Formnoticia({ noticia_id }) {
   const [titulo, setTitulo] = useState("");
   const [informacion, setInformacion] = useState("");
-  const [imagen, setImagen] = useState(null);
-
+  const [imagen, setImagen] = useState("");
+  const [imagenEdit, setImagenEdit] = useState("");
   const keyword = "noticia";
   const {
     isLoadingNoticia,
@@ -28,6 +28,10 @@ export default function Formnoticia({ noticia_id }) {
       getServices({ keyword, id: noticia_id }).then((noticia) => {
         setTitulo(noticia.titulo);
         setInformacion(noticia.informacion);
+        setImagenEdit(noticia.imagen);
+        setErrorTitulo(false);
+        setErrorImagen(false);
+        setErrorInformacion(false);
       });
     }
   }, [noticia_id]);
@@ -49,13 +53,12 @@ export default function Formnoticia({ noticia_id }) {
         setErrorInformacion(true);
       }
     }
-    if (target.name === "imagen") {
-      setImagen(target.files[0]);
-      if (target.files[0]) {
-        setErrorImagen(false);
-      } else {
-        setErrorImagen(true);
-      }
+  };
+
+  const handleUpload = (url) => {
+    if (url !== "") {
+      setErrorImagen(false);
+      setImagen(url);
     }
   };
 
@@ -75,20 +78,20 @@ export default function Formnoticia({ noticia_id }) {
             noticia_id,
             titulo,
             informacion,
-            imagen,
+            imagen: imagen ? imagen : imagenEdit,
           })
         : postNoticia({
             titulo,
             informacion,
-            imagen,
+            imagen: imagen,
           });
 
       if (!noticia_id) {
         setTitulo("");
         setInformacion("");
-        setImagen(null);
+        setImagen("");
       }
-      
+
       setFormValido(false);
     }
   };
@@ -129,7 +132,7 @@ export default function Formnoticia({ noticia_id }) {
                 <input
                   type="text"
                   className="form-control"
-                  name="tiutlo"
+                  name="titulo"
                   id="inputTitulo"
                   value={titulo}
                   onChange={(e) => handleChange(e.target)}
@@ -142,11 +145,11 @@ export default function Formnoticia({ noticia_id }) {
                   </div>
                 )}
                 <label htmlFor="textareaInformacion" className="form-label">
-                  Informacion
+                  Información
                 </label>
                 <textarea
                   className="form-control"
-                  name="infomracion"
+                  name="informacion"
                   id="textareaInformacion"
                   value={informacion}
                   onChange={(e) => handleChange(e.target)}
@@ -156,15 +159,19 @@ export default function Formnoticia({ noticia_id }) {
                 {errorImagen && (
                   <div className="alert alert-danger">Obligatorio</div>
                 )}
-                <label htmlFor="inputImagen" className="form-label">
-                  Imagen
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
+                <label htmlFor="inputImagen" className="form-label"></label>
+                {imagenEdit && (
+                  <img
+                    src={imagen ? imagen : imagenEdit}
+                    className="form-control"
+                    alt="Imagen grafica"
+                  />
+                )}
+                <SimpleFileUpload
+                  apiKey="268ccedd024fa995abe1240d0bfd8298"
                   name="imagen"
                   id="inputImagen"
-                  onChange={(e) => handleChange(e.target)}
+                  onSuccess={handleUpload}
                 />
               </div>
               <div className="col-12 text-center d-flex">

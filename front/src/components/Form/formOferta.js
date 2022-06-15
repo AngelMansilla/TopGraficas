@@ -14,21 +14,21 @@ export default function FormOferta({ oferta_id }) {
   const [graficas, setGraficas] = useState([]);
   const [user_id, setUser_id] = useState([]);
   const keyword = "oferta";
-  const { isLoadingOferta, hasErrorOferta, postOferta, putOferta } =
+  const { isLoadingOferta, hasErrorOferta, postOferta, putOferta, isSubmit } =
     useOferta();
   const [errorTitulo, setErrorTitulo] = useState("");
   const [errorPrecio, setErrorPrecio] = useState("");
   const [errorEnlace, setErrorEnlace] = useState("");
-  const [errorDescripcion, setErrorDescripcion] = useState("");
+  const [errorDescripcion, setErrorDescripcion] = useState(false);
   const [errorVendedor, setErrorVendedor] = useState("");
   const [errorGrafica, setErrorGrafica] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regPrecio = new RegExp("^[d]{0,11}(.[d]{1,2})?$");
+  const regPrecio = new RegExp("^[\\d]{0,11}(\\.[\\d]{1,2})?$");
 
   const handleChange = (target) => {
     if (target.name === "titulo") {
       setTitulo(target.value);
-      if (target.value.lengeht > 3) {
+      if (target.value.length > 3) {
         setErrorTitulo(false);
       } else {
         setErrorTitulo(true);
@@ -36,7 +36,7 @@ export default function FormOferta({ oferta_id }) {
     }
     if (target.name === "vendedor") {
       setVendedor(target.value);
-      if (target.value.lengeht > 3) {
+      if (target.value.length > 3) {
         setErrorVendedor(false);
       } else {
         setErrorVendedor(true);
@@ -52,7 +52,7 @@ export default function FormOferta({ oferta_id }) {
     }
     if (target.name === "descripcion") {
       setDescripcion(target.value);
-      if (target.value.lengeht > 3) {
+      if (target.value.length === 0 || target.value.length > 3) {
         setErrorDescripcion(false);
       } else {
         setErrorDescripcion(true);
@@ -60,7 +60,7 @@ export default function FormOferta({ oferta_id }) {
     }
     if (target.name === "enlace") {
       setEnlace(target.value);
-      if (target.value.lengeht > 3) {
+      if (target.value.length > 3) {
         setErrorEnlace(false);
       } else {
         setErrorEnlace(true);
@@ -90,10 +90,16 @@ export default function FormOferta({ oferta_id }) {
         setTitulo(oferta.titulo);
         setPrecio(oferta.precio);
         setEnlace(oferta.enlace);
-        setDescripcion(oferta.descripcion);
+        oferta.descripcion ? setDescripcion(oferta.descripcion): setDescripcion("");
         setVendedor(oferta.vendedor);
         setGrafica_id(oferta.grafica_id);
         setUser_id(oferta.user_id);
+        setFormValido(true);
+        setErrorTitulo(false);
+        setErrorEnlace(false);
+        setErrorGrafica(false);
+        setErrorPrecio(false);
+        setErrorVendedor(false);
       });
     }
     getServices({ keyword: "grafica" }).then((graficas) => {
@@ -139,14 +145,15 @@ export default function FormOferta({ oferta_id }) {
   return (
     <>
       {isLoadingOferta && <Spinner />}
-      {hasErrorOferta ? (
-        <strong className="alert alert-danger">Datos incorrectos</strong>
-      ) : (
-        <strong className="alert alert-success">
+      {hasErrorOferta && (
+        <div className="alert alert-danger">Datos incorrectos</div>
+      )}
+      {isSubmit && !hasErrorOferta && (
+        <div className="alert alert-success">
           {oferta_id
             ? "Oferta modificada correctamente"
             : "Oferta publicada correctamente"}
-        </strong>
+        </div>
       )}
       {!isLoadingOferta && (
         <div className="wrapper fadeInDown">
@@ -161,12 +168,12 @@ export default function FormOferta({ oferta_id }) {
             >
               <div className="col-md-6">
                 {errorTitulo && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputTitulo" className="form-label">
-                  Titulo
+                  Titulo*
                 </label>
                 <input
                   type="text"
@@ -179,12 +186,12 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-6">
                 {errorEnlace && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputEnlace" className="form-label">
-                  Enlace
+                  Enlace*
                 </label>
                 <input
                   type="text"
@@ -197,12 +204,12 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-6">
                 {errorPrecio && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio, mayor de 0 y maximo 2 decimales
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputPrecio" className="form-label">
-                  Precio (€)
+                  Precio (€)*
                 </label>
                 <input
                   type="number"
@@ -216,12 +223,12 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-6">
                 {errorVendedor && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputVendedor" className="form-label">
-                  vendedor
+                  vendedor*
                 </label>
                 <input
                   type="text"
@@ -234,10 +241,10 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-12">
                 {errorGrafica && (
-                  <strong className="alert alert-danger">Obligatorio</strong>
+                  <div className="alert alert-danger">Obligatorio</div>
                 )}
                 <label htmlFor="textareaDescipcion" className="form-label">
-                  Graficas
+                  Graficas*
                 </label>
                 <select
                   onChange={(e) => handleChange(e.target)}
@@ -259,9 +266,9 @@ export default function FormOferta({ oferta_id }) {
               </div>
               <div className="col-md-12">
                 {errorDescripcion && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="textareaDescipcion" className="form-label">
                   Descripcion
@@ -274,18 +281,24 @@ export default function FormOferta({ oferta_id }) {
                   onChange={(e) => handleChange(e.target)}
                 />
               </div>
-              <div className="col-12 text-center d-flex">
-                {formValido && (
+              <div className="col-6 form-control text-center d-flex border-0">
+                {formValido ? (
                   <input
                     type="submit"
-                    className="fadeIn fourth"
+                    className="fadeIn fourth form-control ms-4 p-2 submit"
+                    value={oferta_id ? "Editar" : "Publicar"}
+                  />
+                ) : (
+                  <input
+                    type="submit"
+                    className="fadeIn fourth disabled form-control ms-4 p-2 submit"
                     value={oferta_id ? "Editar" : "Publicar"}
                   />
                 )}
                 <Link className="fadeIn fourth" to="/">
                   <input
                     type="button"
-                    className="fadeIn fourth"
+                    className="fadeIn fourth form-control ms-0 p-2"
                     value="volver"
                   />
                 </Link>

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Grafica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\validator;
-
 class GraficaController extends Controller
 {
   /**
@@ -26,9 +25,10 @@ class GraficaController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
+
   public function store(Request $request)
   {
-    $validator = Validator::make($request->all(), [
+    $request->validate([
       'nombre' => 'required|min:3',
       'empresa' => 'required|min:3',
       'pvpr' => 'required|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
@@ -39,10 +39,6 @@ class GraficaController extends Controller
       'fecha' => 'required|date',
       'imagen' => 'required'
     ]);
-
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
 
     $grafica = new Grafica();
     $grafica->nombre = $request->nombre;
@@ -84,7 +80,7 @@ class GraficaController extends Controller
   public function update(Request $request, $id)
   {
 
-    $validator = Validator::make($request->all(), [
+    $request->validate([
       'nombre' => 'required|min:3',
       'empresa' => 'required|min:3',
       'pvpr' => 'required|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
@@ -95,9 +91,7 @@ class GraficaController extends Controller
       'fecha' => 'required|date',
       'imagen' => 'required'
     ]);
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
+
 
     $grafica = Grafica::find($id);
 

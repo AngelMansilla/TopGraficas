@@ -3,7 +3,6 @@ import useUser from "../../hooks/useUser";
 import { Link } from "wouter";
 import Spinner from "../Spinner";
 import moment from "moment";
-
 import getService from "../../services/User/get";
 
 export default function FormRegistrar() {
@@ -15,9 +14,7 @@ export default function FormRegistrar() {
   const [pais, setPais] = useState("");
   const [ciudad, setCiudad] = useState("");
   const [telefono, setTelefono] = useState("");
-
-  const { isLoginLoading, hasLoginError, register, edit, isLogged, isSubmit } =
-    useUser();
+  const { isLoginLoading, hasLoginError, register, edit, isLogged, isSubmit } = useUser();
   const [errorNombre, setErrorNombre] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
@@ -27,9 +24,7 @@ export default function FormRegistrar() {
   const [errorCiudad, setErrorCiudad] = useState(false);
   const [errorTelefono, setErrorTelefono] = useState(false);
   const [formValido, setFormValido] = useState(false);
-  const regTelefono = new RegExp(
-    "(^\\+34|0034|34)?^[ -]*(6|7)[ -]*([0-9][ -]*){8}$"
-  );
+  const regTelefono = new RegExp("(^\\+34|0034|34)?^[ -]*(6|7)[ -]*([0-9][ -]*){8}$");
   const regEmail = new RegExp("^[\\w-\\.]+@([\\w-]+.)+[\\w-]{2,4}$");
   const regPassword = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
 
@@ -114,26 +109,27 @@ export default function FormRegistrar() {
 
   useEffect(() => {
     let user_id = sessionStorage.getItem("user_id");
-    let jwt = sessionStorage.getItem("jwt");
-    getService({ user_id, jwt })
-      .then((user) => {
-        setNombre(user.nombre);
-        setEmail(user.email);
-        setPassword(user.password);
-        setApellido(user.apellido);
-        setFecha_nacimiento(user.fecha_nacimiento);
-        setPais(user.pais);
-        setCiudad(user.ciudad);
-        setTelefono(user.telefono);
-        setFormValido(true);
-        setErrorNombre(false);
-        setErrorEmail(false);
-        setErrorFecha_nacimiento(false);
-        setErrorPais(false);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if(user_id !== '0'){
+      let jwt = sessionStorage.getItem("jwt");
+      getService({ user_id, jwt })
+        .then((user) => {
+          setNombre(user.nombre);
+          setEmail(user.email);
+          user.apellido ? setApellido(user.apellido): setApellido("");
+          setFecha_nacimiento(user.fecha_nacimiento);
+          setPais(user.pais);
+          user.ciudad ? setCiudad(user.ciudad): setCiudad("");
+          user.telefono ? setTelefono(user.telefono): setTelefono("");
+          setFormValido(true);
+          setErrorNombre(false);
+          setErrorEmail(false);
+          setErrorFecha_nacimiento(false);
+          setErrorPais(false);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }, []);
 
   const handleSubmit = (e) => {
@@ -338,26 +334,24 @@ export default function FormRegistrar() {
                   onChange={(e) => handleChange(e.target)}
                 />
               </div>
-              <div className="col-md-6 mt-5">
+              <div className="col-6 form-control text-center d-flex border-0">
                 {formValido ? (
                   <input
                     type="submit"
-                    className="fadeIn fourth  ms-0"
+                    className="fadeIn fourth form-control ms-4 p-2"
                     value={isLogged ? "Editar" : "Registrarse"}
                   />
                 ) : (
                   <input
                     type="submit"
-                    className="fadeIn fourth disabled ms-0"
+                    className="fadeIn fourth form-control ms-4 p-2"
                     value={isLogged ? "Editar" : "Registrarse"}
                   />
                 )}
-              </div>
-              <div className="col-md-6 mt-5">
                 <Link to="/">
                   <input
                     type="button"
-                    className="fadeIn fourth ms-3"
+                    className="fadeIn fourth form-control ms-0 p-2"
                     value="volver"
                   />
                 </Link>

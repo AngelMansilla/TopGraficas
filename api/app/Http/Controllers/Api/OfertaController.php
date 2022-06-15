@@ -28,20 +28,16 @@ class OfertaController extends Controller
    */
   public function store(Request $request)
   {
-    $validator = Validator::make($request->all(), [
+    $request->validate([
       'titulo' => 'required|min:3',
       'precio' => array(
         'required',
         'regex:/^[\d]{0,11}(\.[\d]{1,2})?$/'
       ),
       'enlace' => 'required|min:3',
-      'descripcion' => 'required|min:3',
       'vendedor' => 'required|min:3',
       'grafica_id' => 'required',
     ]);
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
 
     $oferta = new Oferta();
     $oferta->titulo = $request->titulo;
@@ -85,21 +81,16 @@ class OfertaController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $validator = Validator::make($request->all(), [
+    $request->validate([
       'titulo' => 'required|min:3',
       'precio' => array(
         'required',
         'regex:/^[\d]{0,11}(\.[\d]{1,2})?$/'
       ),
       'enlace' => 'required|min:3',
-      'descripcion' => 'min:3',
       'vendedor' => 'required|min:3',
       'grafica_id' => 'required',
     ]);
-
-    if ($validator->fails()) {
-      return response()->json($validator->errors(), 422);
-    }
 
     $oferta = Oferta::find($id);
     if (auth()->user()->id === $oferta->user_id || auth()->user()->isAdmin == 1) {

@@ -20,7 +20,6 @@ export default function useUser() {
       setState({ loading: true, error: false });
       loginService({ email, password })
         .then((res) => {
-          console.log(res)
           setState({ loading: false, error: false });
           sessionStorage.setItem("jwt", res.accessToken);
           sessionStorage.setItem("isAdmin", res.user.is_admin);
