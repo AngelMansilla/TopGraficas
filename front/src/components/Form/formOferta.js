@@ -28,7 +28,7 @@ export default function FormOferta({ oferta_id }) {
   const handleChange = (target) => {
     if (target.name === "titulo") {
       setTitulo(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 50) {
         setErrorTitulo(false);
       } else {
         setErrorTitulo(true);
@@ -36,7 +36,7 @@ export default function FormOferta({ oferta_id }) {
     }
     if (target.name === "vendedor") {
       setVendedor(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 50) {
         setErrorVendedor(false);
       } else {
         setErrorVendedor(true);
@@ -52,7 +52,10 @@ export default function FormOferta({ oferta_id }) {
     }
     if (target.name === "descripcion") {
       setDescripcion(target.value);
-      if (target.value.length === 0 || target.value.length > 3) {
+      if (
+        target.value.length === 0 ||
+        (target.value.length > 3 && target.value.length < 9999)
+      ) {
         setErrorDescripcion(false);
       } else {
         setErrorDescripcion(true);
@@ -60,7 +63,7 @@ export default function FormOferta({ oferta_id }) {
     }
     if (target.name === "enlace") {
       setEnlace(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 999) {
         setErrorEnlace(false);
       } else {
         setErrorEnlace(true);
@@ -90,7 +93,9 @@ export default function FormOferta({ oferta_id }) {
         setTitulo(oferta.titulo);
         setPrecio(oferta.precio);
         setEnlace(oferta.enlace);
-        oferta.descripcion ? setDescripcion(oferta.descripcion): setDescripcion("");
+        oferta.descripcion
+          ? setDescripcion(oferta.descripcion)
+          : setDescripcion("");
         setVendedor(oferta.vendedor);
         setGrafica_id(oferta.grafica_id);
         setUser_id(oferta.user_id);
@@ -169,7 +174,7 @@ export default function FormOferta({ oferta_id }) {
               <div className="col-md-6">
                 {errorTitulo && (
                   <div className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
+                        Obligatorio, mas de 3 caracteres y menos de 50
                   </div>
                 )}
                 <label htmlFor="inputTitulo" className="form-label">
@@ -187,7 +192,7 @@ export default function FormOferta({ oferta_id }) {
               <div className="col-md-6">
                 {errorEnlace && (
                   <div className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
+                        Obligatorio, mas de 3 caracteres y menos de 1000
                   </div>
                 )}
                 <label htmlFor="inputEnlace" className="form-label">
@@ -224,7 +229,7 @@ export default function FormOferta({ oferta_id }) {
               <div className="col-md-6">
                 {errorVendedor && (
                   <div className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
+                    Obligatorio, mas de 3 caracteres y menos de 50
                   </div>
                 )}
                 <label htmlFor="inputVendedor" className="form-label">
@@ -267,7 +272,7 @@ export default function FormOferta({ oferta_id }) {
               <div className="col-md-12">
                 {errorDescripcion && (
                   <div className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
+                      Obligatorio, mas de 3 caracteres y menos de 10000
                   </div>
                 )}
                 <label htmlFor="textareaDescipcion" className="form-label">

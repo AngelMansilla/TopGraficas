@@ -39,7 +39,7 @@ export default function Formnoticia({ noticia_id }) {
   const handleChange = (target) => {
     if (target.name === "titulo") {
       setTitulo(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 50) {
         setErrorTitulo(false);
       } else {
         setErrorTitulo(true);
@@ -47,7 +47,7 @@ export default function Formnoticia({ noticia_id }) {
     }
     if (target.name === "informacion") {
       setInformacion(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 9999) {
         setErrorInformacion(false);
       } else {
         setErrorInformacion(true);
@@ -123,7 +123,7 @@ export default function Formnoticia({ noticia_id }) {
               <div className="col-md-12">
                 {errorTitulo && (
                   <div className="alert alert-danger">
-                    Obligatorio y minimo 3 caracteres
+                    Obligatorio, mas de 3 caracteres y menos de 50
                   </div>
                 )}
                 <label htmlFor="inputTitulo" className="form-label">
@@ -141,7 +141,7 @@ export default function Formnoticia({ noticia_id }) {
               <div className="col-md-12">
                 {errorInformacion && (
                   <div className="alert alert-danger">
-                    Obligatorio y minimo 3 caracteres
+                    Obligatorio, mas de 3 caracteres y menos de 10000
                   </div>
                 )}
                 <label htmlFor="textareaInformacion" className="form-label">

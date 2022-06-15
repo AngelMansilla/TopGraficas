@@ -66,7 +66,7 @@ export default function FormGrafica({ grafica_id }) {
   const handleChange = (target) => {
     if (target.name === "nombre") {
       setNombre(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 50) {
         setErrorNombre(false);
       } else {
         setErrorNombre(true);
@@ -74,7 +74,7 @@ export default function FormGrafica({ grafica_id }) {
     }
     if (target.name === "empresa") {
       setEmpresa(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 50) {
         setErrorEmpresa(false);
       } else {
         setErrorEmpresa(true);
@@ -90,7 +90,7 @@ export default function FormGrafica({ grafica_id }) {
     }
     if (target.name === "arquitectura") {
       setArquitectura(target.value);
-      if (target.value.length > 3) {
+      if (target.value.length > 3 && target.value.length < 50) {
         setErrorArquitectura(false);
       } else {
         setErrorArquitectura(true);
@@ -98,7 +98,7 @@ export default function FormGrafica({ grafica_id }) {
     }
     if (target.name === "memoria") {
       setMemoria(target.value);
-      if (target.value > 0) {
+      if (target.value > 0 && target.value.length < 50) {
         setErrorMemoria(false);
       } else {
         setErrorMemoria(true);
@@ -106,7 +106,7 @@ export default function FormGrafica({ grafica_id }) {
     }
     if (target.name === "tipo_memoria") {
       setTipo_memoria(target.value);
-      if (target.value.length) {
+      if (target.value.length && target.value.length < 50) {
         setErrorTipo_memoria(false);
       } else {
         setErrorTipo_memoria(true);
@@ -114,7 +114,7 @@ export default function FormGrafica({ grafica_id }) {
     }
     if (target.name === "consumo") {
       setConsumo(target.value);
-      if (target.value > 0) {
+      if (target.value > 0 && target.value.length < 50) {
         setErrorConsumo(false);
       } else {
         setErrorConsumo(true);
@@ -130,14 +130,13 @@ export default function FormGrafica({ grafica_id }) {
     }
   };
   const handleUpload = (url) => {
-    if(url!== ""){
+    if (url !== "") {
       setErrorImagen(false);
-      setImagen(url)
-    }else {
+      setImagen(url);
+    } else {
       setErrorImagen(true);
     }
   };
-
 
   useEffect(() => {
     setFormValido(
@@ -222,7 +221,7 @@ export default function FormGrafica({ grafica_id }) {
               <div className="col-md-6">
                 {errorNombre && (
                   <div className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
+                    Obligatorio, mas de 3 caracteres y menos de 50
                   </div>
                 )}
                 <label htmlFor="inputNombre" className="form-label">
@@ -240,7 +239,7 @@ export default function FormGrafica({ grafica_id }) {
               <div className="col-md-6">
                 {errorEmpresa && (
                   <div className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
+                    Obligatorio, mas de 3 caracteres y menos de 50
                   </div>
                 )}
                 <label htmlFor="inputEmpresa" className="form-label">
@@ -277,7 +276,7 @@ export default function FormGrafica({ grafica_id }) {
               <div className="col-md-6">
                 {errorArquitectura && (
                   <div className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
+                    Obligatorio, mas de 3 caracteres y menos de 50
                   </div>
                 )}
                 <label htmlFor="inputArquitectura" className="form-label">
@@ -294,7 +293,7 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorMemoria && (
-                  <div className="alert alert-danger">Obligatorio</div>
+                  <div className="alert alert-danger">Obligatorio y positivo</div>
                 )}
                 <label htmlFor="inputMemoria" className="form-label">
                   Memoria (GB)*
@@ -310,7 +309,8 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorTipo_memoria && (
-                  <div className="alert alert-danger">Obligatorio</div>
+                  <div className="alert alert-danger">                    Obligatorio, mas de 3 caracteres y menos de 50
+                  </div>
                 )}
                 <label htmlFor="inputTipo_memoria" className="form-label">
                   Tipo de memoria*
@@ -326,7 +326,7 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorConsumo && (
-                  <div className="alert alert-danger">Obligatorio</div>
+                  <div className="alert alert-danger">Obligatorio y positivo</div>
                 )}
                 <label htmlFor="inputConsumo" className="form-label">
                   Consumo (Vatios)*
@@ -364,7 +364,11 @@ export default function FormGrafica({ grafica_id }) {
                 )}
                 <label htmlFor="inputImagen" className="form-label"></label>
                 {imagenEdit && (
-                  <img src={imagen ? imagen : imagenEdit} className="form-control" alt="Imagen grafica"/>
+                  <img
+                    src={imagen ? imagen : imagenEdit}
+                    className="form-control"
+                    alt="Imagen grafica"
+                  />
                 )}
                 <SimpleFileUpload
                   apiKey="268ccedd024fa995abe1240d0bfd8298"
