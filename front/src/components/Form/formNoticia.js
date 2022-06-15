@@ -16,12 +16,12 @@ export default function Formnoticia({ noticia_id }) {
     hasErrorNoticia,
     postNoticia,
     putNoticia,
+    isSubmit,
   } = useNoticia();
   const [errorTitulo, setErrorTitulo] = useState("");
   const [errorInformacion, setErrorInformacion] = useState("");
   const [errorImagen, setErrorImagen] = useState("");
   const [formValido, setFormValido] = useState(false);
-
 
   useEffect(() => {
     if (noticia_id) {
@@ -32,71 +32,80 @@ export default function Formnoticia({ noticia_id }) {
     }
   }, [noticia_id]);
 
-
   const handleChange = (target) => {
     if (target.name === "titulo") {
-      setTitulo(target.value)
-      if (target.value.lengeht > 3) {
-        setErrorTitulo(false)
+      setTitulo(target.value);
+      if (target.value.length > 3) {
+        setErrorTitulo(false);
       } else {
-        setErrorTitulo(true)
+        setErrorTitulo(true);
       }
     }
     if (target.name === "informacion") {
-      setInformacion(target.value)
-      if (target.value.lengeht > 3) {
-        setErrorInformacion(false)
+      setInformacion(target.value);
+      if (target.value.length > 3) {
+        setErrorInformacion(false);
       } else {
-        setErrorInformacion(true)
+        setErrorInformacion(true);
       }
     }
     if (target.name === "imagen") {
-      setImagen(target.files[0])
-      if (target.files[0] ) {
-        setErrorImagen(false)
+      setImagen(target.files[0]);
+      if (target.files[0]) {
+        setErrorImagen(false);
       } else {
-        setErrorImagen(true)
+        setErrorImagen(true);
       }
     }
+  };
+
+  useEffect(() => {
     setFormValido(
       errorTitulo === false &&
-      errorInformacion === false &&
-      errorImagen === false)
-  }
+        errorInformacion === false &&
+        errorImagen === false
+    );
+  }, [handleChange]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formValido) {
       noticia_id
         ? putNoticia({
-          noticia_id,
-          titulo,
-          informacion,
-          imagen,
-        })
+            noticia_id,
+            titulo,
+            informacion,
+            imagen,
+          })
         : postNoticia({
-          titulo,
-          informacion,
-          imagen,
-        });
+            titulo,
+            informacion,
+            imagen,
+          });
 
       if (!noticia_id) {
         setTitulo("");
         setInformacion("");
         setImagen(null);
       }
+      
+      setFormValido(false);
     }
   };
 
   return (
     <>
       {isLoadingNoticia && <Spinner />}
-      {hasErrorNoticia ? (
-        <strong className="alert alert-danger">Datos incorrectos</strong>
-      )
-        :
-        <strong className="alert alert-success">{noticia_id ? "Noticia modificada correctamente" : "Noticia publicada correctamente"}</strong>
-      }
+      {hasErrorNoticia && (
+        <div className="alert alert-danger">Datos incorrectos</div>
+      )}
+      {isSubmit && !hasErrorNoticia && (
+        <div className="alert alert-success">
+          {noticia_id
+            ? "Noticia modificada correctamente"
+            : "Noticia publicada correctamente"}
+        </div>
+      )}
       {!isLoadingNoticia && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">
@@ -110,7 +119,9 @@ export default function Formnoticia({ noticia_id }) {
             >
               <div className="col-md-12">
                 {errorTitulo && (
-                  <strong className="alert alert-danger">Obligatorio y minimo 3 caracteres</strong>
+                  <div className="alert alert-danger">
+                    Obligatorio y minimo 3 caracteres
+                  </div>
                 )}
                 <label htmlFor="inputTitulo" className="form-label">
                   Titulo
@@ -126,7 +137,9 @@ export default function Formnoticia({ noticia_id }) {
               </div>
               <div className="col-md-12">
                 {errorInformacion && (
-                  <strong className="alert alert-danger">Obligatorio y minimo 3 caracteres</strong>
+                  <div className="alert alert-danger">
+                    Obligatorio y minimo 3 caracteres
+                  </div>
                 )}
                 <label htmlFor="textareaInformacion" className="form-label">
                   Informacion
@@ -141,7 +154,7 @@ export default function Formnoticia({ noticia_id }) {
               </div>
               <div className="col-12">
                 {errorImagen && (
-                  <strong className="alert alert-danger">Obligatorio</strong>
+                  <div className="alert alert-danger">Obligatorio</div>
                 )}
                 <label htmlFor="inputImagen" className="form-label">
                   Imagen
@@ -155,11 +168,19 @@ export default function Formnoticia({ noticia_id }) {
                 />
               </div>
               <div className="col-12 text-center d-flex">
-                {formValido && <input
-                  type="submit"
-                  className="fadeIn fourth"
-                  value={noticia_id ? "Editar" : "Publicar"}
-                />}
+                {formValido ? (
+                  <input
+                    type="submit"
+                    className="fadeIn fourth"
+                    value={noticia_id ? "Editar" : "Publicar"}
+                  />
+                ) : (
+                  <input
+                    type="submit"
+                    className="fadeIn fourth disabled"
+                    value={noticia_id ? "Editar" : "Publicar"}
+                  />
+                )}
                 <Link className="fadeIn fourth" to="/noticias">
                   <input
                     type="button"

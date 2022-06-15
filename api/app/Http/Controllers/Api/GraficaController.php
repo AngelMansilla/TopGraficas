@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Grafica;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\validator;
 
 class GraficaController extends Controller
 {
@@ -27,17 +28,21 @@ class GraficaController extends Controller
    */
   public function store(Request $request)
   {
-    $request->validate([
+    $validator = Validator::make($request->all(), [
       'nombre' => 'required|min:3',
       'empresa' => 'required|min:3',
-      'pvpr' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-      'arquitectura' => 'required|min:3',
-      'memoria' => 'required|min:1',
-      'tipo_memoria' => 'required|min:1',
-      'consumo' => 'required|min:1',
+      'pvpr' => 'required|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
+      'arquitectura' => 'required',
+      'memoria' => 'required',
+      'tipo_memoria' => 'required',
+      'consumo' => 'required',
       'fecha' => 'required|date',
-      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+      'imagen' => 'required'
     ]);
+
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+    }
 
     $grafica = new Grafica();
     $grafica->nombre = $request->nombre;
@@ -48,9 +53,13 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = explode("/", $request->imagen->store('../app/Http/Controllers/images'))[1];
+    $grafica->imagen = $request->imagen;
     $grafica->user_id = auth()->user()->id;
+
     $grafica->save();
+
+    return response()
+      ->json(['data' => $grafica]);
   }
 
   /**
@@ -74,17 +83,21 @@ class GraficaController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $request->validate([
+
+    $validator = Validator::make($request->all(), [
       'nombre' => 'required|min:3',
       'empresa' => 'required|min:3',
-      'pvpr' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-      'arquitectura' => 'required|min:3',
-      'memoria' => 'required|min:1',
-      'tipo_memoria' => 'required|min:1',
-      'consumo' => 'required|min:1',
+      'pvpr' => 'required|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
+      'arquitectura' => 'required',
+      'memoria' => 'required',
+      'tipo_memoria' => 'required',
+      'consumo' => 'required',
       'fecha' => 'required|date',
-      'imagen' => 'required|image|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+      'imagen' => 'required'
     ]);
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+    }
 
     $grafica = Grafica::find($id);
 
@@ -96,11 +109,12 @@ class GraficaController extends Controller
     $grafica->tipo_memoria = $request->tipo_memoria;
     $grafica->consumo = $request->consumo;
     $grafica->fecha = $request->fecha;
-    $grafica->imagen = explode("/", $request->imagen->store('../app/Http/Controllers/images'))[1];
+    $grafica->imagen = $request->imagen;
 
     $grafica->save();
 
-    return $grafica;
+    return response()
+      ->json(['data' => $grafica]);
   }
 
   /**

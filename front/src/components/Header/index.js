@@ -26,7 +26,7 @@ export default function Header() {
             </button>
           </div>
           <div
-            className="collapse navbar-collapse ms-5"
+            className="collapse navbar-collapse ms-0"
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav mb-2 mb-lg-0">

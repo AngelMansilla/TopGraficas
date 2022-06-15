@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Oferta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\validator;
 
 class OfertaController extends Controller
 {
@@ -27,14 +28,20 @@ class OfertaController extends Controller
    */
   public function store(Request $request)
   {
-    $request->validate([
+    $validator = Validator::make($request->all(), [
       'titulo' => 'required|min:3',
-      'precio' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
+      'precio' => array(
+        'required',
+        'regex:/^[\d]{0,11}(\.[\d]{1,2})?$/'
+      ),
       'enlace' => 'required|min:3',
       'descripcion' => 'required|min:3',
       'vendedor' => 'required|min:3',
       'grafica_id' => 'required',
     ]);
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+    }
 
     $oferta = new Oferta();
     $oferta->titulo = $request->titulo;
@@ -46,7 +53,10 @@ class OfertaController extends Controller
     $oferta->user_id = auth()->user()->id;
 
     $oferta->save();
+    return response()
+      ->json(['data' => $oferta]);
   }
+
 
   /**
    * Display the specified resource.
@@ -75,27 +85,37 @@ class OfertaController extends Controller
    */
   public function update(Request $request, $id)
   {
-      $request->validate([
-        'titulo' => 'required|min:3',
-        'precio' => 'required|numeric|min:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-        'enlace' => 'required|min:3',
-        'descripcion' => 'min:3',
-        'vendedor' => 'required|min:3',
-        'grafica_id' => 'required',
-      ]);
-      $oferta = Oferta::find($id);
-      if( auth()->user()->id === $oferta->user_id || auth()->user()->isAdmin == 1){
-        $oferta->titulo = $request->titulo;
-        $oferta->precio = $request->precio;
-        $oferta->enlace = $request->enlace;
-        $oferta->descripcion = $request->descripcion;
-        $oferta->vendedor = $request->vendedor;
-        $oferta->grafica_id = $request->grafica_id;
-        $oferta->save();
-        return $oferta;
-      }else{
-        return "No tienes permisos";
-      }
+    $validator = Validator::make($request->all(), [
+      'titulo' => 'required|min:3',
+      'precio' => array(
+        'required',
+        'regex:/^[\d]{0,11}(\.[\d]{1,2})?$/'
+      ),
+      'enlace' => 'required|min:3',
+      'descripcion' => 'min:3',
+      'vendedor' => 'required|min:3',
+      'grafica_id' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+    }
+
+    $oferta = Oferta::find($id);
+    if (auth()->user()->id === $oferta->user_id || auth()->user()->isAdmin == 1) {
+      $oferta->titulo = $request->titulo;
+      $oferta->precio = $request->precio;
+      $oferta->enlace = $request->enlace;
+      $oferta->descripcion = $request->descripcion;
+      $oferta->vendedor = $request->vendedor;
+      $oferta->grafica_id = $request->grafica_id;
+      $oferta->save();
+      return $oferta;
+    } else {
+      return response()->json("Sin permisos", 401);
+    }
+    return response()
+      ->json(['data' => $oferta]);
   }
 
   /**

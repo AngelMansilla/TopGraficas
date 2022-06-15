@@ -7,6 +7,7 @@ import Context from "../context/UserContext";
 export default function useGrafica() {
   const { jwt } = useContext(Context);
   const [state, setState] = useState({ loading: false, error: false });
+  const [isSubmit, setIsSubmit] = useState(false);
   const keyword = "noticia";
 
 
@@ -30,6 +31,7 @@ export default function useGrafica() {
           })
             .then((res) => {
               setState({ loading: false, error: false });
+              setIsSubmit(true)
             })
             .catch((err) => {
               setState({ loading: false, error: true });
@@ -62,6 +64,7 @@ export default function useGrafica() {
           })
             .then((res) => {
               setState({ loading: false, error: false });
+              setIsSubmit(true)
             })
             .catch((err) => {
               setState({ loading: false, error: true });
@@ -81,6 +84,7 @@ export default function useGrafica() {
         })
           .then((res) => {
             setState({ loading: false, error: false });
+            setIsSubmit(true)
             window.location.reload();
           })
           .catch((err) => {
@@ -96,5 +100,6 @@ export default function useGrafica() {
     postNoticia,
     putNoticia,
     deleteNoticia,
+    isSubmit,
   };
 }

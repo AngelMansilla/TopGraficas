@@ -6,8 +6,6 @@ import useUser from "../../hooks/useUser";
 import Spinner from "../Spinner";
 import useNoticia from "../../hooks/useNoticia";
 
-import ENDPOINT from "../../constants";
-
 export default function Noticia({
   id,
   titulo,
@@ -16,9 +14,6 @@ export default function Noticia({
   created_at,
 }) {
   let fecha = new Date(created_at);
-  const srcImagen = (imagen) => {
-    return `${ENDPOINT()}/imagen/${imagen}`;
-  };
 
   const { isLoginLoading } = useUser();
 
@@ -27,7 +22,7 @@ export default function Noticia({
     <div className="col fadeIn first">
       <div className="card flex-row">
         <img
-          src={srcImagen(imagen)}
+          src={imagen}
           className="card-img-top w-50"
           alt="Imagen de la noticia"
         ></img>

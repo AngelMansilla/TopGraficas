@@ -4,8 +4,9 @@ import { Link } from "wouter";
 import Spinner from "../Spinner";
 import moment from "moment";
 
+import getService from "../../services/User/get";
+
 export default function FormRegistrar() {
-  const user = sessionStorage.getItem("user");
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,88 +16,90 @@ export default function FormRegistrar() {
   const [ciudad, setCiudad] = useState("");
   const [telefono, setTelefono] = useState("");
 
-  const { isLoginLoading, hasLoginError, register, edit } = useUser();
+  const { isLoginLoading, hasLoginError, register, edit, isLogged, isSubmit } =
+    useUser();
   const [errorNombre, setErrorNombre] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
-  const [errorApellido, setErrorApellido] = useState("");
+  const [errorApellido, setErrorApellido] = useState(false);
   const [errorFecha_nacimiento, setErrorFecha_nacimiento] = useState("");
   const [errorPais, setErrorPais] = useState("");
-  const [errorCiudad, setErrorCiudad] = useState("");
-  const [errorTelefono, setErrorTelefono] = useState("");
+  const [errorCiudad, setErrorCiudad] = useState(false);
+  const [errorTelefono, setErrorTelefono] = useState(false);
   const [formValido, setFormValido] = useState(false);
-  const regTelefono = new RegExp("^d{9}$");
-  const regEmail = new RegExp("^[\\w-\\.]+@([\\w-]+\.)+[\\w-]{2,4}$");
-  const regPassword = new RegExp(
-    "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
+  const regTelefono = new RegExp(
+    "(^\\+34|0034|34)?^[ -]*(6|7)[ -]*([0-9][ -]*){8}$"
   );
+  const regEmail = new RegExp("^[\\w-\\.]+@([\\w-]+.)+[\\w-]{2,4}$");
+  const regPassword = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
 
   const handleChange = (target) => {
     if (target.name === "nombre") {
-      if (target.value.lengeht > 3) {
-        setNombre(target.value);
+      setNombre(target.value);
+      if (target.value.length > 3) {
         setErrorNombre(false);
       } else {
         setErrorNombre(true);
       }
     }
     if (target.name === "email") {
+      setEmail(target.value);
       if (regEmail.test(target.value)) {
-        setEmail(target.value);
         setErrorEmail(false);
       } else {
         setErrorEmail(true);
       }
     }
     if (target.name === "password") {
+      setPassword(target.value);
       if (regPassword.test(target.value)) {
-        setPassword(target.value);
         setErrorPassword(false);
       } else {
         setErrorPassword(true);
       }
     }
     if (target.name === "apellido") {
-      if (target.value.lengeht > 3) {
-        setApellido(target.value);
+      setApellido(target.value);
+      if (!target.value || target.value.length > 3) {
         setErrorApellido(false);
       } else {
         setErrorApellido(true);
       }
     }
     if (target.name === "fecha_nacimiento") {
-      if (moment(target.value, "MM/DD/YY", true).isValid()) {
-        setFecha_nacimiento(target.value);
+      setFecha_nacimiento(target.value);
+      if (moment(target.value, "YYYY-MM-DD", true).isValid()) {
         setErrorFecha_nacimiento(false);
       } else {
         setErrorFecha_nacimiento(true);
       }
     }
     if (target.name === "pais") {
-      if (target.value.lengeht > 3) {
-        setPais(target.value);
+      setPais(target.value);
+      if (target.value.length > 3) {
         setErrorPais(false);
       } else {
         setErrorPais(true);
       }
     }
     if (target.name === "ciudad") {
-      if (target.value.lengeht > 3) {
-        setCiudad(target.value);
+      setCiudad(target.value);
+      if (!target.value || target.value.length > 3) {
         setErrorCiudad(false);
       } else {
         setErrorCiudad(true);
       }
     }
     if (target.name === "telefono") {
-      if (regTelefono.test(target.value)) {
-        setTelefono(target.value);
+      setTelefono(target.value);
+      if (!target.value || regTelefono.test(target.value)) {
         setErrorTelefono(false);
       } else {
         setErrorTelefono(true);
       }
     }
-
+  };
+  useEffect(() => {
     setFormValido(
       errorNombre === false &&
         errorApellido === false &&
@@ -107,25 +110,36 @@ export default function FormRegistrar() {
         errorCiudad === false &&
         errorTelefono === false
     );
-  };
+  }, [handleChange]);
 
   useEffect(() => {
-    if (user) {
-      setNombre(user.nombre);
-      setEmail(user.email);
-      setPassword(user.password);
-      setApellido(user.apellido);
-      setFecha_nacimiento(user.fecha_nacimiento);
-      setPais(user.pais);
-      setCiudad(user.ciudad);
-      setTelefono(user.telefono);
-    }
-  }, [user]);
+    let user_id = sessionStorage.getItem("user_id");
+    let jwt = sessionStorage.getItem("jwt");
+    getService({ user_id, jwt })
+      .then((user) => {
+        setNombre(user.nombre);
+        setEmail(user.email);
+        setPassword(user.password);
+        setApellido(user.apellido);
+        setFecha_nacimiento(user.fecha_nacimiento);
+        setPais(user.pais);
+        setCiudad(user.ciudad);
+        setTelefono(user.telefono);
+        setFormValido(true);
+        setErrorNombre(false);
+        setErrorEmail(false);
+        setErrorFecha_nacimiento(false);
+        setErrorPais(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formValido) {
-      user
+      isLogged
         ? edit({
             nombre,
             email,
@@ -147,7 +161,7 @@ export default function FormRegistrar() {
             telefono,
           });
 
-      if (!user) {
+      if (!isLogged) {
         setNombre("");
         setEmail("");
         setPassword("");
@@ -157,38 +171,40 @@ export default function FormRegistrar() {
         setCiudad("");
         setTelefono("");
       }
+      setFormValido(false);
     }
   };
 
   return (
     <>
       {isLoginLoading && <Spinner />}
-      {hasLoginError ? (
-        <strong className="alert alert-danger">Datos incorrectos</strong>
-      ) : (
-        <strong className="alert alert-success">
-          {user && "Perfil modificado correctamente"}
-        </strong>
+      {hasLoginError && (
+        <div className="alert alert-danger">Datos incorrectos</div>
+      )}
+      {isSubmit && !hasLoginError && (
+        <div className="alert alert-success">
+          {isLogged && "Perfil modificado correctamente"}
+        </div>
       )}
       {!isLoginLoading && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">
             <h1 className="text-center fadeIn first">
-              {user ? "Editar perfil" : "Registrarse"}
+              {isLogged ? "Editar perfil" : "Registrarse"}
             </h1>
             <form
-              className="row g-3"
-              name={user ? "editar_perfil" : "registrase"}
+              className="row g-3 mt-3"
+              name={isLogged ? "editar_perfil" : "registrase"}
               onSubmit={handleSubmit}
             >
               <div className="col-md-6">
                 {errorNombre && (
-                  <strong className="alert alert-danger">
-                    Obligatorio y mas de 3 caracteres
-                  </strong>
+                  <div className="alert alert-danger">
+                    Obligatorio y 3 caracteres minimo
+                  </div>
                 )}
                 <label htmlFor="inputNombre" className="form-label">
-                  Nombre
+                  Nombre*
                 </label>
                 <input
                   type="text"
@@ -201,12 +217,12 @@ export default function FormRegistrar() {
               </div>
               <div className="col-md-6">
                 {errorEmail && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y formato email. Ej: pepito@gmail.com
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputEmail" className="form-label">
-                  Email
+                  Email*
                 </label>
                 <input
                   type="email"
@@ -219,13 +235,12 @@ export default function FormRegistrar() {
               </div>
               <div className="col-md-6">
                 {errorPassword && (
-                  <strong className="alert alert-danger">
-                    Obligatorio, entre 6-16 caracteres, minimo una letra, numero
-                    y caracter especial
-                  </strong>
+                  <div className="alert alert-danger">
+                    1 letra, 1 numero y 8 caracteres minimo
+                  </div>
                 )}
                 <label htmlFor="inputPassword" className="form-label">
-                  password
+                  password*
                 </label>
                 <input
                   type="password"
@@ -238,9 +253,9 @@ export default function FormRegistrar() {
               </div>
               <div className="col-md-6">
                 {errorApellido && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputApellido" className="form-label">
                   Apellido
@@ -256,15 +271,15 @@ export default function FormRegistrar() {
               </div>
               <div className="col-md-6">
                 {errorFecha_nacimiento && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y formato fecha
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputFecha_nacimiento" className="form-label">
-                  Fecha de nacimiento
+                  Fecha de nacimiento*
                 </label>
                 <input
-                  type="text"
+                  type="date"
                   name="fecha_nacimiento"
                   id="inputFecha_nacimiento"
                   className="form-control"
@@ -274,12 +289,12 @@ export default function FormRegistrar() {
               </div>
               <div className="col-md-6">
                 {errorPais && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputPais" className="form-label">
-                  Pais
+                  Pais*
                 </label>
                 <input
                   className="form-control"
@@ -291,12 +306,12 @@ export default function FormRegistrar() {
               </div>
               <div className="col-md-6">
                 {errorCiudad && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputCiudad" className="form-label">
-                  Pais
+                  Ciudad
                 </label>
                 <input
                   className="form-control"
@@ -308,9 +323,9 @@ export default function FormRegistrar() {
               </div>
               <div className="col-md-6">
                 {errorTelefono && (
-                  <strong className="alert alert-danger">
+                  <div className="alert alert-danger">
                     Obligatorio y mas de 3 caracteres
-                  </strong>
+                  </div>
                 )}
                 <label htmlFor="inputTelefono" className="form-label">
                   Telefono
@@ -323,18 +338,26 @@ export default function FormRegistrar() {
                   onChange={(e) => handleChange(e.target)}
                 />
               </div>
-              <div className="col-12 text-center d-flex">
-                {formValido && (
+              <div className="col-md-6 mt-5">
+                {formValido ? (
                   <input
                     type="submit"
-                    className="fadeIn fourth"
-                    value={user ? "Editar" : "Registrarse"}
+                    className="fadeIn fourth  ms-0"
+                    value={isLogged ? "Editar" : "Registrarse"}
+                  />
+                ) : (
+                  <input
+                    type="submit"
+                    className="fadeIn fourth disabled ms-0"
+                    value={isLogged ? "Editar" : "Registrarse"}
                   />
                 )}
-                <Link className="fadeIn fourth" to="/">
+              </div>
+              <div className="col-md-6 mt-5">
+                <Link to="/">
                   <input
                     type="button"
-                    className="fadeIn fourth"
+                    className="fadeIn fourth ms-3"
                     value="volver"
                   />
                 </Link>

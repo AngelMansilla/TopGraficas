@@ -7,7 +7,6 @@ import useGrafica from "../../hooks/useGrafica";
 import useUser from "../../hooks/useUser";
 import Spinner from "../Spinner";
 
-import ENDPOINT from "../../constants";
 
 
 export default function Grafica({
@@ -22,14 +21,11 @@ export default function Grafica({
 }) {
   const { isLoginLoading } = useUser();
   const { deleteGrafica, hasErrorGrafica, isLoadingGrafica } = useGrafica();
-  const srcImagen = (imagen) => {
-    return `${ENDPOINT()}/imagen/${imagen}`;
-  };
   return (
     <div className="col fadeIn first">
       <div className="card flex-row">
         <img
-          src={srcImagen(imagen)}
+          src={imagen}
           className="card-img-top w-50"
           alt={nombre}
         ></img>

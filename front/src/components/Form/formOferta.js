@@ -131,6 +131,8 @@ export default function FormOferta({ oferta_id }) {
         setDescripcion("");
         setVendedor("");
       }
+
+      setFormValido(false);
     }
   };
 

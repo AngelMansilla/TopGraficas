@@ -1,6 +1,6 @@
 import ENDPOINT from "../../constants";
 export default async function login({ email, password }) {
-  const res = await fetch(`${ENDPOINT}/sesion`, {
+  const res = await fetch(`${ENDPOINT()}/sesion`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

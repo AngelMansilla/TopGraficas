@@ -38,17 +38,13 @@
   }
 }
 
-.main {
-  margin-left: 10%;
-  margin-right: 10%;
-}
-
 /* BASIC */
 
 html {
   min-height: 100%;
   position: relative;
 }
+
 body {
   margin: 0;
   margin-bottom: 40px;

@@ -8,9 +8,6 @@ import useUser from "../../hooks/useUser";
 
 import useOferta from "../../hooks/useOferta";
 
-import ENDPOINT from "../../constants";
-
-import { useLocation } from "wouter";
 
 export default function Oferta({
   id,
@@ -24,10 +21,7 @@ export default function Oferta({
   nombreGrafica,
   user_id,
 }) {
-  const srcImagen = (imagen) => {
-    return `${ENDPOINT()}/imagen/${imagen}`;
-  };
-  const [, navigate] = useLocation();
+ 
   let fecha = new Date(created_at);
   const { isLoginLoading } = useUser();
   const { deleteOferta, hasErrorOferta, isLoadingOferta } = useOferta();
@@ -38,7 +32,7 @@ export default function Oferta({
     <div className="col fadeIn first">
       <div className="card flex-row">
         <img
-          src={srcImagen(imagen)}
+          src={imagen}
           className="card-img-top w-50"
           alt={nombreGrafica}
         ></img>

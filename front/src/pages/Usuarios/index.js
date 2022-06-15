@@ -12,10 +12,8 @@ export default function IniciarSesion() {
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regEmail = new RegExp("^[\\w-\\.]+@([\\w-]+\.)+[\\w-]{2,4}$");
-  const regPassword = new RegExp(
-    "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
-  );
+  const regEmail = new RegExp("^[\\w-\\.]+@([\\w-]+.)+[\\w-]{2,4}$");
+  const regPassword = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
 
   const handleChange = (target) => {
     if (target.name === "login") {
@@ -34,8 +32,11 @@ export default function IniciarSesion() {
         setErrorPassword(true);
       }
     }
-    setFormValido(errorEmail === false && errorPassword === false);
   };
+  useEffect(() => {
+    setFormValido(errorEmail === false && errorPassword === false);
+  }, [handleChange]);
+
   useEffect(() => {
     if (isLogged) navigate("/");
   }, [isLogged, navigate]);
@@ -50,6 +51,11 @@ export default function IniciarSesion() {
       {isLoginLoading && <Spinner />}
       {!isLoginLoading && (
         <div className="wrapper fadeInDown">
+          {hasLoginError && (
+            <strong className="alert alert-danger">
+              Credenciales incorrectos
+            </strong>
+          )}
           <div id="formContent">
             <div className="fadeIn first">
               <i className="bi bi-file-person-fill"></i>
@@ -64,7 +70,7 @@ export default function IniciarSesion() {
                 <input
                   type="email"
                   id="login"
-                  className="fadeIn second mt-3 mb-3"
+                  className="fadeIn second mt-3 mb-3 login"
                   name="login"
                   placeholder="correo electronico"
                   onChange={(e) => handleChange(e.target)}
@@ -80,7 +86,7 @@ export default function IniciarSesion() {
                 <input
                   type="password"
                   id="password"
-                  className="fadeIn third mt-3"
+                  className="fadeIn third mt-3 login "
                   name="password"
                   placeholder="contraseña"
                   onChange={(e) => handleChange(e.target)}
@@ -90,22 +96,19 @@ export default function IniciarSesion() {
               {formValido ? (
                 <input
                   type="submit"
-                  className="fadeIn fourth"
+                  className="fadeIn fourth mt-3"
                   value="Iniciar sesion"
                 />
               ) : (
                 <input
                   type="submit"
-                  className="fadeIn fourth disabled"
+                  className="fadeIn fourth disabled mt-3"
                   value="Iniciar sesion"
                 />
               )}
             </form>
           </div>
         </div>
-      )}
-      {hasLoginError && (
-        <strong className="alert alert-danger">Credenciales incorrectos</strong>
       )}
     </>
   );

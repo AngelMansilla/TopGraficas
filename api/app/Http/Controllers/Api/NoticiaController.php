@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Noticia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\validator;
 
 class NoticiaController extends Controller
 {
@@ -27,11 +28,14 @@ class NoticiaController extends Controller
    */
   public function store(Request $request)
   {
-    $request->validate([
+    $validator = Validator::make($request->all(), [
       'titulo' => 'required|min:3',
       'informacion' => 'required|min:3',
       'imagen' => 'required'
     ]);
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+    }
 
     $noticia = new Noticia();
     $noticia->titulo = $request->titulo;
@@ -40,7 +44,10 @@ class NoticiaController extends Controller
     $noticia->user_id = auth()->user()->id;
 
     $noticia->save();
+    return response()
+      ->json(['data' => $noticia]);
   }
+
 
   /**
    * Display the specified resource.
@@ -63,11 +70,14 @@ class NoticiaController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $request->validate([
+    $validator = Validator::make($request->all(), [
       'titulo' => 'required|min:3',
       'informacion' => 'required|min:3',
       'imagen' => 'required'
     ]);
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+    }
 
     $noticia = Noticia::find($id);
     $noticia->titulo = $request->titulo;
@@ -76,7 +86,8 @@ class NoticiaController extends Controller
 
     $noticia->save();
 
-    return $noticia;
+    return response()
+      ->json(['data' => $noticia]);
   }
 
   /**

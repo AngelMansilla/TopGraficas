@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import moment from 'moment';
+import moment from "moment";
 import useGrafica from "../../hooks/useGrafica";
 import { Link } from "wouter";
 import Spinner from "../Spinner";
 import getServices from "../../services/buscar";
+import SimpleFileUpload from "react-simple-file-upload";
 
 export default function FormGrafica({ grafica_id }) {
   const [nombre, setNombre] = useState("");
@@ -14,13 +15,15 @@ export default function FormGrafica({ grafica_id }) {
   const [tipo_memoria, setTipo_memoria] = useState("");
   const [consumo, setConsumo] = useState("");
   const [fecha, setFecha] = useState("");
-  const [imagen, setImagen] = useState(null);
+  const [imagen, setImagen] = useState("");
+  const [imagenEdit, setImagenEdit] = useState("");
   const keyword = "grafica";
   const {
     isLoadingGrafica,
     hasErrorGrafica,
     postGrafica,
     putGrafica,
+    isSubmit,
   } = useGrafica();
   const [errorNombre, setErrorNombre] = useState("");
   const [errorEmpresa, setErrorEmpresa] = useState("");
@@ -32,7 +35,7 @@ export default function FormGrafica({ grafica_id }) {
   const [errorFecha, setErrorFecha] = useState("");
   const [errorImagen, setErrorImagen] = useState("");
   const [formValido, setFormValido] = useState(false);
-  const regPvpr = new RegExp("^[\d]{0,11}(\.[\d]{1,2})?$");
+  const regPvpr = new RegExp("^[\\d]{0,11}(\\.[\\d]{1,2})?$");
 
   useEffect(() => {
     if (grafica_id) {
@@ -45,122 +48,136 @@ export default function FormGrafica({ grafica_id }) {
         setTipo_memoria(grafica.tipo_memoria);
         setConsumo(grafica.consumo);
         setFecha(grafica.fecha);
+        setImagenEdit(grafica.imagen);
+        setFormValido(true);
+        setErrorNombre(false);
+        setErrorEmpresa(false);
+        setErrorPvpr(false);
+        setErrorMemoria(false);
+        setErrorTipo_memoria(false);
+        setErrorConsumo(false);
+        setErrorFecha(false);
+        setErrorImagen(false);
+        setErrorArquitectura(false);
       });
     }
   }, [grafica_id]);
 
   const handleChange = (target) => {
     if (target.name === "nombre") {
-      setNombre(target.value)
-      if (target.value.lengeht > 3) {
-        setErrorNombre(false)
+      setNombre(target.value);
+      if (target.value.length > 3) {
+        setErrorNombre(false);
       } else {
-        setErrorNombre(true)
+        setErrorNombre(true);
       }
     }
     if (target.name === "empresa") {
-      setEmpresa(target.value)
-      if (target.value.lengeht > 3) {
-        setErrorEmpresa(false)
+      setEmpresa(target.value);
+      if (target.value.length > 3) {
+        setErrorEmpresa(false);
       } else {
-        setErrorEmpresa(true)
+        setErrorEmpresa(true);
       }
     }
     if (target.name === "pvpr") {
-      setPvpr(target.value)
+      setPvpr(target.value);
       if (target.value > 0 && regPvpr.test(target.value)) {
-        setErrorPvpr(false)
+        setErrorPvpr(false);
       } else {
-        setErrorPvpr(true)
+        setErrorPvpr(true);
       }
     }
     if (target.name === "arquitectura") {
-      setArquitectura(target.value)
-      if (target.value.lengeht > 3) {
-        setErrorArquitectura(false)
+      setArquitectura(target.value);
+      if (target.value.length > 3) {
+        setErrorArquitectura(false);
       } else {
-        setErrorArquitectura(true)
+        setErrorArquitectura(true);
       }
     }
     if (target.name === "memoria") {
-      setMemoria(target.value)
-      if (target.value.lengeht > 1) {
-        setErrorMemoria(false)
+      setMemoria(target.value);
+      if (target.value > 0) {
+        setErrorMemoria(false);
       } else {
-        setErrorMemoria(true)
+        setErrorMemoria(true);
       }
     }
     if (target.name === "tipo_memoria") {
-      setTipo_memoria(target.value)
-      if (target.value.lengeht > 1) {
-        setErrorTipo_memoria(false)
+      setTipo_memoria(target.value);
+      if (target.value.length) {
+        setErrorTipo_memoria(false);
       } else {
-        setErrorTipo_memoria(true)
+        setErrorTipo_memoria(true);
       }
     }
     if (target.name === "consumo") {
-      setConsumo(target.value)
-      if (target.value.lengeht > 1) {
-        setErrorConsumo(false)
+      setConsumo(target.value);
+      if (target.value > 0) {
+        setErrorConsumo(false);
       } else {
-        setErrorConsumo(true)
+        setErrorConsumo(true);
       }
     }
     if (target.name === "fecha") {
-      setFecha(target.value)
-      if (moment(target.value, 'MM/DD/YY', true).isValid()) {
-        setErrorFecha(false)
+      setFecha(target.value);
+      if (moment(target.value, "YYYY-MM-DD", true).isValid()) {
+        setErrorFecha(false);
       } else {
-        setErrorFecha(true)
+        setErrorFecha(true);
       }
     }
-    if (target.name === "imagen") {
-      setImagen(target.files[0])
-      if (target.files[0]) {
-        setErrorImagen(false)
-      } else {
-        setErrorImagen(true)
-      }
+  };
+  const handleUpload = (url) => {
+    if(url!== ""){
+      setErrorImagen(false);
+      setImagen(url)
     }
+  };
+
+
+  useEffect(() => {
     setFormValido(
       errorArquitectura === false &&
-      errorNombre === false &&
-      errorEmpresa === false &&
-      errorConsumo === false &&
-      errorFecha === false &&
-      errorMemoria === false &&
-      errorTipo_memoria === false &&
-      errorPvpr === false &&
-      errorImagen === false)
-  }
+        errorNombre === false &&
+        errorEmpresa === false &&
+        errorConsumo === false &&
+        errorFecha === false &&
+        errorMemoria === false &&
+        errorTipo_memoria === false &&
+        errorPvpr === false &&
+        errorImagen === false
+    );
+  }, [handleChange]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formValido) {
       grafica_id
         ? putGrafica({
-          grafica_id,
-          nombre,
-          empresa,
-          pvpr,
-          arquitectura,
-          memoria,
-          tipo_memoria,
-          consumo,
-          fecha,
-          imagen,
-        })
+            grafica_id,
+            nombre,
+            empresa,
+            pvpr,
+            arquitectura,
+            memoria,
+            tipo_memoria,
+            consumo,
+            fecha,
+            imagen: imagen ? imagen : imagenEdit,
+          })
         : postGrafica({
-          nombre,
-          empresa,
-          pvpr,
-          arquitectura,
-          memoria,
-          tipo_memoria,
-          consumo,
-          fecha,
-          imagen,
-        });
+            nombre,
+            empresa,
+            pvpr,
+            arquitectura,
+            memoria,
+            tipo_memoria,
+            consumo,
+            fecha,
+            imagen: imagen,
+          });
 
       if (!grafica_id) {
         setNombre("");
@@ -171,20 +188,24 @@ export default function FormGrafica({ grafica_id }) {
         setTipo_memoria("");
         setConsumo("");
         setFecha("");
-        setImagen(null);
       }
+      setFormValido(false);
     }
   };
 
   return (
     <>
       {isLoadingGrafica && <Spinner />}
-      {hasErrorGrafica ? (
-        <strong className="alert alert-danger">Datos incorrectos</strong>
-      )
-        :
-        <strong className="alert alert-success">{grafica_id ? "Grafica modificada correctamente" : "Grafica publicada correctamente"}</strong>
-      }
+      {hasErrorGrafica && (
+        <div className="alert alert-danger">Datos incorrectos</div>
+      )}
+      {isSubmit && !hasErrorGrafica && (
+        <div className="alert alert-success">
+          {grafica_id
+            ? "Grafica modificada correctamente"
+            : "Grafica publicada correctamente"}
+        </div>
+      )}
       {!isLoadingGrafica && (
         <div className="wrapper fadeInDown">
           <div className="container w-50 border p-4 mt-4 formContent">
@@ -195,10 +216,13 @@ export default function FormGrafica({ grafica_id }) {
               className="row g-3"
               name="publicar-grafica"
               onSubmit={handleSubmit}
+              encType="multipart/form-data"
             >
               <div className="col-md-6">
                 {errorNombre && (
-                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                  <div className="alert alert-danger">
+                    Obligatorio y mas de 3 caracteres
+                  </div>
                 )}
                 <label htmlFor="inputNombre" className="form-label">
                   Nombre*
@@ -214,7 +238,9 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorEmpresa && (
-                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                  <div className="alert alert-danger">
+                    Obligatorio y mas de 3 caracteres
+                  </div>
                 )}
                 <label htmlFor="inputEmpresa" className="form-label">
                   Empresa*
@@ -230,7 +256,9 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorPvpr && (
-                  <strong className="alert alert-danger">Obligatorio, numero, mayor de 0 y maximo 2 decimales</strong>
+                  <div className="alert alert-danger">
+                    Obligatorio, numero, mayor de 0 y maximo 2 decimales
+                  </div>
                 )}
                 <label htmlFor="inputPVPR" className="form-label">
                   Precio de salida (€)*
@@ -247,7 +275,9 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorArquitectura && (
-                  <strong className="alert alert-danger">Obligatorio y mas de 3 caracteres</strong>
+                  <div className="alert alert-danger">
+                    Obligatorio y mas de 3 caracteres
+                  </div>
                 )}
                 <label htmlFor="inputArquitectura" className="form-label">
                   Arquitectura*
@@ -263,7 +293,7 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorMemoria && (
-                  <strong className="alert alert-danger">Obligatorio</strong>
+                  <div className="alert alert-danger">Obligatorio</div>
                 )}
                 <label htmlFor="inputMemoria" className="form-label">
                   Memoria (GB)*
@@ -279,7 +309,7 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorTipo_memoria && (
-                  <strong className="alert alert-danger">Obligatorio</strong>
+                  <div className="alert alert-danger">Obligatorio</div>
                 )}
                 <label htmlFor="inputTipo_memoria" className="form-label">
                   Tipo de memoria*
@@ -295,7 +325,7 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorConsumo && (
-                  <strong className="alert alert-danger">Obligatorio</strong>
+                  <div className="alert alert-danger">Obligatorio</div>
                 )}
                 <label htmlFor="inputConsumo" className="form-label">
                   Consumo (Vatios)*
@@ -311,7 +341,9 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-md-6">
                 {errorFecha && (
-                  <strong className="alert alert-danger">Obligatorio y formato fecha</strong>
+                  <div className="alert alert-danger">
+                    Obligatorio y formato fecha
+                  </div>
                 )}
                 <label htmlFor="inputFecha" className="form-label">
                   Fecha*
@@ -327,30 +359,37 @@ export default function FormGrafica({ grafica_id }) {
               </div>
               <div className="col-12">
                 {errorImagen && (
-                  <strong className="alert alert-danger">Obligatorio</strong>
+                  <div className="alert alert-danger">Obligatorio</div>
                 )}
-                <label htmlFor="inputImagen" className="form-label">
-                  Imagen*
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
+                <label htmlFor="inputImagen" className="form-label"></label>
+                {imagenEdit && (
+                  <img src={imagen ? imagen : imagenEdit} className="form-control"></img>
+                )}
+                <SimpleFileUpload
+                  apiKey="268ccedd024fa995abe1240d0bfd8298"
                   name="imagen"
                   id="inputImagen"
-                  onChange={(e) => handleChange(e.target)}
+                  onSuccess={handleUpload}
                 />
               </div>
-              <div className="col-12 text-center d-flex">
-                {formValido &&
+              <div className="col-6 form-control text-center d-flex border-0">
+                {formValido ? (
                   <input
                     type="submit"
-                    className="fadeIn fourth"
+                    className="fadeIn fourth form-control ms-4 p-2"
                     value={grafica_id ? "Editar" : "Publicar"}
-                  />}
+                  />
+                ) : (
+                  <input
+                    type="submit"
+                    className="fadeIn fourth disabled form-control ms-4 p-2"
+                    value={grafica_id ? "Editar" : "Publicar"}
+                  />
+                )}
                 <Link className="fadeIn fourth" to="/graficas">
                   <input
                     type="button"
-                    className="fadeIn fourth"
+                    className="fadeIn fourth form-control ms-0 p-2"
                     value="volver"
                   />
                 </Link>

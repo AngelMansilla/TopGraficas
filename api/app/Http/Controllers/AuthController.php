@@ -13,18 +13,18 @@ class AuthController extends Controller
   public function register(Request $request)
   {
     $validator = Validator::make($request->all(), [
-      'nombre' => 'required|string|min:3',
-      'email' => 'required|string|min:3|email|unique:users|regex:/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/',
-      'password' => 'required|regex:/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/',
-      'apellido' => 'string|min:3',
+      'nombre' => 'required|string|max:191',
+      'email' =>  'required|min:3',
+      'password' => 'required|min:8',
+      'apellido' => 'max:191',
       'fecha_nacimiento' => 'required|date',
-      'pais' => 'required|string|min:3',
-      'ciudad' => 'string|min:3',
-      'telefono' => 'string|regex:/^\d{9}$/',
+      'pais' => 'required|string|max:191',
+      'ciudad' => 'max:191',
+      'telefono' => 'max:9',
     ]);
 
     if ($validator->fails()) {
-      return response()->json($validator->errors());
+      return response()->json($validator->errors(), 422);
     }
 
     $user = User::create([
@@ -41,44 +41,46 @@ class AuthController extends Controller
     return response()
       ->json(['data' => $user]);
   }
-  
+
   public function editUser(Request $request)
   {
     $validator = Validator::make($request->all(), [
       'nombre' => 'required|string|max:191',
-      'email' => 'required|string|max:191|email',
-      'password' => 'required|min:8|string|max:191',
-      'apellido' => 'string|max:191',
+      'email' =>  'required|min:3',
+      'password' => 'required|min:8',
+      'apellido' => 'max:191',
       'fecha_nacimiento' => 'required|date',
       'pais' => 'required|string|max:191',
-      'ciudad' => 'string|max:191',
-      'telefono' => 'string|max:191',
+      'ciudad' => 'max:191',
+      'telefono' => 'max:9',
     ]);
 
     if ($validator->fails()) {
-      return response()->json($validator->errors());
+      return response()->json($validator->errors(), 422);
     }
 
     $updateuser = User::where('email', $request['email'])->firstOrFail();
 
-    $input = $request->all();
-    $updateuser->fill($input)->save();
+    $updateuser->nombre = $request->nombre;
+    $updateuser->email = $request->email;
+    $updateuser->password = Hash::make($request->password);
+    $updateuser->apellido = $request->apellido;
+    $updateuser->fecha_nacimiento = $request->fecha_nacimiento;
+    $updateuser->pais = $request->pais;
+    $updateuser->ciudad = $request->ciudad;
+    $updateuser->telefono = $request->telefono;
 
-    if($updateuser['is_admin'] === 1){
-      $token = $updateuser->createToken($request['email'], ['admin'])->plainTextToken;
-    }else{
-      $token = $updateuser->createToken($request['email'])->plainTextToken;
-    }
+    $updateuser->save();
 
     return response()
-      ->json(['data' => $updateuser, 'access_token' => $token, 'token_type' => 'Bearer',]);
+      ->json(['data' => $updateuser]);
   }
 
   public function login(Request $request)
   {
     $validator = Validator::make($request->all(), [
-      'email' => 'required|email',
-      'password' => 'required|string|min:6'
+      'email' =>  'required|min:3',
+      'password' => 'required|min:8',
     ]);
     if ($validator->fails()) {
       return response()->json($validator->errors(), 422);
@@ -87,9 +89,9 @@ class AuthController extends Controller
       return response()->json(['message' => 'Sin autorización'], 401);
     }
     $user = User::where('email', $request['email'])->firstOrFail();
-    if($user['is_admin'] === 1){
+    if ($user['is_admin'] === 1) {
       $token = $user->createToken($request['email'], ['admin'])->plainTextToken;
-    }else{
+    } else {
       $token = $user->createToken($request['email'])->plainTextToken;
     }
 
@@ -110,5 +112,11 @@ class AuthController extends Controller
         'message' => 'Has finalizado sesión correctamente'
       ];
     }
+  }
+
+  public function getUser($id)
+  {
+    $user = User::find($id);
+    return $user;
   }
 }

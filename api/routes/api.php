@@ -38,10 +38,6 @@ Route::controller(OfertaController::class)->group(function () {
   Route::get('/ofertas/{id}', 'search');
 });
 
-Route::controller(ImagenController::class)->group(function () {
-  Route::get('/imagen/{id}', 'show');
-});
-
 Route::controller(AuthController::class)->group(function () {
   Route::post('/registrar', 'register');
   Route::post('/sesion', 'login');
@@ -50,6 +46,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
   Route::controller(AuthController::class)->group(function () {
     Route::get('/cerrarsesion', 'logout');
+    Route::get('/usuario/{id}', 'getUser');
     Route::put('/usuario', 'editUser');
   });
 

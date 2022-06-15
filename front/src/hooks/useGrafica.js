@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState} from "react";
+import { useCallback, useContext, useState } from "react";
 import postService from "../services/publicar";
 import putService from "../services/modificar";
 import deleteService from "../services/eliminar";
@@ -7,9 +7,8 @@ import Context from "../context/UserContext";
 export default function useGrafica() {
   const { jwt } = useContext(Context);
   const [state, setState] = useState({ loading: false, error: false });
+  const [isSubmit, setIsSubmit] = useState(false);
   const keyword = "grafica";
-
-
 
   const postGrafica = useCallback(
     ({
@@ -43,6 +42,7 @@ export default function useGrafica() {
           })
             .then((res) => {
               setState({ loading: false, error: false });
+              setIsSubmit(true);
             })
             .catch((err) => {
               setState({ loading: false, error: true });
@@ -79,14 +79,17 @@ export default function useGrafica() {
         fecha,
         imagen,
       };
+
       sessionStorage.getItem("isAdmin") === "1"
         ? putService({
             keyword,
+            id: grafica_id,
             jwt,
             datos,
           })
             .then((res) => {
               setState({ loading: false, error: false });
+              setIsSubmit(true);
             })
             .catch((err) => {
               setState({ loading: false, error: true });
@@ -106,7 +109,7 @@ export default function useGrafica() {
         })
           .then((res) => {
             setState({ loading: false, error: false });
-
+            setIsSubmit(true);
             window.location.reload();
           })
           .catch((err) => {
@@ -122,5 +125,6 @@ export default function useGrafica() {
     postGrafica,
     putGrafica,
     deleteGrafica,
+    isSubmit,
   };
 }
