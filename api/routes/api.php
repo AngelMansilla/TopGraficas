@@ -53,6 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::controller(OfertaController::class)->group(function () {
     Route::post('/oferta', 'store');
     Route::put('/oferta/{id}', 'update');
+    Route::delete('/oferta/{id}', 'destroy');
   });
 });
 
@@ -66,8 +67,5 @@ Route::group(['middleware' => ['auth:sanctum', 'abilities:admin']], function () 
     Route::post('/noticia', 'store');
     Route::put('/noticia/{id}', 'update');
     Route::delete('/noticia/{id}', 'destroy');
-  });
-  Route::controller(OfertaController::class)->group(function () {
-    Route::delete('/oferta/{id}', 'destroy');
   });
 });

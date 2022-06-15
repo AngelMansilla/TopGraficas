@@ -62,8 +62,8 @@ export default function useOferta() {
         grafica_id,
       };
       console.log(datos);
-      sessionStorage.getItem("isAdmin") === "1" ||
-      user_id === sessionStorage.getItem("user_id")
+      (sessionStorage.getItem("isAdmin") === "1" ||
+      user_id === sessionStorage.getItem("user_id"))
         ? putService({
             keyword,
             id: oferta_id,
@@ -82,9 +82,9 @@ export default function useOferta() {
     },
     []
   );
-  const deleteOferta = useCallback(({ id }) => {
+  const deleteOferta = useCallback(({ id, user_id }) => {
     setState({ loading: true, error: false });
-    sessionStorage.getItem("isAdmin") === "1"
+    (sessionStorage.getItem("isAdmin") === "1" )
       ? deleteService({
           id,
           keyword,

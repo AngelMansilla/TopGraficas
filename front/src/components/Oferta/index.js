@@ -115,7 +115,7 @@ export default function Oferta({
               <i
                 className="bi bi-x-circle"
                 type="button"
-                onClick={() => deleteOferta({ id })}
+                onClick={() => deleteOferta({ id, user_id })}
               ></i>
             </div>
           )}

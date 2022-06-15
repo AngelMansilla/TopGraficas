@@ -93,7 +93,6 @@ class OfertaController extends Controller
     ]);
 
     $oferta = Oferta::find($id);
-    if (auth()->user()->id === $oferta->user_id || auth()->user()->isAdmin == 1) {
       $oferta->titulo = $request->titulo;
       $oferta->precio = $request->precio;
       $oferta->enlace = $request->enlace;
@@ -101,10 +100,7 @@ class OfertaController extends Controller
       $oferta->vendedor = $request->vendedor;
       $oferta->grafica_id = $request->grafica_id;
       $oferta->save();
-      return $oferta;
-    } else {
-      return response()->json("Sin permisos", 401);
-    }
+
     return response()
       ->json(['data' => $oferta]);
   }
